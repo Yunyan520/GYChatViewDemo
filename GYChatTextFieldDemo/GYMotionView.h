@@ -14,4 +14,6 @@ typedef void(^ChooseMotionCallback)(UIView *motion,NSArray *phArr,NSArray *bqArr
 
 /** 选择表情回调 */
 @property(nonatomic, copy) ChooseMotionCallback chooseMotionCallback;
+/** 发送回调 */
+@property(nonatomic, copy) void(^sendMessageCallback)();
 @end

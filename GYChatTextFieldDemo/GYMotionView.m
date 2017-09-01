@@ -19,6 +19,8 @@
     UIScrollView *_motionScrollView;
     /** 分页控制器 */
     UIPageControl *_pageControl;
+    //发送按钮
+    UIButton *_sendBtn;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -48,14 +50,24 @@
     _motionScrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:_motionScrollView];
     
-    CGRect pageRect = CGRectMake(0, 175, kScreenWidth, 40);
+    CGFloat pageWidth = 100;
+    CGFloat pageX = (kScreenWidth - pageWidth)/2;
+    CGRect pageRect = CGRectMake(pageX, 175, pageWidth, 40);
     _pageControl = [[UIPageControl alloc] initWithFrame:pageRect];
     _pageControl.pageIndicatorTintColor = [UIColor redColor];
     _pageControl.currentPageIndicatorTintColor = [UIColor greenColor];
     [_pageControl addTarget:self action:@selector(pageTurn:) forControlEvents:UIControlEventValueChanged];
-    
     [self updateScrollview];
     [self addSubview:_pageControl];
+    
+    _sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect sendBtnRect = CGRectMake(kScreenWidth - 60, 170, 40, 40);
+    _sendBtn.frame = sendBtnRect;
+    [_sendBtn setTitle:@"发送" forState:UIControlStateNormal];
+    _sendBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    [_sendBtn setTitleColor:kUIColorFromRGB(0x028be6) forState:UIControlStateNormal];
+    [_sendBtn addTarget:self action:@selector(sendVoiceMessage:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_sendBtn];
 }
 //表情适配
 - (void)updateScrollview
@@ -146,6 +158,13 @@
     if(_chooseMotionCallback)
     {
         _chooseMotionCallback((UIButton *)sender,_phraseArray,_bqStrArray);
+    }
+}
+- (void)sendVoiceMessage:(id)sender
+{
+    if(self.sendMessageCallback)
+    {
+        self.sendMessageCallback();
     }
 }
 #pragma -mark pageControlTurnAction

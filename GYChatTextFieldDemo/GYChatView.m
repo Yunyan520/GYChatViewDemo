@@ -22,7 +22,6 @@
     UIButton *_talkButton;
     UIButton *_picButton;
     UIButton *_iconButton;
-    UIButton *_sendBtn;
     CGRect _selfFrame;
     CGRect _motionViewFrame;
     CGRect _picViewFrame;
@@ -115,15 +114,6 @@
     [_picButton setImage:[UIImage imageNamed:@"type_select_btn_nor.png"] forState:UIControlStateNormal];
     [_picButton addTarget:self action:@selector(chooseItemAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_picButton];
-    
-    _sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect sendBtnRect = CGRectMake(kScreenWidth - 60, 220, 40, 40);
-    _sendBtn.frame = sendBtnRect;
-    [_sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    _sendBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    [_sendBtn setTitleColor:kUIColorFromRGB(0x028be6) forState:UIControlStateNormal];
-    [_sendBtn addTarget:self action:@selector(sendVoiceMessage:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_sendBtn];
 }
 - (void)configMotionView
 {
@@ -138,6 +128,22 @@
             [strongSelf chooseMotion:motion phArr:phArr bqArr:bqArr];
         }
         return;
+    };
+    __weak typeof(_textView) weakTextView = _textView;
+    _motionView.sendMessageCallback = ^{
+        __strong typeof(self) strongSelf = weakSelf;
+        if(!strongSelf)
+        {
+            return;
+        }
+        if(strongSelf.sendMessageCallback)
+        {
+            __strong typeof(_textView) strongTextView = weakTextView;
+            if(weakTextView)
+            {
+                strongSelf.sendMessageCallback(strongTextView.text);
+            }
+        }
     };
 }
 - (void)configPicView
@@ -236,13 +242,6 @@
 }
 - (void)recordTouchDragIn:(id)sender
 {
-}
-- (void)sendVoiceMessage:(id)sender
-{
-    if(self.sendMessageCallback)
-    {
-        self.sendMessageCallback(_textView.text);
-    }
 }
 #pragma -mark privateMethod
 - (void)isVoiceInputStatus:(BOOL)isVoice

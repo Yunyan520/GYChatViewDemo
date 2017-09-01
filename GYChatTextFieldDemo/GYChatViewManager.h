@@ -32,9 +32,9 @@ typedef void(^FunctionClickedCallback)(UIView *functionItem);
 @interface GYChatViewManager : NSObject
 + (GYChatViewManager *)sharedManager;
 /** 获取所有表情 */
-- (NSMutableArray *)getAllMotions;
-/** 获取所有功能 */
-- (NSMutableArray *)getAllFunctionItems;
 - (NSMutableArray *)prepareFaceArray;
 - (NSMutableArray *)loadFaceArray;
+/** 获取所有功能 */
+- (NSMutableArray *)getAllFunctionItems;
+
 @end
