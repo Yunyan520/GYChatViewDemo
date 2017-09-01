@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "GYChatView.h"
+#import "GYChatViewManager.h"
 @interface ViewController ()
 
 @end
@@ -25,6 +26,28 @@
       //点击照片、拍照、视频等功能
         UIButton *functionBtn = (UIButton *)functionItem;
         NSLog(@"%ld", (long)functionBtn.tag);
+        switch (functionBtn.tag) {
+            case kFunctionItemTag_Picture:
+                //do something
+                break;
+            case kFunctionItemTag_Camera:
+                //do something
+                break;
+            case kFunctionItemTag_Video:
+                //do something
+                break;
+            case kFunctionItemTag_File:
+                //do something
+                break;
+            case kFunctionItemTag_Receipt:
+                //do something
+                break;
+            case kFunctionItemTag_VoiceInput:
+                //do something
+                break;
+            default:
+                break;
+        }
     };
     [self.view addSubview:footerView];
     // Do any additional setup after loading the view, typically from a nib.
