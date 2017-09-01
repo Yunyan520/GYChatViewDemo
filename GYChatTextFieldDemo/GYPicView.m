@@ -11,7 +11,19 @@
 #define kHomeDic [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) objectAtIndex:0]
 #define kGetCachesPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 #define kSDCrashFileDirectory [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+#define kFunctionItemTag_Picture 1000
+#define kFunctionItemTag_Camera 1001
+#define kFunctionItemTag_Video 1002
+#define kFunctionItemTag_File 1003
+#define kFunctionItemTag_Receipt 1004
+#define kFunctionItemTag_VoiceInput 1005
 @interface GYPicView()<UIScrollViewDelegate>
+
+@end
+
+@implementation FunctionButtonModel
+
+
 
 @end
 
@@ -32,7 +44,7 @@
 }
 - (void)addFunctionItem
 {
-    _functionArray = [[GYChatViewManager sharedManager] getAllFunctionItems];
+    _functionArray = [self getAllFunctionItems];
 }
 - (void)configUI
 {
@@ -117,6 +129,55 @@
     }
 }
 #pragma -mark privateMethod
+- (NSMutableArray *)getAllFunctionItems
+{
+    NSMutableArray *functionArray = [[NSMutableArray alloc]init];
+    FunctionButtonModel *button = nil;
+    //    照片按钮
+    button = [[FunctionButtonModel alloc]init];
+    button.functionName = @"照片";
+    button.imageName = @"chat_picture_icon.png";
+    button.hlImageName = @"chat_picture_icon_hl.png";
+    button.btnTag = kFunctionItemTag_Picture;
+    [functionArray addObject:button];
+    //    拍照按钮
+    button = [[FunctionButtonModel alloc]init];
+    button.functionName = @"拍照";
+    button.imageName = @"chat_camera_icon.png";
+    button.hlImageName = @"chat_camera_icon_hl.png";
+    button.btnTag = kFunctionItemTag_Camera;
+    [functionArray addObject:button];
+    //    视频按钮
+    button = [[FunctionButtonModel alloc]init];
+    button.functionName = @"视频";
+    button.imageName = @"chat_video_icon.png";
+    button.hlImageName = @"chat_video_icon_hl.png";
+    button.btnTag = kFunctionItemTag_Video;
+    [functionArray addObject:button];
+    //文件按钮
+    button = [[FunctionButtonModel alloc]init];//文件
+    button.functionName = @"文件";
+    button.imageName = @"chat_file_icon.png";
+    button.hlImageName = @"chat_file_icon_hl.png";
+    button.btnTag = kFunctionItemTag_File;
+    [functionArray addObject:button];
+    //回执按钮
+    button = [[FunctionButtonModel alloc]init];
+    button.functionName = @"回执";
+    button.imageName = @"chat_receipt_icon.png";
+    button.hlImageName = @"chat_receipt_icon_hl.png";
+    button.btnTag = kFunctionItemTag_Receipt;
+    [functionArray addObject:button];
+    //语音按钮
+    button = [[FunctionButtonModel alloc]init];
+    button.functionName = @"语音";
+    button.imageName = @"语音输入.png";
+    button.hlImageName = @"voiceInput.png";
+    button.btnTag = kFunctionItemTag_VoiceInput;
+    [functionArray addObject:button];
+    return functionArray;
+}
+
 //添加长按手势
 - (void)addLongPressToButton:(UIButton *)button
 {

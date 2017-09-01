@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		614867B01F57DCBA00B31D99 /* GYChatViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 614867AF1F57DCBA00B31D99 /* GYChatViewManager.m */; };
 		614867C51F57F0AB00B31D99 /* 语音输入.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B41F57F0AA00B31D99 /* 语音输入.png */; };
 		614867C61F57F0AB00B31D99 /* Album_ToolViewEmotion.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B51F57F0AA00B31D99 /* Album_ToolViewEmotion.png */; };
 		614867C71F57F0AB00B31D99 /* chat_camera_icon_hl.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B61F57F0AA00B31D99 /* chat_camera_icon_hl.png */; };
@@ -196,8 +195,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		614867AE1F57DCBA00B31D99 /* GYChatViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatViewManager.h; sourceTree = "<group>"; };
-		614867AF1F57DCBA00B31D99 /* GYChatViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatViewManager.m; sourceTree = "<group>"; };
 		614867B11F57E83200B31D99 /* faceDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = faceDefine.h; sourceTree = "<group>"; };
 		614867B41F57F0AA00B31D99 /* 语音输入.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音输入.png"; sourceTree = "<group>"; };
 		614867B51F57F0AA00B31D99 /* Album_ToolViewEmotion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Album_ToolViewEmotion.png; sourceTree = "<group>"; };
@@ -606,8 +603,6 @@
 				61C60C381F565DBC00B6A921 /* AppDelegate.m */,
 				61C60C3A1F565DBC00B6A921 /* ViewController.h */,
 				61C60C3B1F565DBC00B6A921 /* ViewController.m */,
-				614867AE1F57DCBA00B31D99 /* GYChatViewManager.h */,
-				614867AF1F57DCBA00B31D99 /* GYChatViewManager.m */,
 				61C60C711F568B4400B6A921 /* GYChatView.h */,
 				61C60C721F568B4400B6A921 /* GYChatView.m */,
 				61C60C6E1F5663EE00B6A921 /* GYMotionView.h */,
@@ -945,7 +940,6 @@
 				61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */,
 				61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */,
 				61C60C731F568B4400B6A921 /* GYChatView.m in Sources */,
-				614867B01F57DCBA00B31D99 /* GYChatViewManager.m in Sources */,
 				61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */,
 				61C60C361F565DBC00B6A921 /* main.m in Sources */,
 				61C60C701F5663EE00B6A921 /* GYMotionView.m in Sources */,

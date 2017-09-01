@@ -7,7 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GYChatViewManager.h"
+@interface FunctionButtonModel : NSObject
+
+/** 功能名称 */
+@property(nonatomic,copy) NSString *functionName;
+/** 常态图片名称 */
+@property(nonatomic,copy) NSString *imageName;
+/** 高亮图片名称 */
+@property(nonatomic,copy) NSString *hlImageName;
+/** tag */
+@property(nonatomic, assign) NSInteger btnTag;
+@end
+
 @interface GYPicView : UIView
 /** 点击按钮回调 */
 @property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);

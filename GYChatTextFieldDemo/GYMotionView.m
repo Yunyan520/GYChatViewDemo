@@ -7,14 +7,15 @@
 //
 
 #import "GYMotionView.h"
+#import "faceDefine.h"
 @interface GYMotionView()<UIScrollViewDelegate>
 
 @end
 
 @implementation GYMotionView
 {
-    NSArray *_phraseArray;
-    NSArray *_bqStrArray;
+    NSMutableArray *_phraseArray;
+    NSMutableArray *_bqStrArray;
     /** 表情容器 */
     UIScrollView *_motionScrollView;
     /** 分页控制器 */
@@ -27,8 +28,8 @@
     self = [super initWithFrame:frame];
     if(self)
     {
-        _bqStrArray = [[GYChatViewManager sharedManager] loadFaceArray];
-        _phraseArray = [[GYChatViewManager sharedManager] prepareFaceArray];
+        _bqStrArray = [self loadFaceArray];
+        _phraseArray = [self prepareFaceArray];
         [self initEvent];
         [self configUI];
     }
@@ -69,6 +70,7 @@
     [_sendBtn addTarget:self action:@selector(sendVoiceMessage:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_sendBtn];
 }
+#pragma -mark privateMethod
 //表情适配
 - (void)updateScrollview
 {
@@ -152,6 +154,62 @@
         [v removeFromSuperview];
     }
 }
+//准备表情数组
+- (NSMutableArray *)prepareFaceArray{
+    //聊天表情相关
+    NSMutableArray *temp = [[NSMutableArray alloc] init];
+    NSString *faceName = @"";
+    
+    for (int i = 0; i < [_bqStrArray count]; i++){
+        //		 表情名字
+        faceName = [NSString stringWithFormat:@"%@_%@.png", @"face",[_bqStrArray objectAtIndex:i]];
+        //        表情对应的image对象
+        UIImage *face = [UIImage imageNamed:faceName];// [NSString stringWithFormat:@"%03d.png",i+1]];
+        NSMutableDictionary *dicFace = [NSMutableDictionary dictionary];
+        [dicFace setValue:face forKey:[NSString stringWithFormat:@"[/%@]",[_bqStrArray objectAtIndex:i]]];// [NSString stringWithFormat:@"[/%03d]",i+1]];
+        [temp addObject:dicFace];
+        _phraseArray = temp;
+    }
+    return _phraseArray;
+}
+#pragma mark - 初始化表情集合
+- (NSMutableArray *)loadFaceArray{
+    
+    if (_bqStrArray == nil || _bqStrArray.count == 0) {
+        // 加载表情数据
+        
+        _bqStrArray = faceAfterName;
+        
+        int rowCount = 8;   // 一行显示的表情个数
+        //支持竖屏
+        if (IS_IPHONE) {
+            if (IS_IPHONE_6P) {
+                rowCount = 9;
+            }
+        }else if (IS_IPAD){
+            if (kScreenWidth < kScreenHeight) {
+                rowCount = 10;
+            }else{
+                rowCount = 14;
+            }
+        }
+        
+        NSInteger pageCount = _bqStrArray.count/(rowCount * 4); // 表情的总的页数
+        // 为表情的每一页的最后添加一个删除表情
+        for (int i = 0; i < pageCount+1; i++) {
+            NSInteger scIndex = 4*rowCount*(i+1)-1;
+            if (i == pageCount) {
+                // 0911 最后一页不显示删除按钮
+                break;
+            }else if(i == 0){
+                scIndex = (4*rowCount-1)*(i+1);
+            }
+            [_bqStrArray insertObject:@"sc" atIndex:scIndex];
+        }
+    }
+    return _bqStrArray;
+}
+
 #pragma -mark faceBtnClickedAction
 - (void)choosefacePic:(id)sender
 {
