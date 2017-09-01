@@ -8,12 +8,7 @@
 
 #import "ViewController.h"
 #import "GYChatView.h"
-#define kFunctionItemTag_Picture 1000
-#define kFunctionItemTag_Camera 1001
-#define kFunctionItemTag_Video 1002
-#define kFunctionItemTag_File 1003
-#define kFunctionItemTag_Receipt 1004
-#define kFunctionItemTag_VoiceInput 1005
+#import "GYChatManager.h"
 @interface ViewController ()
 
 @end
@@ -22,13 +17,29 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self configFooterView];
+    // Do any additional setup after loading the view, typically from a nib.
+}
+- (void)configFooterView
+{
     CGFloat footerY =self.view.frame.size.height - 50 -44;
-    GYChatView *footerView=[[GYChatView alloc]initWithFrame:CGRectMake(0, footerY, self.view.frame.size.width, 50)];
-    footerView.sendMessageCallback = ^(NSString *msg) {
+    CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, 50);
+    GYChatManager *chatManager = [GYChatManager sharedManager];
+    __weak typeof(self) weakSelf = self;
+    [chatManager configChatRootView:footerRect callback:^(UIView *view) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (strongSelf) {
+            [self.view addSubview:view];
+        }
+    }];
+    chatManager.sendMessageCallback = ^(NSString *msg) {
         NSLog(@"%@", msg);
     };
-    footerView.functionClickedCallback = ^(UIView *functionItem) {
-      //点击照片、拍照、视频等功能
+    chatManager.sendFileCallback = ^(NSString *fileName) {
+        NSLog(@"%@", fileName);
+    };
+    chatManager.functionClickedCallback = ^(UIView *functionItem) {
+        //点击照片、拍照、视频等功能
         UIButton *functionBtn = (UIButton *)functionItem;
         NSLog(@"%ld", (long)functionBtn.tag);
         switch (functionBtn.tag) {
@@ -54,14 +65,7 @@
                 break;
         }
     };
-    footerView.sendFileCallback = ^(NSString *fileName) {
-        NSLog(@"%@", fileName);
-    };
-    [self.view addSubview:footerView];
-    // Do any additional setup after loading the view, typically from a nib.
 }
-
-//
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

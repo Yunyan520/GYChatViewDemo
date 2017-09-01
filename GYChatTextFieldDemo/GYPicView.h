@@ -7,8 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#define kFunctionItemTag_Picture 1000
+#define kFunctionItemTag_Camera 1001
+#define kFunctionItemTag_Video 1002
+#define kFunctionItemTag_File 1003
+#define kFunctionItemTag_Receipt 1004
+#define kFunctionItemTag_VoiceInput 1005
 @interface FunctionButtonModel : NSObject
-
 /** 功能名称 */
 @property(nonatomic,copy) NSString *functionName;
 /** 常态图片名称 */

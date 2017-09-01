@@ -164,6 +164,7 @@
 		614868EC1F57F5BC00B31D99 /* face_zhk.png in Resources */ = {isa = PBXBuildFile; fileRef = 614868601F57F5BC00B31D99 /* face_zhk.png */; };
 		614868ED1F57F5BC00B31D99 /* face_zhu.png in Resources */ = {isa = PBXBuildFile; fileRef = 614868611F57F5BC00B31D99 /* face_zhu.png */; };
 		614868EE1F57F5BC00B31D99 /* face_zq.png in Resources */ = {isa = PBXBuildFile; fileRef = 614868621F57F5BC00B31D99 /* face_zq.png */; };
+		61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61722AD81F5934A200EA49D2 /* GYChatManager.m */; };
 		61C60C361F565DBC00B6A921 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C351F565DBC00B6A921 /* main.m */; };
 		61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C381F565DBC00B6A921 /* AppDelegate.m */; };
 		61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C3B1F565DBC00B6A921 /* ViewController.m */; };
@@ -353,6 +354,8 @@
 		614868601F57F5BC00B31D99 /* face_zhk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_zhk.png; sourceTree = "<group>"; };
 		614868611F57F5BC00B31D99 /* face_zhu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_zhu.png; sourceTree = "<group>"; };
 		614868621F57F5BC00B31D99 /* face_zq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_zq.png; sourceTree = "<group>"; };
+		61722AD71F5934A200EA49D2 /* GYChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatManager.h; sourceTree = "<group>"; };
+		61722AD81F5934A200EA49D2 /* GYChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatManager.m; sourceTree = "<group>"; };
 		61C60C311F565DBC00B6A921 /* GYChatTextFieldDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GYChatTextFieldDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C60C351F565DBC00B6A921 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		61C60C371F565DBC00B6A921 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -603,6 +606,8 @@
 				61C60C381F565DBC00B6A921 /* AppDelegate.m */,
 				61C60C3A1F565DBC00B6A921 /* ViewController.h */,
 				61C60C3B1F565DBC00B6A921 /* ViewController.m */,
+				61722AD71F5934A200EA49D2 /* GYChatManager.h */,
+				61722AD81F5934A200EA49D2 /* GYChatManager.m */,
 				61C60C711F568B4400B6A921 /* GYChatView.h */,
 				61C60C721F568B4400B6A921 /* GYChatView.m */,
 				61C60C6E1F5663EE00B6A921 /* GYMotionView.h */,
@@ -939,6 +944,7 @@
 			files = (
 				61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */,
 				61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */,
+				61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */,
 				61C60C731F568B4400B6A921 /* GYChatView.m in Sources */,
 				61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */,
 				61C60C361F565DBC00B6A921 /* main.m in Sources */,

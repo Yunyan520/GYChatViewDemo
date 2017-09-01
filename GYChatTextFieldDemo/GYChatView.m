@@ -10,7 +10,7 @@
 #import "GYScreen.h"
 #import "GYMotionView.h"
 #import "GYPicView.h"
-
+#import "GYChatManager.h"
 @interface GYChatView()<UITextViewDelegate>
 
 @end
@@ -117,62 +117,42 @@
 }
 - (void)configMotionView
 {
-    CGFloat motionViewHeight = 255;
-    _motionViewFrame = CGRectMake(0, kScreenHeight - motionViewHeight, self.frame.size.width, motionViewHeight + _selfFrame.size.height);
-    CGRect motionRect =  CGRectMake(0, _selfFrame.size.height, self.frame.size.width, motionViewHeight);
-    _motionView = [[GYMotionView alloc] initWithFrame:motionRect];
-    __weak typeof(self) weakSelf = self;
-    _motionView.chooseMotionCallback = ^(UIView *motion, NSArray *phArr, NSArray *bqArr) {
-        __strong typeof(self) strongSelf = weakSelf;
-        if (strongSelf) {
-            [strongSelf chooseMotion:motion phArr:phArr bqArr:bqArr];
-        }
-        return;
-    };
-    __weak typeof(_textView) weakTextView = _textView;
-    _motionView.sendMessageCallback = ^{
-        __strong typeof(self) strongSelf = weakSelf;
-        if(!strongSelf)
-        {
-            return;
-        }
-        if(strongSelf.sendMessageCallback)
-        {
-            __strong typeof(_textView) strongTextView = weakTextView;
-            if(weakTextView)
-            {
-                strongSelf.sendMessageCallback(strongTextView.text);
+    GYChatManager *chatManager = [GYChatManager sharedManager];
+    [chatManager configMotionView:_selfFrame callback:^(UIView *view) {
+        _motionView = (GYMotionView *)view;
+        _motionViewFrame = CGRectMake(0, kScreenHeight - view.frame.size.height - _selfFrame.size.height, self.frame.size.width, view.frame.size.height + _selfFrame.size.height);
+        __weak typeof(self) weakSelf = self;
+        _motionView.chooseMotionCallback = ^(UIView *motion, NSArray *phArr, NSArray *bqArr) {
+            __strong typeof(self) strongSelf = weakSelf;
+            if (strongSelf) {
+                [strongSelf chooseMotion:motion phArr:phArr bqArr:bqArr];
             }
-        }
-    };
+            return;
+        };
+        __weak typeof(_textView) weakTextView = _textView;
+        _motionView.sendMessageCallback = ^{
+            __strong typeof(self) strongSelf = weakSelf;
+            if(!strongSelf)
+            {
+                return;
+            }
+            if(chatManager.sendMessageCallback)
+            {
+                __strong typeof(_textView) strongTextView = weakTextView;
+                if(weakTextView)
+                {
+                    chatManager.sendMessageCallback(strongTextView.text);
+                }
+            }
+        };
+    }];
 }
 - (void)configPicView
 {
-    CGFloat picViewHeight = 255;
-    _picViewFrame = CGRectMake(0, kScreenHeight - picViewHeight, self.frame.size.width, picViewHeight + _selfFrame.size.height);
-    CGRect picRect =  CGRectMake(0, _selfFrame.size.height, self.frame.size.width, picViewHeight);
-    _picView = [[GYPicView alloc] initWithFrame:picRect];
-    __weak typeof(self) weakSelf = self;
-    _picView.functionClickedCallback = ^(UIView *functionItem) {
-        __strong typeof(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        if(strongSelf.functionClickedCallback)
-        {
-            strongSelf.functionClickedCallback(functionItem);
-        }
-    };
-    _picView.sendFileCallback = ^(NSString *fileName) {
-        __strong typeof(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        if(strongSelf.sendFileCallback)
-        {
-            strongSelf.sendFileCallback(fileName);
-        }
-    };
+    [[GYChatManager sharedManager] configPicView:_selfFrame callback:^(UIView *view) {
+        _picView = (GYPicView *)view;
+        _picViewFrame = CGRectMake(0, kScreenHeight - view.frame.size.height - _selfFrame.size.height, self.frame.size.width, view.frame.size.height + _selfFrame.size.height);
+    }];
 }
 - (void)registerForKeyboardNotifications
 {
@@ -386,9 +366,9 @@
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
-        if(self.sendMessageCallback)
+        if([GYChatManager sharedManager].sendMessageCallback)
         {
-            self.sendMessageCallback(_textView.text);
+            [GYChatManager sharedManager].sendMessageCallback(_textView.text);
         }
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }

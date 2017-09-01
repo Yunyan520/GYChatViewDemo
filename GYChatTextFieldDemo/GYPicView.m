@@ -11,12 +11,6 @@
 #define kHomeDic [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) objectAtIndex:0]
 #define kGetCachesPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 #define kSDCrashFileDirectory [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
-#define kFunctionItemTag_Picture 1000
-#define kFunctionItemTag_Camera 1001
-#define kFunctionItemTag_Video 1002
-#define kFunctionItemTag_File 1003
-#define kFunctionItemTag_Receipt 1004
-#define kFunctionItemTag_VoiceInput 1005
 @interface GYPicView()<UIScrollViewDelegate>
 
 @end
