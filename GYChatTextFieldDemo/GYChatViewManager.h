@@ -16,7 +16,6 @@
 #define kFunctionItemTag_VoiceInput 1005
 
 
-typedef void(^FunctionClickedCallback)(UIView *functionItem);
 @interface FunctionButtonModel : NSObject
 
 /** 功能名称 */

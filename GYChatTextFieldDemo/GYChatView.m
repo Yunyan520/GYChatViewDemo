@@ -152,7 +152,17 @@
     _picViewFrame = CGRectMake(0, kScreenHeight - picViewHeight, self.frame.size.width, picViewHeight + _selfFrame.size.height);
     CGRect picRect =  CGRectMake(0, _selfFrame.size.height, self.frame.size.width, picViewHeight);
     _picView = [[GYPicView alloc] initWithFrame:picRect];
-    _picView.functionClickedCallback = _functionClickedCallback;
+    __weak typeof(self) weakSelf = self;
+    _picView.functionClickedCallback = ^(UIView *functionItem) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if(strongSelf.functionClickedCallback)
+        {
+            strongSelf.functionClickedCallback(functionItem);
+        }
+    };
 }
 - (void)registerForKeyboardNotifications
 {

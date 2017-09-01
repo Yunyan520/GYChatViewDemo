@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "GYChatViewManager.h"
 @interface GYChatView : UIView
-@property(nonatomic, copy) FunctionClickedCallback functionClickedCallback;
+@property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
 @property(nonatomic, copy) void(^sendMessageCallback)(NSString *msg);
 @end

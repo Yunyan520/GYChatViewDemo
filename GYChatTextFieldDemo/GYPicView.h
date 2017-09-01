@@ -10,5 +10,5 @@
 #import "GYChatViewManager.h"
 @interface GYPicView : UIView
 /** 点击按钮回调 */
-@property(nonatomic, copy) FunctionClickedCallback functionClickedCallback;
+@property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
 @end
