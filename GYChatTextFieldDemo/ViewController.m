@@ -49,6 +49,9 @@
                 break;
         }
     };
+    footerView.sendFileCallback = ^(NSString *fileName) {
+        NSLog(@"%@", fileName);
+    };
     [self.view addSubview:footerView];
     // Do any additional setup after loading the view, typically from a nib.
 }

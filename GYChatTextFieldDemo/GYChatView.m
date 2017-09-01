@@ -163,6 +163,16 @@
             strongSelf.functionClickedCallback(functionItem);
         }
     };
+    _picView.sendFileCallback = ^(NSString *fileName) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        if(strongSelf.sendFileCallback)
+        {
+            strongSelf.sendFileCallback(fileName);
+        }
+    };
 }
 - (void)registerForKeyboardNotifications
 {

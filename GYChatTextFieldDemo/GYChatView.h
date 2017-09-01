@@ -11,4 +11,6 @@
 @interface GYChatView : UIView
 @property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
 @property(nonatomic, copy) void(^sendMessageCallback)(NSString *msg);
+/** 长按发送文件 */
+@property(nonatomic, copy) void(^sendFileCallback)(NSString *fileName);
 @end

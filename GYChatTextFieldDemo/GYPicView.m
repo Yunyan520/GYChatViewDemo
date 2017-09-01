@@ -7,8 +7,10 @@
 //
 
 #import "GYPicView.h"
-
 #import "GYScreen.h"
+#define kHomeDic [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) objectAtIndex:0]
+#define kGetCachesPath [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
+#define kSDCrashFileDirectory [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject]
 @interface GYPicView()<UIScrollViewDelegate>
 
 @end
@@ -85,17 +87,21 @@
         iconbutton.backgroundColor=[UIColor clearColor];
         iconbutton.tag = model.btnTag;
         [iconbutton addTarget:self action:@selector(functionItemBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        if (i == 0) {
-//            [LogUtil addLongPressToButton1:iconbutton];
-//        }else if (i == 1){
-//            [LogUtil addLongPressToButton2:iconbutton];
-//        }else if (i == 2){
-//            [LogUtil addLongPressToButton3:iconbutton];
-//        }else if (i == 3){
-//            [LogUtil addLongPressToButton4:iconbutton];
-//        }else if (i == 4){
-//            [LogUtil addLongPressToButton5:iconbutton];
-//        }
+        if (i == 0) {
+            [self addLongPressToButton:iconbutton];
+        }
+        if (i == 1){
+            [self addLongPressToButton:iconbutton];
+        }
+        if (i == 2){
+            [self addLongPressToButton:iconbutton];
+        }
+        if (i == 3){
+            [self addLongPressToButton:iconbutton];
+        }
+        if (i == 4){
+            [self addLongPressToButton:iconbutton];
+        }
         [iconbutton setImage:[UIImage imageNamed:model.imageName]forState:UIControlStateNormal];
         [iconbutton setImage:[UIImage imageNamed:model.hlImageName] forState:UIControlStateSelected];
         [iconbutton setImage:[UIImage imageNamed:model.hlImageName] forState:UIControlStateHighlighted];
@@ -110,7 +116,48 @@
         [iconbutton addSubview:nameLabel];
     }
 }
-#pragma -mark
+#pragma -mark privateMethod
+//添加长按手势
+- (void)addLongPressToButton:(UIButton *)button
+{
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] init];
+    switch (button.tag) {
+        case kFunctionItemTag_Picture:
+            [longPress addTarget:self action:@selector(processLongPress1:)];
+            break;
+        case kFunctionItemTag_Camera:
+            [longPress addTarget:self action:@selector(processLongPress2:)];
+            break;
+        case kFunctionItemTag_Video:
+            [longPress addTarget:self action:@selector(processLongPress3:)];
+            break;
+        case kFunctionItemTag_File:
+            [longPress addTarget:self action:@selector(processLongPress4:)];
+            break;
+        case kFunctionItemTag_Receipt:
+            [longPress addTarget:self action:@selector(processLongPress5:)];
+            break;
+        default:
+            break;
+    }
+    
+    longPress.minimumPressDuration = 1; //1s 定义按的时间
+    [button addGestureRecognizer:longPress];
+}
+/*
+ 功能说明
+ 获取当前异常日志文件的路径
+ */
+- (NSString *)getCurExpLogFilePath
+{
+    NSString *time = [[NSDate date] my_formattedDateWithFormat:@"yyyyMMdd" locale:[NSLocale currentLocale]];
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *crashname = [NSString stringWithFormat:@"%@_%@Crashlog.log",time,infoDictionary[@"CFBundleName"]];
+    NSString *crashPath = [kGetCachesPath  stringByAppendingPathComponent:kSDCrashFileDirectory];
+    NSString *filepath = [crashPath stringByAppendingPathComponent:crashname];
+    return filepath;
+}
+#pragma -mark functionBtnClicked
 - (void)functionItemBtnClicked:(UIButton *)sender
 {
     if(self.functionClickedCallback)
@@ -118,12 +165,114 @@
         self.functionClickedCallback(sender);
     }
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+//长按第一个功能按钮 可以 发送当天的日志文件
+- (void)processLongPress1:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        //        找到当天的日志文件
+        NSDateFormatter *formatter 	= [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateStr=[formatter stringFromDate:[NSDate date]];
+        
+        NSString *logFileName = [NSString stringWithFormat:@"client%@.log",dateStr];
+        
+        NSString *logFilePath = [kHomeDic stringByAppendingPathComponent:logFileName];
+        if(self.sendFileCallback)
+        {
+            self.sendFileCallback(logFilePath);
+        }
+    }
 }
-*/
+//长按第一个功能按钮 可以 发送昨天的日志文件
+- (void)processLongPress2:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        
+        int currentTime =  [[NSDate date] timeIntervalSince1970];
+        int yesterday = currentTime - 60 * 60 * 24;
+        
+        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:yesterday];
+        
+        //        找到前一天的日志文件
+        NSDateFormatter *formatter 	= [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateStr=[formatter stringFromDate:yesterdayDate];
+        
+        NSString *logFileName = [NSString stringWithFormat:@"client%@.log",dateStr];
+        NSString *logFilePath = [kHomeDic stringByAppendingPathComponent:logFileName];
+        if(self.sendFileCallback)
+        {
+            self.sendFileCallback(logFilePath);
+        }
+    }
+}
+//长按第一个功能按钮 可以 发送前天的日志文件
+- (void)processLongPress3:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        
+        int currentTime =  [[NSDate date] timeIntervalSince1970];
+        int yesterday = currentTime - 60 * 60 * 24 * 2;
+        
+        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:yesterday];
+        
+        //        找到前一天的日志文件
+        NSDateFormatter *formatter 	= [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateStr=[formatter stringFromDate:yesterdayDate];
+        
+        NSString *logFileName = [NSString stringWithFormat:@"client%@.log",dateStr];
+        NSString *logFilePath = [kHomeDic stringByAppendingPathComponent:logFileName];
+        if(self.sendFileCallback)
+        {
+            self.sendFileCallback(logFilePath);
+        }
+    }
+}
+//长按第一个功能按钮 可以 发送eCloud.log
+- (void)processLongPress4:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        
+        NSString *logFileName = [NSString stringWithFormat:@"eCloud.log"];
+        NSString *logFilePath = [kHomeDic stringByAppendingPathComponent:logFileName];
+        if(self.sendFileCallback)
+        {
+            self.sendFileCallback(logFilePath);
+        }
+    }
+}
+//长按第五个功能按钮 可以 发送异常日志
+- (void)processLongPress5:(UILongPressGestureRecognizer *)gestureRecognizer{
+    if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+        
+        NSString *logFilePath = [self getCurExpLogFilePath];
+        
+        if(self.sendFileCallback)
+        {
+            self.sendFileCallback(logFilePath);
+        }
+    }
+}
+@end
+#pragma mark - 增加NSDate的分类的一个方法
+@implementation NSDate(myformatter)
+- (NSString *)my_formattedDateWithFormat:(NSString *)format{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:format];
+    return [formatter stringFromDate:self];
+}
 
+- (NSString *)my_formattedDateWithFormat:(NSString *)format locale:(NSLocale *)locale{
+    return [self my_formattedDateWithFormat:format timeZone:[NSTimeZone systemTimeZone] locale:locale];
+}
+
+- (NSString *)my_formattedDateWithFormat:(NSString *)format timeZone:(NSTimeZone *)timeZone locale:(NSLocale *)locale{
+    static NSDateFormatter *formatter = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [[NSDateFormatter alloc] init];
+    });
+    
+    [formatter setDateFormat:format];
+    [formatter setTimeZone:timeZone];
+    [formatter setLocale:locale];
+    return [formatter stringFromDate:self];
+}
 @end

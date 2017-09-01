@@ -28,10 +28,7 @@ static GYChatViewManager *instance = nil;
     });
     return instance;
 }
-- (NSMutableArray *)getAllMotions
-{
-    return nil;
-}
+
 - (NSMutableArray *)getAllFunctionItems
 {
     NSMutableArray *functionArray = [[NSMutableArray alloc]init];
