@@ -160,6 +160,8 @@
                                              selector:@selector(keyboardWillBeHidden:)
      
                                                  name:UIKeyboardWillHideNotification object:nil];
+    //键盘的frame即将发生变化时立刻发出该通知
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 #pragma -mark ButtonClickedAction
 - (void)talkAction:(id)sender
@@ -172,7 +174,9 @@
     } else
     {
         [self isVoiceInputStatus:YES];
-        self.frame = _selfFrame;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.frame = _selfFrame;
+        }];
         [_motionView removeFromSuperview];
         [_picView removeFromSuperview];
         _iconButton.selected = NO;
@@ -187,7 +191,9 @@
         //弹起键盘
         iconBtn.selected = NO;
         [_textView becomeFirstResponder];
-        self.frame = _selfFrame;
+//        [UIView animateWithDuration:0.25 animations:^{
+//            self.frame = _selfFrame;
+//        }];
         [_motionView removeFromSuperview];
     } else {
         iconBtn.selected = YES;
@@ -195,7 +201,9 @@
         _textView.hidden = NO;
         _pressButton.hidden = YES;
         _picButton.selected = NO;
-        self.frame = _motionViewFrame;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.frame = _motionViewFrame;
+        }];
         [_picView removeFromSuperview];
         [self addSubview:_motionView];
     }
@@ -208,12 +216,18 @@
         //弹起键盘
         picBtn.selected = NO;
         [_textView becomeFirstResponder];
-        self.frame = _selfFrame;
+        
+//        [UIView animateWithDuration:0.25 animations:^{
+//            self.frame = _selfFrame;
+//        }];
         [_picView removeFromSuperview];
     } else {
         picBtn.selected = YES;
         [_textView resignFirstResponder];
-        self.frame = _picViewFrame;
+        [UIView animateWithDuration:0.25 animations:^{
+            self.frame = _picViewFrame;
+        }];
+        
         _iconButton.selected = NO;
         [_motionView removeFromSuperview];
         [self addSubview:_picView];
@@ -336,7 +350,23 @@
     _picButton.selected = NO;
     _iconButton.selected = NO;
     _talkButton.selected = NO;
-    self.frame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
+//    [UIView animateWithDuration:0.25 animations:^{
+//        self.frame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
+//    }];
+    
+}
+
+- (void)keyboardChanged:(NSNotification*)aNotification
+{
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;//得到鍵盤的高度
+    if(_talkButton.selected)
+    {
+        return;
+    }
+    [UIView animateWithDuration:0.25 animations:^{
+        self.frame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
+    }];
 }
 //当键盘隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification

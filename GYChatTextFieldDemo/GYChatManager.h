@@ -12,6 +12,20 @@
 #import "GYChatView.h"
 #import "GYPicView.h"
 #import "GYMotionView.h"
+
+typedef NS_ENUM(NSInteger, InputViewStyle)
+{
+    /** 类似微信聊天界面输入框 */
+    TypeChat1,
+    /** 类似微信公众号输入框 */
+    TypeChat2
+};
+
+@interface GYChatManagerItem : NSObject
+@property(nonatomic, assign) CGRect inputViewFrame;
+@property(nonatomic, assign) InputViewStyle style;
+@end
+
 typedef void(^ConfigViewCallback)(UIView *view);
 @interface GYChatManager : NSObject
 /** 点击功能按钮回调 */
