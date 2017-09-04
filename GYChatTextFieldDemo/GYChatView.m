@@ -49,12 +49,6 @@
 }
 - (void)configVoiceInputUI
 {
-    //	录音按钮
-    _talkButton = [[UIButton alloc]initWithFrame:CGRectMake(5, 5+2, 30, 30)];
-    [_talkButton setImage:[UIImage imageNamed:@"Fav_Search_Voice.png"] forState:UIControlStateNormal];
-    [_talkButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
-    [_talkButton addTarget:self action:@selector(talkAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_talkButton];
     //文本输入框
     _textView = [[UITextView alloc] init];
     if (IOS7_OR_LATER) {
@@ -95,6 +89,12 @@
 }
 - (void)configMotionPicSendUI
 {
+    //	录音按钮
+    _talkButton = [[UIButton alloc]initWithFrame:CGRectMake(5, 5+2, 30, 30)];
+    [_talkButton setImage:[UIImage imageNamed:@"Fav_Search_Voice.png"] forState:UIControlStateNormal];
+    [_talkButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
+    [_talkButton addTarget:self action:@selector(talkAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_talkButton];
     //	表情选择按钮
     _iconButton = [UIButton buttonWithType:UIButtonTypeCustom];
     if(IOS7_OR_LATER)
@@ -129,20 +129,11 @@
             }
             return;
         };
-        __weak typeof(_textView) weakTextView = _textView;
         _motionView.sendMessageCallback = ^{
             __strong typeof(self) strongSelf = weakSelf;
-            if(!strongSelf)
+            if(strongSelf)
             {
-                return;
-            }
-            if(chatManager.sendMessageCallback)
-            {
-                __strong typeof(_textView) strongTextView = weakTextView;
-                if(weakTextView)
-                {
-                    chatManager.sendMessageCallback(strongTextView.text);
-                }
+                [strongSelf sendMessage];
             }
         };
     }];
@@ -249,6 +240,15 @@
     _talkButton.selected = isVoice;
     _pressButton.hidden = !isVoice;
     _textView.hidden = isVoice;
+}
+//发送消息
+- (void)sendMessage
+{
+    if([GYChatManager sharedManager].sendMessageCallback)
+    {
+        [GYChatManager sharedManager].sendMessageCallback(_textView.text);
+        _textView.text = @"";
+    }
 }
 - (void)chooseMotion:(id)sender phArr:(NSArray *)phArr bqArr:(NSArray *)bqArr
 {
@@ -366,10 +366,7 @@
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
-        if([GYChatManager sharedManager].sendMessageCallback)
-        {
-            [GYChatManager sharedManager].sendMessageCallback(_textView.text);
-        }
+        [self sendMessage];
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
     }
     
