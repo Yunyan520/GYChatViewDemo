@@ -289,6 +289,7 @@
     _talkButton.frame = CGRectMake(_item.talkButtonFrame.origin.x, _item.talkButtonFrame.origin.y + heightChange, _item.talkButtonFrame.size.width, _item.talkButtonFrame.size.height);
     _iconButton.frame = CGRectMake(_item.iconButtonFrame.origin.x, _item.iconButtonFrame.origin.y + heightChange, _item.iconButtonFrame.size.width, _item.iconButtonFrame.size.height);
     _picButton.frame = CGRectMake(_item.picButtonFrame.origin.x, _item.picButtonFrame.origin.y + heightChange, _item.picButtonFrame.size.width, _item.picButtonFrame.size.height);
+    _pressButton.frame = CGRectMake(_item.pressButtonFrame.origin.x, _item.pressButtonFrame.origin.y + heightChange, _item.pressButtonFrame.size.width, _item.pressButtonFrame.size.height);
 }
 //发送消息
 - (void)sendMessage
