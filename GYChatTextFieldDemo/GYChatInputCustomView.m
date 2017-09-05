@@ -166,7 +166,7 @@
     {
         [self isVoiceInputStatus:YES];
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self resetFrame];
+            [self resetSuperFrame];
         }];
         [_motionView removeFromSuperview];
         [_picView removeFromSuperview];
@@ -192,7 +192,7 @@
         _pressButton.hidden = YES;
         _picButton.selected = NO;
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeFrame:_motionViewFrame];
+            [self changeSuperViewFrame:_motionViewFrame];
         }];
         [_picView removeFromSuperview];
         [_item.currentSuperView addSubview:_motionView];
@@ -212,7 +212,7 @@
         picBtn.selected = YES;
         [_textView resignFirstResponder];
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeFrame:_picViewFrame];
+            [self changeSuperViewFrame:_picViewFrame];
         }];
 
         _iconButton.selected = NO;
@@ -242,15 +242,53 @@
     _pressButton.hidden = !isVoice;
     _textView.hidden = isVoice;
 }
-- (void)resetFrame
+- (void)resetSuperFrame
 {
     GYChatView *chatView = (GYChatView *)_item.currentSuperView;
     [chatView resetFrame];
 }
-- (void)changeFrame:(CGRect)newFrame
+- (void)resetCurrentViewFrame
+{
+    self.frame = _selfFrame;
+}
+- (void)changeSuperViewFrame:(CGRect)newFrame
 {
     GYChatView *chatView = (GYChatView *)_item.currentSuperView;
     [chatView changeFrame:newFrame];
+}
+- (void)changeSelfViewFrame:(CGRect)newFrame
+{
+    self.frame = newFrame;
+}
+- (void)setTextViewFrame
+{
+    static CGFloat maxHeight = 60.0f;
+    CGRect frame = _item.textViewFrame;
+    CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
+    CGSize size = [_textView sizeThatFits:constraintSize];
+    if (size.height <= frame.size.height) {
+        size.height = frame.size.height;
+    }else{
+        if (size.height >= maxHeight)
+        {
+            size.height = maxHeight;
+            _textView.scrollEnabled = YES;   // 允许滚动
+        }
+        else
+        {
+            _textView.scrollEnabled = NO;    // 不允许滚动
+        }
+    }
+    CGFloat heightAdd = size.height - _item.textViewFrame.size.height;
+    [self changeSelfViewFrame:CGRectMake(_selfFrame.origin.x, _selfFrame.origin.y - heightAdd, _selfFrame.size.width, _selfFrame.size.height + heightAdd)];
+    _textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
+    [self setContentUIFrame:heightAdd];
+}
+- (void)setContentUIFrame:(CGFloat)heightChange
+{
+    _talkButton.frame = CGRectMake(_item.talkButtonFrame.origin.x, _item.talkButtonFrame.origin.y + heightChange, _item.talkButtonFrame.size.width, _item.talkButtonFrame.size.height);
+    _iconButton.frame = CGRectMake(_item.iconButtonFrame.origin.x, _item.iconButtonFrame.origin.y + heightChange, _item.iconButtonFrame.size.width, _item.iconButtonFrame.size.height);
+    _picButton.frame = CGRectMake(_item.picButtonFrame.origin.x, _item.picButtonFrame.origin.y + heightChange, _item.picButtonFrame.size.width, _item.picButtonFrame.size.height);
 }
 //发送消息
 - (void)sendMessage
@@ -259,6 +297,7 @@
     {
         [GYChatManager sharedManager].sendMessageCallback(_textView.text);
         _textView.text = @"";
+        [self setTextViewFrame];
     }
 }
 - (void)chooseMotion:(id)sender phArr:(NSArray *)phArr bqArr:(NSArray *)bqArr
@@ -341,7 +380,7 @@
 - (void)menuBtnSelected:(BOOL)isSelected
 {
     [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-        [self resetFrame];
+        [self resetSuperFrame];
     }];
     if(isSelected)
     {
@@ -376,7 +415,7 @@
     }
     [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
         CGRect newFrame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
-        [self changeFrame:newFrame];
+        [self changeSuperViewFrame:newFrame];
     }];
 }
 //当键盘隐藏的时候
@@ -394,6 +433,8 @@
 {
     if(textView.text)
     {
+        NSLog(@"textView.tex:%@",textView.text);
+        NSLog(@"%f",_item.textViewFrame.size.height);
         CGFloat offsetHeight;
         if(textView.contentSize.height >= textView.frame.size.height)
         {
@@ -404,6 +445,7 @@
             offsetHeight = 0;
         }
         [textView setContentOffset:CGPointMake(0,offsetHeight)];
+        [self setTextViewFrame];
     }
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{

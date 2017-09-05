@@ -115,7 +115,7 @@
     else
     {
         [_chatInputCustomView removeFromSuperview];
-        [self addSubview:_chatInputCustomView];
+        [self addSubview:_chatInputStyle1View];
         menuBtn.selected = YES;
         [_chatInputCustomView menuBtnSelected:NO];
     }
