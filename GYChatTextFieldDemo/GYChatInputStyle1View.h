@@ -11,6 +11,7 @@
  *创建类似微信公众号状态下输入框view
  *包含其他功能按钮
  */
-@interface GYChatInputStyle1View : UIView
 
+@interface GYChatInputStyle1View : UIView
+- (instancetype)initWithFrame:(CGRect)frame footeBtnCount:(NSInteger)footeBtnCount;
 @end

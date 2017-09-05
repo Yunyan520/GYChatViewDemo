@@ -21,12 +21,15 @@ typedef NS_ENUM(NSInteger, ChatInputViewStyle)
     TypeChat2
 };
 
+typedef void(^ConfigViewCallback)(UIView *view);
+
 @interface GYChatManagerItem : NSObject
 @property(nonatomic, assign) CGRect inputViewFrame;
 @property(nonatomic, assign) ChatInputViewStyle style;
+@property(nonatomic, assign) NSInteger type2footerBtnCount;
+@property(nonatomic, copy) ConfigViewCallback configViewCallback;
 @end
 
-typedef void(^ConfigViewCallback)(UIView *view);
 @interface GYChatManager : NSObject
 /** 点击功能按钮回调 */
 @property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
@@ -36,7 +39,7 @@ typedef void(^ConfigViewCallback)(UIView *view);
 @property(nonatomic, copy) void(^sendMessageCallback)(NSString *msg);
 + (GYChatManager *)sharedManager;
 /** 创建框架UI */
-- (void)configChatRootView:(CGRect)viewFrame callback:(ConfigViewCallback)callback;
+- (void)configChatRootView:(GYChatManagerItem *)item;
 /** 创建功能UI */
 - (void)configPicView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback;
 /** 创建表情UI */

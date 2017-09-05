@@ -25,14 +25,19 @@
     CGFloat footerHeight = 50;
     CGFloat footerY =self.view.frame.size.height - footerHeight -44;
     CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, footerHeight);
-    GYChatManager *chatManager = [GYChatManager sharedManager];
+    GYChatManagerItem *item = [[GYChatManagerItem alloc] init];
+    item.inputViewFrame = footerRect;
+    item.style = TypeChat2;
+    item.type2footerBtnCount = 2;
     __weak typeof(self) weakSelf = self;
-    [chatManager configChatRootView:footerRect callback:^(UIView *view) {
+    item.configViewCallback = ^(UIView *view) {
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf) {
             [self.view addSubview:view];
         }
-    }];
+    };
+    GYChatManager *chatManager = [GYChatManager sharedManager];
+    [chatManager configChatRootView:item];
     chatManager.sendMessageCallback = ^(NSString *msg) {
         NSLog(@"%@", msg);
     };

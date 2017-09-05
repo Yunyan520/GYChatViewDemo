@@ -12,9 +12,8 @@
 @interface GYChatView : UIView
 /**
  创建底部输入框
- @param style 输入框样式
  */
-- (instancetype)initWithFrame:(CGRect)frame viewStyle:(ChatInputViewStyle)style;
+- (instancetype)initWithFrame:(GYChatManagerItem *)item;
 - (void)resetFrame;
 - (void)changeFrame:(CGRect)newFrame;
 @end

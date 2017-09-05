@@ -22,10 +22,10 @@ static GYChatManager *instance = nil;
     });
     return instance;
 }
-- (void)configChatRootView:(CGRect)viewFrame callback:(ConfigViewCallback)callback
+- (void)configChatRootView:(GYChatManagerItem *)item
 {
-    GYChatView *footerView=[[GYChatView alloc]initWithFrame:viewFrame viewStyle:TypeChat2];
-    callback(footerView);
+    GYChatView *footerView=[[GYChatView alloc]initWithFrame:item];
+    item.configViewCallback(footerView);
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {

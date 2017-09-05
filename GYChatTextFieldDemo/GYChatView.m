@@ -18,20 +18,19 @@
 
 @implementation GYChatView
 {
-    ChatInputViewStyle _viewStyle;
-    CGRect _selfFrame;
+    GYChatManagerItem *_item;
     CGRect _muneBtnFrame;
     CGRect _style1BackFrame;
     CGRect _style2BackFrame;
     GYChatInputCustomView *_chatInputCustomView;
     GYChatInputStyle1View *_chatInputStyle1View;
 }
-- (instancetype)initWithFrame:(CGRect)frame viewStyle:(ChatInputViewStyle)style{
-    self = [super initWithFrame:frame];
+- (instancetype)initWithFrame:(GYChatManagerItem *)item
+{
+    self = [super initWithFrame:item.inputViewFrame];
     if(self)
     {
-        _selfFrame = frame;
-        _viewStyle = style;
+        _item = item;
         [self setBackViewFrame];
         [self configUI];
     }
@@ -39,15 +38,15 @@
 }
 - (void)setBackViewFrame
 {
-    if(_viewStyle == TypeChat1)
+    if(_item.style == TypeChat1)
     {
-        _style1BackFrame = CGRectMake(0, 0, _selfFrame.size.width, _selfFrame.size.height);
+        _style1BackFrame = CGRectMake(0, 0, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
     }
     else
     {
         _muneBtnFrame = CGRectMake(0, 5+2, 45, 30);
-        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _selfFrame.size.width - _muneBtnFrame.size.width, _selfFrame.size.height);
-        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _selfFrame.size.width - _muneBtnFrame.size.width, _selfFrame.size.height);
+        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
     }
 }
 - (void)configUI
@@ -58,7 +57,7 @@
 }
 - (void)configChatViewStyle2MenuBtn
 {
-    if(_viewStyle == TypeChat1)
+    if(_item.style == TypeChat1)
     {
         return;
     }
@@ -75,7 +74,7 @@
 - (void)configCustomBackViewUI
 {
     GYChatInputCustomViewItem *chatCustomViewItem = [[GYChatInputCustomViewItem alloc] init];
-    if(_viewStyle == TypeChat1)
+    if(_item.style == TypeChat1)
     {
         chatCustomViewItem.talkButtonFrame = CGRectMake(5, 5+2, 30, 30);
         chatCustomViewItem.textViewFrame = CGRectMake(40,5,self.frame.size.width-128, 34);
@@ -98,8 +97,7 @@
 
 - (void)configStyle1BackView
 {
-    _chatInputStyle1View = [[GYChatInputStyle1View alloc] initWithFrame:_style2BackFrame];
-    _chatInputStyle1View.backgroundColor = [UIColor greenColor];
+    _chatInputStyle1View = [[GYChatInputStyle1View alloc] initWithFrame:_style2BackFrame footeBtnCount:_item.type2footerBtnCount];
 }
 #pragma -mark ButtonClickedAction
 - (void)menuAction:(id)sender
@@ -122,7 +120,7 @@
 }
 - (void)resetFrame
 {
-    self.frame = _selfFrame;
+    self.frame = _item.inputViewFrame;
 }
 - (void)changeFrame:(CGRect)newFrame
 {
