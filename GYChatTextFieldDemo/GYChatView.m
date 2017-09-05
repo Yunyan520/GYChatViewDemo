@@ -10,7 +10,7 @@
 #import "GYScreen.h"
 #import "GYMotionView.h"
 #import "GYPicView.h"
-#import "GYChatManager.h"
+#define kKeyboardAnimationDuration 0.25
 @interface GYChatView()<UITextViewDelegate>
 
 @end
@@ -22,12 +22,26 @@
     UIButton *_talkButton;
     UIButton *_picButton;
     UIButton *_iconButton;
+    UIButton *_muneButton;
+    ChatInputViewStyle _viewStyle;
     CGRect _selfFrame;
     CGRect _motionViewFrame;
     CGRect _picViewFrame;
     GYMotionView *_motionView;
     GYPicView *_picView;
     NSMutableString *_messageString;
+    //根据View样式确定UIFrame;
+    CGRect _talkBtnFrame;
+    CGRect _textViewFrame;
+    CGRect _pressBtnFrame;
+    CGRect _iconBtnFrame;
+    CGRect _picBtnFrame;
+    CGRect _muneBtnFrame;
+    CGRect _style1BackFrame;
+    CGRect _style2BackFrame;
+    UIView *_chatStyle1BackView;
+    UIView *_chatStyle2BackView;
+    BOOL _keyboradIsShow;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -42,35 +56,105 @@
     }
     return self;
 }
+- (instancetype)initWithFrame:(CGRect)frame viewStyle:(ChatInputViewStyle)style{
+    self = [super initWithFrame:frame];
+    if(self)
+    {
+        _selfFrame = frame;
+        _viewStyle = style;
+        [self setUIFrame];
+        [self configUI];
+        [self configMotionView];
+        [self configPicView];
+        [self registerForKeyboardNotifications];
+    }
+    return self;
+}
+//根据View样式确定UIFrame;
+- (void)setUIFrame
+{
+    if(_viewStyle == TypeChat1)
+    {
+        _style1BackFrame = CGRectMake(0, 0, _selfFrame.size.width, _selfFrame.size.height);
+        _talkBtnFrame = CGRectMake(5, 5+2, 30, 30);
+        if (IOS7_OR_LATER)
+        {
+            _textViewFrame = CGRectMake(40,5,self.frame.size.width-128, 34);
+            _pressBtnFrame = CGRectMake(40,5,self.frame.size.width-128, 34);
+            _iconBtnFrame = CGRectMake(self.frame.size.width-85+4, 5+2, 30, 30);
+        }
+        else
+        {
+            _textViewFrame = CGRectMake(40,5,self.frame.size.width-122, 34);
+            _pressBtnFrame = CGRectMake(40,5,self.frame.size.width-122, 34);
+            _iconBtnFrame = CGRectMake(self.frame.size.width-85+8, 5+2, 30, 30);
+        }
+        _picBtnFrame = CGRectMake(self.frame.size.width-50, 5+2, 50,30);
+    }
+    else
+    {
+        _muneBtnFrame = CGRectMake(0, 5+2, 45, 30);
+        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _selfFrame.size.width - _muneBtnFrame.size.width, _selfFrame.size.height);
+        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _selfFrame.size.width - _muneBtnFrame.size.width, _selfFrame.size.height);
+        _talkBtnFrame = CGRectMake(5, 5+2, 30, 30);
+        if (IOS7_OR_LATER)
+        {
+            _textViewFrame = CGRectMake(40,5,self.frame.size.width-168, 34);
+            _pressBtnFrame = CGRectMake(40,5,self.frame.size.width-168, 34);
+            _iconBtnFrame = CGRectMake(self.frame.size.width-125+4, 5+2, 30, 30);
+        }
+        else
+        {
+            _textViewFrame = CGRectMake(40,5,self.frame.size.width-162, 34);
+            _pressBtnFrame = CGRectMake(40,5,self.frame.size.width-162, 34);
+            _iconBtnFrame = CGRectMake(self.frame.size.width-125+8, 5+2, 30, 30);
+        }
+        _picBtnFrame = CGRectMake(self.frame.size.width-90, 5+2, 50,30);
+    }
+}
 - (void)configUI
 {
+    [self configBackView];
+    [self configChatViewStyle2MenuBtn];
     [self configVoiceInputUI];
     [self configMotionPicSendUI];
+}
+- (void)configBackView
+{
+    _chatStyle1BackView = [[UIView alloc] initWithFrame:_style1BackFrame];
+    _chatStyle2BackView = [[UIView alloc] initWithFrame:_style2BackFrame];
+    _chatStyle2BackView.backgroundColor = [UIColor greenColor];
+    [self addSubview:_chatStyle1BackView];
+}
+- (void)configChatViewStyle2MenuBtn
+{
+    if(_viewStyle == TypeChat1)
+    {
+        return;
+    }
+    _muneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _muneButton.frame = _muneBtnFrame;
+    _muneButton.imageView.contentMode = UIViewContentModeCenter;
+    [_muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_texttolist.png"] forState:UIControlStateNormal];
+    [_muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_listtotext.png"] forState:UIControlStateSelected];
+    [_muneButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];
+    _muneButton.selected = NO;
+    [self addSubview:_muneButton];
 }
 - (void)configVoiceInputUI
 {
     //文本输入框
     _textView = [[UITextView alloc] init];
-    if (IOS7_OR_LATER) {
-        [_textView setFrame:CGRectMake(40,5,self.frame.size.width-128, 34)];
-    }else
-    {
-        [_textView setFrame:CGRectMake(40,5,self.frame.size.width-122, 34)];
-    }
+    _textView.frame = _textViewFrame;
     _textView.backgroundColor = [UIColor grayColor];
     _textView.layer.cornerRadius = 5;
     _textView.delegate = self;
     _textView.returnKeyType = UIReturnKeySend;
-    [self addSubview:_textView];
+    [_chatStyle1BackView addSubview:_textView];
     
     //语音发送按钮
     _pressButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if (IOS7_OR_LATER) {
-        [_pressButton setFrame:CGRectMake(40,5,self.frame.size.width-128, 34)];
-    }else
-    {
-        [_pressButton setFrame:CGRectMake(40,5,self.frame.size.width-122, 34)];
-    }
+    _pressButton.frame = _pressBtnFrame;
     _pressButton.hidden = YES;
     [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button.png"] forState:UIControlStateNormal];
     [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button_click.png"] forState:UIControlStateHighlighted];
@@ -85,35 +169,36 @@
     [_pressButton addTarget:self action:@selector(recordTouchDown:) forControlEvents:UIControlEventTouchDown];
     [_pressButton addTarget:self action:@selector(recordTouchDragOutside:) forControlEvents: UIControlEventTouchDragOutside];
     [_pressButton addTarget:self action:@selector(recordTouchDragIn:) forControlEvents: UIControlEventTouchDragInside];
-    [self addSubview:_pressButton];
+    [_chatStyle1BackView addSubview:_pressButton];
 }
 - (void)configMotionPicSendUI
 {
     //	录音按钮
-    _talkButton = [[UIButton alloc]initWithFrame:CGRectMake(5, 5+2, 30, 30)];
+    _talkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _talkButton.frame = _talkBtnFrame;
     [_talkButton setImage:[UIImage imageNamed:@"Fav_Search_Voice.png"] forState:UIControlStateNormal];
     [_talkButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
     [_talkButton addTarget:self action:@selector(talkAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_talkButton];
+    [_chatStyle1BackView addSubview:_talkButton];
     //	表情选择按钮
     _iconButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if(IOS7_OR_LATER)
-    {
-        _iconButton.frame = CGRectMake(self.frame.size.width-85+4, 5+2, 30, 30);
-    }else
-    {
-        _iconButton.frame = CGRectMake(self.frame.size.width-85+8, 5+2, 30, 30);
-    }
+
+    _iconButton.frame = _iconBtnFrame;
     [_iconButton setImage:[UIImage imageNamed:@"Album_ToolViewEmotion.png"] forState:UIControlStateNormal];
     [_iconButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
     [_iconButton addTarget:self action:@selector(moodIconAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_iconButton];
+    [_chatStyle1BackView addSubview:_iconButton];
     
     //	图片选择按钮
-    _picButton = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width-50, 5+2, 50,30)];
+    _picButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _picButton.frame = _picBtnFrame;
     [_picButton setImage:[UIImage imageNamed:@"type_select_btn_nor.png"] forState:UIControlStateNormal];
     [_picButton addTarget:self action:@selector(chooseItemAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_picButton];
+    [_chatStyle1BackView addSubview:_picButton];
+}
+- (void)configChatStyle2Button
+{
+    
 }
 - (void)configMotionView
 {
@@ -164,6 +249,37 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 #pragma -mark ButtonClickedAction
+- (void)menuAction:(id)sender
+{
+    UIButton *menuBtn = (UIButton *)sender;
+    if(menuBtn.selected)
+    {
+        [_chatStyle2BackView removeFromSuperview];
+        [self addSubview:_chatStyle1BackView];
+        menuBtn.selected = NO;
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self changeFrame:_selfFrame];
+        }];
+        if(_keyboradIsShow)
+        {
+            [_textView becomeFirstResponder];
+        }
+        _iconButton.selected = NO;
+        _picButton.selected = NO;
+    }
+    else
+    {
+        [_chatStyle1BackView removeFromSuperview];
+        [self addSubview:_chatStyle2BackView];
+        menuBtn.selected = YES;
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self changeFrame:_selfFrame];
+        }];
+        [_motionView removeFromSuperview];
+        [_picView removeFromSuperview];
+        
+    }
+}
 - (void)talkAction:(id)sender
 {
     UIButton *talkBtn = (UIButton *)sender;
@@ -171,29 +287,29 @@
         //弹起键盘
         [self isVoiceInputStatus:NO];
         [_textView becomeFirstResponder];
+        _keyboradIsShow = YES;
     } else
     {
         [self isVoiceInputStatus:YES];
-        [UIView animateWithDuration:0.25 animations:^{
-            self.frame = _selfFrame;
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self changeFrame:_selfFrame];
         }];
         [_motionView removeFromSuperview];
         [_picView removeFromSuperview];
         _iconButton.selected = NO;
         [_textView resignFirstResponder];
+        _keyboradIsShow = NO;
     }
 }
 - (void)moodIconAction:(id)sender
 {
     UIButton *iconBtn = (UIButton *)sender;
     [self isVoiceInputStatus:NO];
+    _keyboradIsShow = YES;
     if(iconBtn.selected) {
         //弹起键盘
         iconBtn.selected = NO;
         [_textView becomeFirstResponder];
-//        [UIView animateWithDuration:0.25 animations:^{
-//            self.frame = _selfFrame;
-//        }];
         [_motionView removeFromSuperview];
     } else {
         iconBtn.selected = YES;
@@ -201,8 +317,8 @@
         _textView.hidden = NO;
         _pressButton.hidden = YES;
         _picButton.selected = NO;
-        [UIView animateWithDuration:0.25 animations:^{
-            self.frame = _motionViewFrame;
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self changeFrame:_motionViewFrame];
         }];
         [_picView removeFromSuperview];
         [self addSubview:_motionView];
@@ -212,20 +328,17 @@
 {
     UIButton *picBtn = (UIButton *)sender;
     [self isVoiceInputStatus:NO];
+    _keyboradIsShow = YES;
     if(picBtn.selected) {
         //弹起键盘
         picBtn.selected = NO;
         [_textView becomeFirstResponder];
-        
-//        [UIView animateWithDuration:0.25 animations:^{
-//            self.frame = _selfFrame;
-//        }];
         [_picView removeFromSuperview];
     } else {
         picBtn.selected = YES;
         [_textView resignFirstResponder];
-        [UIView animateWithDuration:0.25 animations:^{
-            self.frame = _picViewFrame;
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self changeFrame:_picViewFrame];
         }];
         
         _iconButton.selected = NO;
@@ -254,6 +367,10 @@
     _talkButton.selected = isVoice;
     _pressButton.hidden = !isVoice;
     _textView.hidden = isVoice;
+}
+- (void)changeFrame:(CGRect)newFrame
+{
+    self.frame = newFrame;
 }
 //发送消息
 - (void)sendMessage
@@ -343,17 +460,9 @@
 //实现当键盘出现的时候计算键盘的高度大小。用于输入框显示位置
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
-    //kbSize即為鍵盤尺寸 (有width, height)
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;//得到鍵盤的高度
-    NSLog(@"hight_hitht:%f",kbSize.height);
     _picButton.selected = NO;
     _iconButton.selected = NO;
     _talkButton.selected = NO;
-//    [UIView animateWithDuration:0.25 animations:^{
-//        self.frame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
-//    }];
-    
 }
 
 - (void)keyboardChanged:(NSNotification*)aNotification
@@ -364,9 +473,11 @@
     {
         return;
     }
-    [UIView animateWithDuration:0.25 animations:^{
-        self.frame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
+    [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+        CGRect newFrame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
+        [self changeFrame:newFrame];
     }];
+    
 }
 //当键盘隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
@@ -376,6 +487,7 @@
 #pragma -mark UITextViewDelegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
+    _keyboradIsShow = YES;
     return YES;
 }
 - (void)textViewDidChange:(UITextView *)textView

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		613A8A5B1F5D413B001599F1 /* Mode_texttolist.png in Resources */ = {isa = PBXBuildFile; fileRef = 613A8A5A1F5D413B001599F1 /* Mode_texttolist.png */; };
+		613A8A5D1F5D42F9001599F1 /* Mode_listtotext.png in Resources */ = {isa = PBXBuildFile; fileRef = 613A8A5C1F5D42F9001599F1 /* Mode_listtotext.png */; };
 		614867C51F57F0AB00B31D99 /* 语音输入.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B41F57F0AA00B31D99 /* 语音输入.png */; };
 		614867C61F57F0AB00B31D99 /* Album_ToolViewEmotion.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B51F57F0AA00B31D99 /* Album_ToolViewEmotion.png */; };
 		614867C71F57F0AB00B31D99 /* chat_camera_icon_hl.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B61F57F0AA00B31D99 /* chat_camera_icon_hl.png */; };
@@ -165,6 +167,8 @@
 		614868ED1F57F5BC00B31D99 /* face_zhu.png in Resources */ = {isa = PBXBuildFile; fileRef = 614868611F57F5BC00B31D99 /* face_zhu.png */; };
 		614868EE1F57F5BC00B31D99 /* face_zq.png in Resources */ = {isa = PBXBuildFile; fileRef = 614868621F57F5BC00B31D99 /* face_zq.png */; };
 		61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61722AD81F5934A200EA49D2 /* GYChatManager.m */; };
+		617489781F5E2D5A0020B1B3 /* GYChatInputCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */; };
+		6174897B1F5E2EB90020B1B3 /* GYChatInputStyle1View.m in Sources */ = {isa = PBXBuildFile; fileRef = 6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */; };
 		61C60C361F565DBC00B6A921 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C351F565DBC00B6A921 /* main.m */; };
 		61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C381F565DBC00B6A921 /* AppDelegate.m */; };
 		61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C3B1F565DBC00B6A921 /* ViewController.m */; };
@@ -196,6 +200,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		613A8A5A1F5D413B001599F1 /* Mode_texttolist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mode_texttolist.png; sourceTree = "<group>"; };
+		613A8A5C1F5D42F9001599F1 /* Mode_listtotext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mode_listtotext.png; sourceTree = "<group>"; };
 		614867B11F57E83200B31D99 /* faceDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = faceDefine.h; sourceTree = "<group>"; };
 		614867B41F57F0AA00B31D99 /* 语音输入.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "语音输入.png"; sourceTree = "<group>"; };
 		614867B51F57F0AA00B31D99 /* Album_ToolViewEmotion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Album_ToolViewEmotion.png; sourceTree = "<group>"; };
@@ -356,6 +362,10 @@
 		614868621F57F5BC00B31D99 /* face_zq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = face_zq.png; sourceTree = "<group>"; };
 		61722AD71F5934A200EA49D2 /* GYChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatManager.h; sourceTree = "<group>"; };
 		61722AD81F5934A200EA49D2 /* GYChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatManager.m; sourceTree = "<group>"; };
+		617489761F5E2D5A0020B1B3 /* GYChatInputCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatInputCustomView.h; sourceTree = "<group>"; };
+		617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatInputCustomView.m; sourceTree = "<group>"; };
+		617489791F5E2EB90020B1B3 /* GYChatInputStyle1View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatInputStyle1View.h; sourceTree = "<group>"; };
+		6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatInputStyle1View.m; sourceTree = "<group>"; };
 		61C60C311F565DBC00B6A921 /* GYChatTextFieldDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GYChatTextFieldDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C60C351F565DBC00B6A921 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		61C60C371F565DBC00B6A921 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -570,6 +580,8 @@
 				614867BF1F57F0AB00B31D99 /* chat_video_icon.png */,
 				614867C01F57F0AB00B31D99 /* Fav_Search_Voice.png */,
 				614867C11F57F0AB00B31D99 /* Keyboard_ios.png */,
+				613A8A5A1F5D413B001599F1 /* Mode_texttolist.png */,
+				613A8A5C1F5D42F9001599F1 /* Mode_listtotext.png */,
 				614867C21F57F0AB00B31D99 /* speaking_Button_click.png */,
 				614867C31F57F0AB00B31D99 /* speaking_Button.png */,
 				614867C41F57F0AB00B31D99 /* type_select_btn_nor.png */,
@@ -610,6 +622,10 @@
 				61722AD81F5934A200EA49D2 /* GYChatManager.m */,
 				61C60C711F568B4400B6A921 /* GYChatView.h */,
 				61C60C721F568B4400B6A921 /* GYChatView.m */,
+				617489761F5E2D5A0020B1B3 /* GYChatInputCustomView.h */,
+				617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */,
+				617489791F5E2EB90020B1B3 /* GYChatInputStyle1View.h */,
+				6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */,
 				61C60C6E1F5663EE00B6A921 /* GYMotionView.h */,
 				61C60C6F1F5663EE00B6A921 /* GYMotionView.m */,
 				61C60C801F569F0D00B6A921 /* GYPicView.h */,
@@ -819,6 +835,7 @@
 				614868D01F57F5BC00B31D99 /* face_pj.png in Resources */,
 				614868DE1F57F5BC00B31D99 /* face_wq.png in Resources */,
 				614868A61F57F5BC00B31D99 /* face_ndy.png in Resources */,
+				613A8A5B1F5D413B001599F1 /* Mode_texttolist.png in Resources */,
 				614868D91F57F5BC00B31D99 /* face_sl.png in Resources */,
 				614868C11F57F5BC00B31D99 /* face_ntq.png in Resources */,
 				6148689C1F57F5BC00B31D99 /* face_music.png in Resources */,
@@ -901,6 +918,7 @@
 				614868D31F57F5BC00B31D99 /* face_qq.png in Resources */,
 				614868A71F57F5BC00B31D99 /* face_nfd.png in Resources */,
 				6148687A1F57F5BC00B31D99 /* face_fjhang.png in Resources */,
+				613A8A5D1F5D42F9001599F1 /* Mode_listtotext.png in Resources */,
 				614868771F57F5BC00B31D99 /* face_fjding.png in Resources */,
 				614868DA1F57F5BC00B31D99 /* face_tc.png in Resources */,
 				614868831F57F5BC00B31D99 /* face_gz2.png in Resources */,
@@ -942,6 +960,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				617489781F5E2D5A0020B1B3 /* GYChatInputCustomView.m in Sources */,
+				6174897B1F5E2EB90020B1B3 /* GYChatInputStyle1View.m in Sources */,
 				61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */,
 				61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */,
 				61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */,

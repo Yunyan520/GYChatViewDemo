@@ -7,6 +7,9 @@
 //
 
 #import "GYChatManager.h"
+#import "GYChatView.h"
+@implementation GYChatManagerItem
+@end
 
 static GYChatManager *instance = nil;
 @implementation GYChatManager
@@ -21,7 +24,7 @@ static GYChatManager *instance = nil;
 }
 - (void)configChatRootView:(CGRect)viewFrame callback:(ConfigViewCallback)callback
 {
-    GYChatView *footerView=[[GYChatView alloc]initWithFrame:viewFrame];
+    GYChatView *footerView=[[GYChatView alloc]initWithFrame:viewFrame viewStyle:TypeChat2];
     callback(footerView);
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback

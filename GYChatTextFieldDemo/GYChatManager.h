@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "GYScreen.h"
-#import "GYChatView.h"
+//#import "GYChatView.h"
 #import "GYPicView.h"
 #import "GYMotionView.h"
 
-typedef NS_ENUM(NSInteger, InputViewStyle)
+typedef NS_ENUM(NSInteger, ChatInputViewStyle)
 {
     /** 类似微信聊天界面输入框 */
     TypeChat1,
@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, InputViewStyle)
 
 @interface GYChatManagerItem : NSObject
 @property(nonatomic, assign) CGRect inputViewFrame;
-@property(nonatomic, assign) InputViewStyle style;
+@property(nonatomic, assign) ChatInputViewStyle style;
 @end
 
 typedef void(^ConfigViewCallback)(UIView *view);

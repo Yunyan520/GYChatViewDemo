@@ -22,8 +22,9 @@
 }
 - (void)configFooterView
 {
-    CGFloat footerY =self.view.frame.size.height - 50 -44;
-    CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, 50);
+    CGFloat footerHeight = 50;
+    CGFloat footerY =self.view.frame.size.height - footerHeight -44;
+    CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, footerHeight);
     GYChatManager *chatManager = [GYChatManager sharedManager];
     __weak typeof(self) weakSelf = self;
     [chatManager configChatRootView:footerRect callback:^(UIView *view) {

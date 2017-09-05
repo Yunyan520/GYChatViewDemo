@@ -47,13 +47,14 @@
 }
 - (void)configBgScrollView
 {
-    _bgScrollview = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    CGRect _baScrollRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    _bgScrollview = [[UIScrollView alloc]initWithFrame:_baScrollRect];
     _bgScrollview.scrollsToTop = NO;
     _bgScrollview.pagingEnabled = YES;
     _bgScrollview.delegate = self;
     _bgScrollview.showsHorizontalScrollIndicator = NO;
     _bgScrollview.showsVerticalScrollIndicator = NO;
-    _bgScrollview.backgroundColor = [UIColor colorWithRed:250.0/255 green:250.0/255 blue:250.0/255 alpha:1.0];
+    _bgScrollview.backgroundColor = [UIColor whiteColor];
     [self addSubview:_bgScrollview];
 }
 - (void)configFunctionItemIcon
@@ -113,10 +114,12 @@
         [iconbutton setImage:[UIImage imageNamed:model.hlImageName] forState:UIControlStateHighlighted];
         [_bgScrollview addSubview:iconbutton];
         
-        UILabel *nameLabel=[[UILabel alloc]initWithFrame:CGRectMake(0, buttonSize, buttonSize, labelHeight)];
+        CGRect nameLabelRect = CGRectMake(0, buttonSize, buttonSize, labelHeight);
+        CGFloat nameLabelFont = 12;
+        UILabel *nameLabel=[[UILabel alloc]initWithFrame:nameLabelRect];
         nameLabel.text = model.functionName;
         nameLabel.backgroundColor=[UIColor clearColor];
-        nameLabel.font=[UIFont systemFontOfSize:12];
+        nameLabel.font=[UIFont systemFontOfSize:nameLabelFont];
         nameLabel.textColor=[UIColor blackColor];
         nameLabel.textAlignment=NSTextAlignmentCenter;
         [iconbutton addSubview:nameLabel];
