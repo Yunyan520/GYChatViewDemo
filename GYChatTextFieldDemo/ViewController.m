@@ -36,6 +36,7 @@
             [self.view addSubview:view];
         }
     };
+    //初始化manager
     GYChatManager *chatManager = [GYChatManager sharedManager];
     [chatManager configChatRootView:item];
     chatManager.sendMessageCallback = ^(NSString *msg) {
