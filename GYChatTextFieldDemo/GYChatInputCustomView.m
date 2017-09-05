@@ -49,7 +49,12 @@
     }
     return self;
 }
-
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
 - (void)registerForKeyboardNotifications
 {
     //使用NSNotificationCenter 鍵盤出現時
@@ -58,6 +63,12 @@
                                              selector:@selector(keyboardWasShown:)
      
                                                  name:UIKeyboardDidShowNotification object:nil];
+    //使用NSNotificationCenter 鍵盤将要出現時
+    [[NSNotificationCenter defaultCenter] addObserver:self
+     
+                                             selector:@selector(keyboardWillShown:)
+     
+                                                 name:UIKeyboardWillShowNotification object:nil];
     
     //使用NSNotificationCenter 鍵盤隐藏時
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -65,8 +76,7 @@
                                              selector:@selector(keyboardWillBeHidden:)
      
                                                  name:UIKeyboardWillHideNotification object:nil];
-    //键盘的frame即将发生变化时立刻发出该通知
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(keyboardChanged:) name:UIKeyboardWillChangeFrameNotification object:nil];
+
 }
 - (void)configVoiceInputUI
 {
@@ -405,24 +415,22 @@
     _iconButton.selected = NO;
     _talkButton.selected = NO;
 }
-
-- (void)keyboardChanged:(NSNotification*)aNotification
+//键盘即将弹起
+- (void)keyboardWillShown:(NSNotification*)aNotification
 {
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;//得到鍵盤的高度
-    if(_talkButton.selected)
-    {
-        return;
-    }
     [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
         CGRect newFrame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
         [self changeSuperViewFrame:newFrame];
     }];
+    [GYChatManager sharedManager].keyboardShownCallback(kbSize);
 }
-//当键盘隐藏的时候
+//当键盘即将隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-
+    [GYChatManager sharedManager].keyboradHiddenCallback();
+    NSLog(@"键盘隐藏");
 }
 #pragma -mark UITextViewDelegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView

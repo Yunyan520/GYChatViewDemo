@@ -37,6 +37,10 @@ typedef void(^ConfigViewCallback)(UIView *view);
 @property(nonatomic, copy) void(^sendFileCallback)(NSString *fileName);
 /** 发送回调 */
 @property(nonatomic, copy) void(^sendMessageCallback)(NSString *msg);
+/** 弹起键盘回调 */
+@property(nonatomic, copy) void(^keyboardShownCallback)(CGSize keyboardSize);
+/** 收起键盘回调 */
+@property(nonatomic, copy) void(^keyboradHiddenCallback)();
 + (GYChatManager *)sharedManager;
 /** 创建框架UI */
 - (void)configChatRootView:(GYChatManagerItem *)item;

@@ -39,6 +39,12 @@
     //初始化manager
     GYChatManager *chatManager = [GYChatManager sharedManager];
     [chatManager configChatRootView:item];
+    chatManager.keyboardShownCallback = ^(CGSize keyboardSize) {
+        NSLog(@"%f,%f",keyboardSize.width,keyboardSize.height);
+    };
+    chatManager.keyboradHiddenCallback = ^{
+        NSLog(@"键盘收起");
+    };
     chatManager.sendMessageCallback = ^(NSString *msg) {
         NSLog(@"%@", msg);
     };
