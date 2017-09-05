@@ -15,5 +15,6 @@
  @param style 输入框样式
  */
 - (instancetype)initWithFrame:(CGRect)frame viewStyle:(ChatInputViewStyle)style;
-
+- (void)resetFrame;
+- (void)changeFrame:(CGRect)newFrame;
 @end

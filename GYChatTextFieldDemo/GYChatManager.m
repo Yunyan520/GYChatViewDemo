@@ -24,7 +24,7 @@ static GYChatManager *instance = nil;
 }
 - (void)configChatRootView:(CGRect)viewFrame callback:(ConfigViewCallback)callback
 {
-    GYChatView *footerView=[[GYChatView alloc]initWithFrame:viewFrame viewStyle:TypeChat2];
+    GYChatView *footerView=[[GYChatView alloc]initWithFrame:viewFrame viewStyle:TypeChat1];
     callback(footerView);
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
