@@ -25,4 +25,7 @@
 @interface GYChatInputCustomView : UIView
 - (instancetype)initWithFrame:(CGRect)frame item:(GYChatInputCustomViewItem *)item;
 - (void)menuBtnSelected:(BOOL)isSelected;
+- (void)keyBoardIsShow:(BOOL)isShow;
+- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
+- (void)addDraft:(NSString *)draft;
 @end

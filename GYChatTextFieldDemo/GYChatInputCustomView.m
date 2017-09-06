@@ -256,6 +256,8 @@
 {
     GYChatView *chatView = (GYChatView *)_item.currentSuperView;
     [chatView resetFrame];
+    [_motionView removeFromSuperview];
+    [_picView removeFromSuperview];
 }
 - (void)resetCurrentViewFrame
 {
@@ -407,6 +409,39 @@
         [_picView removeFromSuperview];
     }
 }
+- (void)keyBoardIsShow:(BOOL)isShow
+{
+    if(isShow)
+    {
+        [_textView becomeFirstResponder];
+    }
+    else
+    {
+        [_textView resignFirstResponder];
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self resetSuperFrame];
+        }];
+    }
+}
+- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed
+{
+    if(isLongPressed)
+    {
+        //长按方式艾特某人
+        //已经艾特过某人
+        if([_textView.text rangeOfString:personName].location != NSNotFound)
+        {
+            return;
+        }
+    }
+    _textView.text = [NSString stringWithFormat:@"%@@%@",_textView.text,personName];
+    [_textView becomeFirstResponder];
+}
+- (void)addDraft:(NSString *)draft
+{
+    _textView.text = draft;
+    [_textView becomeFirstResponder];
+}
 #pragma -mark keyboardNotification
 //实现当键盘出现的时候计算键盘的高度大小。用于输入框显示位置
 - (void)keyboardWasShown:(NSNotification*)aNotification
@@ -461,6 +496,13 @@
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
         [self sendMessage];
         return NO; //这里返回NO，就代表return键值失效，即页面上按下return，不会出现换行，如果为yes，则输入页面会换行
+    }
+    if([text isEqualToString:@"@"])
+    {
+        if([GYChatManager sharedManager].clickedAtCallback)
+        {
+            [GYChatManager sharedManager].clickedAtCallback(text);
+        }
     }
     return YES;
 }

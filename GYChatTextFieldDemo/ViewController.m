@@ -17,7 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor greenColor];
     [self configFooterView];
+    [self addTapGesture];
     // Do any additional setup after loading the view, typically from a nib.
 }
 - (void)configFooterView
@@ -25,7 +27,7 @@
     CGFloat footerHeight = 50;
     CGFloat footerY =self.view.frame.size.height - footerHeight -44;
     CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, footerHeight);
-    GYChatManagerItem *item = [[GYChatManagerItem alloc] init];
+    GYConfigChatViewItem *item = [[GYConfigChatViewItem alloc] init];
     item.inputViewFrame = footerRect;
     item.style = TypeChat2;
     item.type2footerBtnCount = 2;
@@ -39,6 +41,7 @@
     //初始化manager
     GYChatManager *chatManager = [GYChatManager sharedManager];
     [chatManager configChatRootView:item];
+    
     chatManager.keyboardShownCallback = ^(CGSize keyboardSize) {
         NSLog(@"%f,%f",keyboardSize.width,keyboardSize.height);
     };
@@ -78,6 +81,31 @@
                 break;
         }
     };
+    chatManager.clickedAtCallback = ^(NSString *msg) {
+        NSLog(@"%@",msg);
+        [[GYChatManager sharedManager] orientateAnswer:@"personName1" isLongPressed:NO];
+    };
+}
+- (void)addTapGesture
+{
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
+    [self.view addGestureRecognizer:recognizer];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+    [self.view addGestureRecognizer:longPress];
+}
+- (void)tapAction:(id)sender
+{
+    [[GYChatManager sharedManager] keyboardIsShow:NO];
+}
+- (void)longPressAction:(id)sender
+{
+    UILongPressGestureRecognizer *gesture = (UILongPressGestureRecognizer *)sender;
+    if(gesture.state == UIGestureRecognizerStateBegan)
+    {
+        [[GYChatManager sharedManager] orientateAnswer:@"personName" isLongPressed:YES];
+    }
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

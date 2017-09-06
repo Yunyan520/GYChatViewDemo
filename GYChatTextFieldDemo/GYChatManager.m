@@ -8,12 +8,16 @@
 
 #import "GYChatManager.h"
 #import "GYChatView.h"
-@implementation GYChatManagerItem
+@implementation GYConfigChatViewItem
 @end
 
 static GYChatManager *instance = nil;
 @implementation GYChatManager
-
+{
+    GYChatInputCustomView *_chatInputCustomView;
+    UIView *_motionView;
+    UIView *_picView;
+}
 + (GYChatManager *)sharedManager
 {
     static dispatch_once_t pred;
@@ -22,10 +26,11 @@ static GYChatManager *instance = nil;
     });
     return instance;
 }
-- (void)configChatRootView:(GYChatManagerItem *)item
+- (void)configChatRootView:(GYConfigChatViewItem *)item
 {
     GYChatView *footerView=[[GYChatView alloc]initWithFrame:item];
     item.configViewCallback(footerView);
+    _chatInputCustomView = [footerView getChatInputCustomView];
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
@@ -62,5 +67,17 @@ static GYChatManager *instance = nil;
         }
     };
     callback(picView);
+}
+- (void)keyboardIsShow:(BOOL)isShow
+{
+    [_chatInputCustomView keyBoardIsShow:isShow];
+}
+- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed
+{
+    [_chatInputCustomView orientateAnswer:personName isLongPressed:isLongPressed];
+}
+- (void)addDraft:(NSString *)draft
+{
+    [_chatInputCustomView addDraft:draft];
 }
 @end

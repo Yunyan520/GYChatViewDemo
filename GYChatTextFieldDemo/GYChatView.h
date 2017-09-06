@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "GYChatManager.h"
-
+#import "GYChatInputCustomView.h"
 @interface GYChatView : UIView
 /**
  创建底部输入框
  */
-- (instancetype)initWithFrame:(GYChatManagerItem *)item;
+- (instancetype)initWithFrame:(GYConfigChatViewItem *)item;
+- (GYChatInputCustomView *)getChatInputCustomView;
 - (void)resetFrame;
 - (void)changeFrame:(CGRect)newFrame;
 @end
