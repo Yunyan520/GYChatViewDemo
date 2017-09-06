@@ -41,7 +41,7 @@
 }
 - (void)configUI
 {
-    CGRect scrollRect = CGRectMake(0, 0, kScreenWidth, 170);
+    CGRect scrollRect = CGRectMake(kMotionScrollViewX, kMotionScrollViewY, kScreenWidth, kMotionScrollViewHeight);
     _motionScrollView=[[UIScrollView alloc]initWithFrame:scrollRect];
     _motionScrollView.pagingEnabled = YES;
     _motionScrollView.delegate = self;
@@ -51,9 +51,9 @@
     _motionScrollView.backgroundColor = [UIColor clearColor];
     [self addSubview:_motionScrollView];
     
-    CGFloat pageWidth = 100;
+    CGFloat pageWidth = kPageControlWidth;
     CGFloat pageX = (kScreenWidth - pageWidth)/2;
-    CGRect pageRect = CGRectMake(pageX, 175, pageWidth, 40);
+    CGRect pageRect = CGRectMake(pageX, kPageControlY, pageWidth, kPageControlHeight);
     _pageControl = [[UIPageControl alloc] initWithFrame:pageRect];
     _pageControl.pageIndicatorTintColor = [UIColor redColor];
     _pageControl.currentPageIndicatorTintColor = [UIColor greenColor];
@@ -62,11 +62,11 @@
     [self addSubview:_pageControl];
     
     _sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    CGRect sendBtnRect = CGRectMake(kScreenWidth - 60, 170, 40, 40);
+    CGRect sendBtnRect = CGRectMake(kSendBtnX, kSendBtnY, kSendBtnWidth, kSendBtnHeight);
     _sendBtn.frame = sendBtnRect;
     [_sendBtn setTitle:@"发送" forState:UIControlStateNormal];
     _sendBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    [_sendBtn setTitleColor:kUIColorFromRGB(0x028be6) forState:UIControlStateNormal];
+    [_sendBtn setTitleColor:kSendBtnTitleColorCount forState:UIControlStateNormal];
     [_sendBtn addTarget:self action:@selector(sendVoiceMessage:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_sendBtn];
 }
@@ -77,25 +77,25 @@
     [self removeSubViewFromShowViewContext];
     // update 0805 by yanlei 表情的适配
     // 首先先计算一行能放置几个表情
-    int rowCount = 8;   // 每行的个数
-    int spacing = 10;
+    int rowCount = kRowCount;   // 每行的个数
+    int spacing = kSpacing;
     
     if (IS_IPHONE) {
         if (IS_IPHONE_6P) {
-            rowCount = 9;
-            spacing = 15;
+            rowCount = kIS_IPHONE_6PRowCount;
+            spacing = kIS_IPHONE_6PSpacing;
         }else if (IS_IPHONE_6){
-            spacing = 15;
+            spacing = kIS_IPHONE_6Spacing;
         }
     }else if (IS_IPAD){
         //        竖屏显示10个；横屏一行显示14个
         if (kScreenWidth < kScreenHeight) {
-            rowCount = 10;
+            rowCount = kiPadVertical;
         }else{
-            rowCount = 14;
+            rowCount = kiPadHorizontal;
         }
         
-        spacing = (kScreenWidth - 30 * rowCount) / (rowCount + 1);
+        spacing = kiPadSpacing;
     }
     int y=0;
     int bint=(int)[_phraseArray count]; //表情总数
@@ -107,25 +107,25 @@
     }
     int sumindex=bint;//表情总数
     
-    float faceBtnWidth = (kScreenWidth - 20.0) / rowCount;
-    float faceBtnHeight = 40.0;
+//    float faceBtnWidth = (kScreenWidth - 20.0) / rowCount;
+//    float faceBtnHeight = 40.0;
 
     for (int r=0; r<rownum; r++) {
         int row=r; //行数
         int arrayindex=row*rowCount; //表情对应的下标
-        y=faceBtnHeight*(r%4)+10; //表情的y值 第一行是10
+        y=kFaceBtnHeight*(r%4) + kFirstRowFaceBtnY; //表情的y值 第一行是10
         UIImageView *imgv;
         UIButton *iconBtn;
         for (int i=0; i<rowCount; i++) {
             
             if (arrayindex<sumindex) {
-                CGRect imageValueRect=CGRectMake(kScreenWidth * (r/4) + 10 + faceBtnWidth * i,y, faceBtnWidth,faceBtnHeight);
+                CGRect imageValueRect=CGRectMake(kScreenWidth * (r/4) + kFirstRowFaceBtnY + kFaceBtnWidth * i,y, kFaceBtnWidth,kFaceBtnHeight);
                 
                 iconBtn=[[UIButton alloc]initWithFrame:imageValueRect];
                 [iconBtn addTarget:self action:@selector(choosefacePic:)  forControlEvents:UIControlEventTouchUpInside];
                 iconBtn.titleLabel.text=@"0";
                 iconBtn.tag=arrayindex;
-                CGRect imageValueRect1=CGRectMake((faceBtnWidth - 30) / 2, (faceBtnHeight - 30) / 2, 30, 30);
+                CGRect imageValueRect1=CGRectMake((kFaceBtnWidth - 30) / 2, (kFaceBtnHeight - 30) / 2, 30, 30);
                 imgv=[[UIImageView alloc]initWithFrame:imageValueRect1];
                 NSMutableDictionary *tempdic = [_phraseArray objectAtIndex:arrayindex];
                 

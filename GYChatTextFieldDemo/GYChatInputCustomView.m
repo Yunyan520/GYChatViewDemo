@@ -84,7 +84,7 @@
     _textView = [[UITextView alloc] init];
     _textView.frame = _item.textViewFrame;
     _textView.backgroundColor = [UIColor grayColor];
-    _textView.layer.cornerRadius = 5;
+    _textView.layer.cornerRadius = kTextViewCornerRadius;
     _textView.delegate = self;
     _textView.returnKeyType = UIReturnKeySend;
     [self addSubview:_textView];
@@ -138,7 +138,7 @@
     GYChatManager *chatManager = [GYChatManager sharedManager];
     [chatManager configMotionView:_item.currentSuperView.frame callback:^(UIView *view) {
         _motionView = (GYMotionView *)view;
-        _motionViewFrame = CGRectMake(0, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, kScreenWidth, view.frame.size.height + _item.currentSuperView.frame.size.height);
+        _motionViewFrame = CGRectMake(kMotionViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, kScreenWidth, view.frame.size.height + _item.currentSuperView.frame.size.height);
         __weak typeof(self) weakSelf = self;
         _motionView.chooseMotionCallback = ^(UIView *motion, NSArray *phArr, NSArray *bqArr) {
             __strong typeof(self) strongSelf = weakSelf;
@@ -160,7 +160,7 @@
 {
     [[GYChatManager sharedManager] configPicView:_item.currentSuperView.frame callback:^(UIView *view) {
         _picView = (GYPicView *)view;
-        _picViewFrame = CGRectMake(0, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, _item.currentSuperView.frame.size.width, view.frame.size.height + _item.currentSuperView.frame.size.height);
+        _picViewFrame = CGRectMake(kPicViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, _item.currentSuperView.frame.size.width, view.frame.size.height + _item.currentSuperView.frame.size.height);
     }];
 }
 
@@ -274,7 +274,7 @@
 }
 - (void)setTextViewFrame
 {
-    static CGFloat maxHeight = 60.0f;
+    static CGFloat maxHeight = kTextViewMaxHeight;
     CGRect frame = _item.textViewFrame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
     CGSize size = [_textView sizeThatFits:constraintSize];
@@ -316,10 +316,10 @@
 - (void)chooseMotion:(id)sender phArr:(NSArray *)phArr bqArr:(NSArray *)bqArr
 {
     _messageString =[NSMutableString stringWithFormat:@"%@",_textView.text];
-    int everNum = 32;   // 在6plus之前一页显示32个表情
+    int everNum = kMotionNumberBefore6p;   // 在6plus之前一页显示32个表情
 
     if (IS_IPHONE_6P) {
-        everNum = 36;   // 在6plus上一页显示36个表情
+        everNum = kMotionNumberAfter6p;   // 在6plus上一页显示36个表情
     }
 
     UIButton *tempbtn = (UIButton *)sender;

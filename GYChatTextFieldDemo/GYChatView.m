@@ -40,13 +40,13 @@
 {
     if(_item.style == TypeChat1)
     {
-        _style1BackFrame = CGRectMake(0, 0, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
+        _style1BackFrame = CGRectMake(GY_ChatType1_Style1BgX, GY_ChatType1_Style1BgY, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
     }
     else
     {
-        _muneBtnFrame = CGRectMake(0, 7, 45, 30);
-        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
-        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, 0, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _muneBtnFrame = CGRectMake(GY_ChatType2_MenuBtnX, GY_ChatType2_MenuBtnY, GY_ChatType2_MenuBtnWidth, GY_ChatType2_MenuBtnHeight);
+        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, GY_ChatType2_Style1BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, GY_ChatType2_Style2BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
     }
 }
 - (void)configUI
@@ -76,19 +76,19 @@
     GYChatInputCustomViewItem *chatCustomViewItem = [[GYChatInputCustomViewItem alloc] init];
     if(_item.style == TypeChat1)
     {
-        chatCustomViewItem.talkButtonFrame = CGRectMake(5, 7, 30, 30);
-        chatCustomViewItem.textViewFrame = CGRectMake(40,5,self.frame.size.width-128, 34);
-        chatCustomViewItem.pressButtonFrame = CGRectMake(40,5,self.frame.size.width-128, 34);
-        chatCustomViewItem.iconButtonFrame = CGRectMake(self.frame.size.width-81, 7, 30, 30);
-        chatCustomViewItem.picButtonFrame = CGRectMake(self.frame.size.width-50, 7, 50,30);
+        chatCustomViewItem.talkButtonFrame = CGRectMake(GY_ChatType1_TalkBtnX, GY_ChatType1_TalkBtnY, GY_ChatType1_TalkBtnWidth, GY_ChatType1_TalkBtnHeight);
+        chatCustomViewItem.textViewFrame = CGRectMake(GY_ChatType1_TextViewX,GY_ChatType1_TextViewY,GY_ChatType1_TextViewWidth, GY_ChatType1_TextViewHeight);
+        chatCustomViewItem.pressButtonFrame = CGRectMake(GY_ChatType1_PressBtnX,GY_ChatType1_PressBtnY,GY_ChatType1_PressBtnWidth, GY_ChatType1_PressBtnHeight);
+        chatCustomViewItem.iconButtonFrame = CGRectMake(GY_ChatType1_IconBtnX, GY_ChatType1_IconBtnY, GY_ChatType1_IconBtnWidth, GY_ChatType1_IconBtnHeight);
+        chatCustomViewItem.picButtonFrame = CGRectMake(GY_ChatType1_PicBtnX, GY_ChatType1_PicBtnY, GY_ChatType1_PicBtnWidth,GY_ChatType1_PicBtnHeight);
     }
     else
     {
-        chatCustomViewItem.talkButtonFrame = CGRectMake(5, 7, 30, 30);
-        chatCustomViewItem.textViewFrame = CGRectMake(40,5,self.frame.size.width-168, 34);
-        chatCustomViewItem.pressButtonFrame = CGRectMake(40,5,self.frame.size.width-168, 34);
-        chatCustomViewItem.iconButtonFrame = CGRectMake(self.frame.size.width-121, 7, 30, 30);
-        chatCustomViewItem.picButtonFrame = CGRectMake(self.frame.size.width-90, 7, 50,30);
+        chatCustomViewItem.talkButtonFrame = CGRectMake(GY_ChatType2_TalkBtnX, GY_ChatType2_TalkBtnY, GY_ChatType2_TalkBtnWidth, GY_ChatType2_TalkBtnHeight);
+        chatCustomViewItem.textViewFrame = CGRectMake(GY_ChatType2_TextViewX,GY_ChatType2_TextViewY,GY_ChatType2_TextViewWidth, GY_ChatType2_TextViewHeight);
+        chatCustomViewItem.pressButtonFrame = CGRectMake(GY_ChatType2_PressBtnX,GY_ChatType2_PressBtnY,GY_ChatType2_PressBtnWidth, GY_ChatType2_PressBtnHeight);
+        chatCustomViewItem.iconButtonFrame = CGRectMake(GY_ChatType2_IconBtnX, GY_ChatType2_IconBtnY, GY_ChatType2_IconBtnWidth, GY_ChatType2_IconBtnHeight);
+        chatCustomViewItem.picButtonFrame = CGRectMake(GY_ChatType2_PicBtnX, GY_ChatType2_PicBtnY, GY_ChatType2_PicBtnWidth,GY_ChatType2_PicBtnHeight);
     }
     chatCustomViewItem.currentSuperView = self;
     _chatInputCustomView = [[GYChatInputCustomView alloc] initWithFrame:_style1BackFrame item:chatCustomViewItem];

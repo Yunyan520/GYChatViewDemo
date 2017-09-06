@@ -47,7 +47,7 @@
 }
 - (void)configBgScrollView
 {
-    CGRect _baScrollRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    CGRect _baScrollRect = CGRectMake(kBgScrollViewX, kBgScrollViewY, self.frame.size.width, self.frame.size.height);
     _bgScrollview = [[UIScrollView alloc]initWithFrame:_baScrollRect];
     _bgScrollview.scrollsToTop = NO;
     _bgScrollview.pagingEnabled = YES;
@@ -66,22 +66,22 @@
     
     NSUInteger sumnum = _functionArray.count;
     
-    int numberOfIconEachLine = 4;
+    int numberOfIconEachLine = kNumberOfIconEachLine;
     if ( IS_IPHONE_6P) {
-        numberOfIconEachLine = 5;
+        numberOfIconEachLine = kNumberOfIconEachLine_6p;
     }
     
-    float buttonSize = 60.0;
-    float labelHeight = 20.0;
+//    float buttonSize = 60.0;
+//    float labelHeight = 20.0;
     
     unsigned long page = sumnum / numberOfIconEachLine + (sumnum % numberOfIconEachLine ? 1 : 0);
     
-    float paddingX = (_bgScrollview.frame.size.width - numberOfIconEachLine * buttonSize) / (numberOfIconEachLine + 1);
-    float paddingY = 15;
+    float paddingX = (_bgScrollview.frame.size.width - numberOfIconEachLine * kBtnSize) / (numberOfIconEachLine + 1);
+//    float paddingY = 15;
     
     _bgScrollview.pagingEnabled = YES;
     _bgScrollview.scrollEnabled = YES;
-    _bgScrollview.contentSize = CGSizeMake(_bgScrollview.frame.size.width, (paddingY + buttonSize + labelHeight) * page);
+    _bgScrollview.contentSize = CGSizeMake(_bgScrollview.frame.size.width, (kPaddingY + kBtnSize + kLabelHeight) * page);
     
     for (int i = 0; i < sumnum; i++) {
         
@@ -90,23 +90,23 @@
         int row = i / numberOfIconEachLine;
         int col = i % numberOfIconEachLine;
         
-        UIButton *iconbutton=[[UIButton alloc]initWithFrame:CGRectMake(paddingX + (buttonSize + paddingX) * col,paddingY + (paddingY + buttonSize + labelHeight) * row ,buttonSize,buttonSize)];
+        UIButton *iconbutton=[[UIButton alloc]initWithFrame:CGRectMake(paddingX + (kBtnSize + paddingX) * col,kPaddingY + (kPaddingY + kBtnSize + kLabelHeight) * row ,kBtnSize,kBtnSize)];
         iconbutton.backgroundColor=[UIColor clearColor];
         iconbutton.tag = model.btnTag;
         [iconbutton addTarget:self action:@selector(functionItemBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if (i == 0) {
+        if (i + kFunctionItemTag == kFunctionItemTag_Picture) {
             [self addLongPressToButton:iconbutton];
         }
-        if (i == 1){
+        if (i + kFunctionItemTag == kFunctionItemTag_Camera){
             [self addLongPressToButton:iconbutton];
         }
-        if (i == 2){
+        if (i + kFunctionItemTag == kFunctionItemTag_Video){
             [self addLongPressToButton:iconbutton];
         }
-        if (i == 3){
+        if (i + kFunctionItemTag == kFunctionItemTag_File){
             [self addLongPressToButton:iconbutton];
         }
-        if (i == 4){
+        if (i + kFunctionItemTag == kFunctionItemTag_Receipt){
             [self addLongPressToButton:iconbutton];
         }
         [iconbutton setImage:[UIImage imageNamed:model.imageName]forState:UIControlStateNormal];
@@ -114,8 +114,8 @@
         [iconbutton setImage:[UIImage imageNamed:model.hlImageName] forState:UIControlStateHighlighted];
         [_bgScrollview addSubview:iconbutton];
         
-        CGRect nameLabelRect = CGRectMake(0, buttonSize, buttonSize, labelHeight);
-        CGFloat nameLabelFont = 12;
+        CGRect nameLabelRect = CGRectMake(kNameLabelRect, kBtnSize, kBtnSize, kLabelHeight);
+        CGFloat nameLabelFont = kNameLabelFont;
         UILabel *nameLabel=[[UILabel alloc]initWithFrame:nameLabelRect];
         nameLabel.text = model.functionName;
         nameLabel.backgroundColor=[UIColor clearColor];
@@ -243,11 +243,7 @@
 //长按第一个功能按钮 可以 发送昨天的日志文件
 - (void)processLongPress2:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
-        
-        int currentTime =  [[NSDate date] timeIntervalSince1970];
-        int yesterday = currentTime - 60 * 60 * 24;
-        
-        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:yesterday];
+        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:kCurrentDayBefore(1)];
         
         //        找到前一天的日志文件
         NSDateFormatter *formatter 	= [[NSDateFormatter alloc] init];
@@ -265,11 +261,7 @@
 //长按第一个功能按钮 可以 发送前天的日志文件
 - (void)processLongPress3:(UILongPressGestureRecognizer *)gestureRecognizer{
     if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
-        
-        int currentTime =  [[NSDate date] timeIntervalSince1970];
-        int yesterday = currentTime - 60 * 60 * 24 * 2;
-        
-        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:yesterday];
+        NSDate *yesterdayDate = [NSDate dateWithTimeIntervalSince1970:kCurrentDayBefore(2)];
         
         //        找到前一天的日志文件
         NSDateFormatter *formatter 	= [[NSDateFormatter alloc] init];

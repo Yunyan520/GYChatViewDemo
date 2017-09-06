@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GYChatManager.h"
 #import "GYChatInputCustomView.h"
+#import "GYChatViewCount.h"
 @interface GYChatView : UIView
 /**
  创建底部输入框

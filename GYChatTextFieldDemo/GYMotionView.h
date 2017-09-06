@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GYScreen.h"
+#import "GYMotionViewCount.h"
 typedef void(^ChooseMotionCallback)(UIView *motion,NSArray *phArr,NSArray *bqArr);
 @interface GYMotionView : UIView
 

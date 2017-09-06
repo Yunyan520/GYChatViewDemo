@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#define kFunctionItemTag_Picture 1000
-#define kFunctionItemTag_Camera 1001
-#define kFunctionItemTag_Video 1002
-#define kFunctionItemTag_File 1003
-#define kFunctionItemTag_Receipt 1004
-#define kFunctionItemTag_VoiceInput 1005
+#import "GYPicViewCount.h"
+#define kFunctionItemTag 1000
+#define kFunctionItemTag_Picture kFunctionItemTag + 0
+#define kFunctionItemTag_Camera kFunctionItemTag + 1
+#define kFunctionItemTag_Video kFunctionItemTag + 2
+#define kFunctionItemTag_File kFunctionItemTag + 3
+#define kFunctionItemTag_Receipt kFunctionItemTag + 4
+#define kFunctionItemTag_VoiceInput kFunctionItemTag + 5
 @interface FunctionButtonModel : NSObject
 /** 功能名称 */
 @property(nonatomic,copy) NSString *functionName;

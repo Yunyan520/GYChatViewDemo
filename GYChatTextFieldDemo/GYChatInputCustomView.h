@@ -13,6 +13,7 @@
  */
 #import <UIKit/UIKit.h>
 #import "GYChatManager.h"
+#import "GYChatInputCustomViewCount.h"
 @interface GYChatInputCustomViewItem : NSObject
 @property(nonatomic, assign) CGRect talkButtonFrame;
 @property(nonatomic, assign) CGRect textViewFrame;
