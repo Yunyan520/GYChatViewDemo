@@ -40,13 +40,13 @@
 {
     if(_item.style == TypeChat1)
     {
-        _style1BackFrame = CGRectMake(GY_ChatType1_Style1BgX, GY_ChatType1_Style1BgY, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
+        _style1BackFrame = CGRectMake(kChatType1_Style1BgX, kChatType1_Style1BgY, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
     }
     else
     {
-        _muneBtnFrame = CGRectMake(GY_ChatType2_MenuBtnX, GY_ChatType2_MenuBtnY, GY_ChatType2_MenuBtnWidth, GY_ChatType2_MenuBtnHeight);
-        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, GY_ChatType2_Style1BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
-        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, GY_ChatType2_Style2BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _muneBtnFrame = CGRectMake(kChatType2_MenuBtnX, kChatType2_MenuBtnY, kChatType2_MenuBtnWidth, kChatType2_MenuBtnHeight);
+        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style1BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style2BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
     }
 }
 - (void)configUI
@@ -76,19 +76,19 @@
     GYChatInputCustomViewItem *chatCustomViewItem = [[GYChatInputCustomViewItem alloc] init];
     if(_item.style == TypeChat1)
     {
-        chatCustomViewItem.talkButtonFrame = CGRectMake(GY_ChatType1_TalkBtnX, GY_ChatType1_TalkBtnY, GY_ChatType1_TalkBtnWidth, GY_ChatType1_TalkBtnHeight);
-        chatCustomViewItem.textViewFrame = CGRectMake(GY_ChatType1_TextViewX,GY_ChatType1_TextViewY,GY_ChatType1_TextViewWidth, GY_ChatType1_TextViewHeight);
-        chatCustomViewItem.pressButtonFrame = CGRectMake(GY_ChatType1_PressBtnX,GY_ChatType1_PressBtnY,GY_ChatType1_PressBtnWidth, GY_ChatType1_PressBtnHeight);
-        chatCustomViewItem.iconButtonFrame = CGRectMake(GY_ChatType1_IconBtnX, GY_ChatType1_IconBtnY, GY_ChatType1_IconBtnWidth, GY_ChatType1_IconBtnHeight);
-        chatCustomViewItem.picButtonFrame = CGRectMake(GY_ChatType1_PicBtnX, GY_ChatType1_PicBtnY, GY_ChatType1_PicBtnWidth,GY_ChatType1_PicBtnHeight);
+        chatCustomViewItem.talkButtonFrame = CGRectMake(kChatType1_TalkBtnX,kChatType1_TalkBtnY, kChatType1_TalkBtnWidth, kChatType1_TalkBtnHeight);
+        chatCustomViewItem.textViewFrame = CGRectMake(kChatType1_TextViewX,kChatType1_TextViewY,kChatType1_TextViewWidth, kChatType1_TextViewHeight);
+        chatCustomViewItem.pressButtonFrame = CGRectMake(kChatType1_PressBtnX,kChatType1_PressBtnY,kChatType1_PressBtnWidth, kChatType1_PressBtnHeight);
+        chatCustomViewItem.iconButtonFrame = CGRectMake(kChatType1_IconBtnX, kChatType1_IconBtnY, kChatType1_IconBtnWidth, kChatType1_IconBtnHeight);
+        chatCustomViewItem.picButtonFrame = CGRectMake(kChatType1_PicBtnX, kChatType1_PicBtnY, kChatType1_PicBtnWidth,kChatType1_PicBtnHeight);
     }
     else
     {
-        chatCustomViewItem.talkButtonFrame = CGRectMake(GY_ChatType2_TalkBtnX, GY_ChatType2_TalkBtnY, GY_ChatType2_TalkBtnWidth, GY_ChatType2_TalkBtnHeight);
-        chatCustomViewItem.textViewFrame = CGRectMake(GY_ChatType2_TextViewX,GY_ChatType2_TextViewY,GY_ChatType2_TextViewWidth, GY_ChatType2_TextViewHeight);
-        chatCustomViewItem.pressButtonFrame = CGRectMake(GY_ChatType2_PressBtnX,GY_ChatType2_PressBtnY,GY_ChatType2_PressBtnWidth, GY_ChatType2_PressBtnHeight);
-        chatCustomViewItem.iconButtonFrame = CGRectMake(GY_ChatType2_IconBtnX, GY_ChatType2_IconBtnY, GY_ChatType2_IconBtnWidth, GY_ChatType2_IconBtnHeight);
-        chatCustomViewItem.picButtonFrame = CGRectMake(GY_ChatType2_PicBtnX, GY_ChatType2_PicBtnY, GY_ChatType2_PicBtnWidth,GY_ChatType2_PicBtnHeight);
+        chatCustomViewItem.talkButtonFrame = CGRectMake(kChatType2_TalkBtnX, kChatType2_TalkBtnY, kChatType2_TalkBtnWidth, kChatType2_TalkBtnHeight);
+        chatCustomViewItem.textViewFrame = CGRectMake(kChatType2_TextViewX,kChatType2_TextViewY,kChatType2_TextViewWidth, kChatType2_TextViewHeight);
+        chatCustomViewItem.pressButtonFrame = CGRectMake(kChatType2_PressBtnX,kChatType2_PressBtnY,kChatType2_PressBtnWidth, kChatType2_PressBtnHeight);
+        chatCustomViewItem.iconButtonFrame = CGRectMake(kChatType2_IconBtnX, kChatType2_IconBtnY, kChatType2_IconBtnWidth, kChatType2_IconBtnHeight);
+        chatCustomViewItem.picButtonFrame = CGRectMake(kChatType2_PicBtnX, kChatType2_PicBtnY, kChatType2_PicBtnWidth,kChatType2_PicBtnHeight);
     }
     chatCustomViewItem.currentSuperView = self;
     _chatInputCustomView = [[GYChatInputCustomView alloc] initWithFrame:_style1BackFrame item:chatCustomViewItem];

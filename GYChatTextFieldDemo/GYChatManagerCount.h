@@ -9,10 +9,10 @@
 #ifndef GYChatManagerCount_h
 #define GYChatManagerCount_h
 
-#define GY_MotionViewX 0
-#define GY_MotionViewHeight 205
+#define kMotionViewX 0
+#define kMotionViewHeight 205
 
-#define GY_PicViewX 0
-#define GY_PicViewHeight 205
+#define kPicViewX 0
+#define kPicViewHeight 205
 
 #endif /* GYChatManagerCount_h */

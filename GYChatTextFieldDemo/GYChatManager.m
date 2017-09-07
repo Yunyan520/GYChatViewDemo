@@ -34,14 +34,14 @@ static GYChatManager *instance = nil;
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-    CGRect motionRect =  CGRectMake(GY_MotionViewX, inputViewFrame.size.height, inputViewFrame.size.width, GY_MotionViewHeight);
+    CGRect motionRect =  CGRectMake(kMotionViewX, inputViewFrame.size.height, inputViewFrame.size.width, kMotionViewHeight);
     GYMotionView *motionView = [[GYMotionView alloc] initWithFrame:motionRect];
     callback(motionView);
 }
 
 - (void)configPicView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-    CGRect picRect =  CGRectMake(GY_PicViewX, inputViewFrame.size.height, inputViewFrame.size.width, GY_PicViewHeight);
+    CGRect picRect =  CGRectMake(kPicViewX, inputViewFrame.size.height, inputViewFrame.size.width, kPicViewHeight);
     GYPicView *picView = [[GYPicView alloc] initWithFrame:picRect];
     __weak typeof(self) weakSelf = self;
     picView.functionClickedCallback = ^(UIView *functionItem) {

@@ -54,7 +54,7 @@
     _bgScrollview.delegate = self;
     _bgScrollview.showsHorizontalScrollIndicator = NO;
     _bgScrollview.showsVerticalScrollIndicator = NO;
-    _bgScrollview.backgroundColor = [UIColor whiteColor];
+    _bgScrollview.backgroundColor = [UIColor clearColor];
     [self addSubview:_bgScrollview];
 }
 - (void)configFunctionItemIcon
