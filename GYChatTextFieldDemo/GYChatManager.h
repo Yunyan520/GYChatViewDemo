@@ -42,15 +42,27 @@ typedef void(^ConfigViewCallback)(UIView *view);
 @property(nonatomic, copy) void(^keyboardShownCallback)(CGSize keyboardSize);
 /** 点击键盘上@按钮键时回调 */
 @property(nonatomic, copy) void(^clickedAtCallback)(NSString *msg);
-
 /** 收起键盘回调 */
 @property(nonatomic, copy) void(^keyboradHiddenCallback)();
 + (GYChatManager *)sharedManager;
-/** 创建框架UI */
+/**
+ 创建框架UI
+ @param item 所需item
+ */
 - (void)configChatRootView:(GYConfigChatViewItem *)item;
-/** 创建功能UI */
+
+/**
+ 创建功能UI
+ 包含相册、相机、视频等按钮
+ @param inputViewFrame Frame
+ @param callback 回调
+ */
 - (void)configPicView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback;
-/** 创建表情UI */
+/**
+ 创建表情UI
+ @param inputViewFrame Frame
+ @param callback 回调
+ */
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback;
 /**
  是否收起键盘
