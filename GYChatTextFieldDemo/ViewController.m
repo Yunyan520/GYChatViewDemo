@@ -18,7 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+//    GYVoiceInputPromptView *view = [[GYVoiceInputPromptView alloc] initWithFrame:self.view.frame];
+//    [self.view addSubview:view];
+//    [view InputPromptViewStatus:PromptStatus_Cancle];
     self.view.backgroundColor = [UIColor greenColor];
     [self configFooterView];
     [self addTapGesture];

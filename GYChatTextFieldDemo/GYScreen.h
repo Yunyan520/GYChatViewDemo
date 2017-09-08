@@ -65,7 +65,7 @@
 #define kIPHONE5sWIDTH 320
 #define kIPHONE5sHEIGHT 568
 
-#define kNavigationBarHeight [[UIApplication sharedApplication] statusBarFrame.size.height + self.navigationController.navigationBar.frame.size.height
+#define kNavigationBarHeight 64
 
 #define kFixedHeight(fixedHeight) fixedHeight/([UIScreen mainScreen].bounds.size.height/IPHONE5sHEIGHT)
 

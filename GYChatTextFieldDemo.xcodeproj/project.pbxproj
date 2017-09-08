@@ -409,6 +409,7 @@
 		61CE257C1F623FA400E2631E /* Microphone_ico03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone_ico03.png; sourceTree = "<group>"; };
 		61CE25801F623FB700E2631E /* speak_Layer_bj1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speak_Layer_bj1.png; sourceTree = "<group>"; };
 		61CE25821F623FCB00E2631E /* cancel_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_audio.png; sourceTree = "<group>"; };
+		61CE25841F626C5B00E2631E /* GYVoiceInputPromptViewCount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GYVoiceInputPromptViewCount.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -654,6 +655,7 @@
 				617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */,
 				61CE25751F62370000E2631E /* GYVoiceInputPromptView.h */,
 				61CE25761F62370000E2631E /* GYVoiceInputPromptView.m */,
+				61CE25841F626C5B00E2631E /* GYVoiceInputPromptViewCount.h */,
 				6162778F1F5FCD440042C663 /* GYChatInputCustomViewCount.h */,
 				617489791F5E2EB90020B1B3 /* GYChatInputStyle1View.h */,
 				6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */,
