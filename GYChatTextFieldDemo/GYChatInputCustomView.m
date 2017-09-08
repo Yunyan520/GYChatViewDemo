@@ -101,6 +101,7 @@
     [_pressButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_pressButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     [_pressButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+    
     [_pressButton addTarget:self action:@selector(recordTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     [_pressButton addTarget:self action:@selector(recordTouchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
     [_pressButton addTarget:self action:@selector(recordTouchDown:) forControlEvents:UIControlEventTouchDown];

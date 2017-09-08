@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "GYChatView.h"
 #import "GYChatManager.h"
+#import "GYVoiceInputPromptView.h"
 @interface ViewController ()
 
 @end
@@ -17,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     self.view.backgroundColor = [UIColor greenColor];
     [self configFooterView];
     [self addTapGesture];

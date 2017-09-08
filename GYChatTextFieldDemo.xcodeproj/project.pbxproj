@@ -180,6 +180,13 @@
 		61C60C701F5663EE00B6A921 /* GYMotionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C6F1F5663EE00B6A921 /* GYMotionView.m */; };
 		61C60C731F568B4400B6A921 /* GYChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C721F568B4400B6A921 /* GYChatView.m */; };
 		61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C811F569F0D00B6A921 /* GYPicView.m */; };
+		61CE25771F62370000E2631E /* GYVoiceInputPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61CE25761F62370000E2631E /* GYVoiceInputPromptView.m */; };
+		61CE25791F623F9300E2631E /* speak_Layer_bj.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE25781F623F9300E2631E /* speak_Layer_bj.png */; };
+		61CE257D1F623FA400E2631E /* Microphone_ico01.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE257A1F623FA400E2631E /* Microphone_ico01.png */; };
+		61CE257E1F623FA400E2631E /* Microphone_ico02.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE257B1F623FA400E2631E /* Microphone_ico02.png */; };
+		61CE257F1F623FA400E2631E /* Microphone_ico03.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE257C1F623FA400E2631E /* Microphone_ico03.png */; };
+		61CE25811F623FB700E2631E /* speak_Layer_bj1.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE25801F623FB700E2631E /* speak_Layer_bj1.png */; };
+		61CE25831F623FCB00E2631E /* cancel_audio.png in Resources */ = {isa = PBXBuildFile; fileRef = 61CE25821F623FCB00E2631E /* cancel_audio.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -394,6 +401,14 @@
 		61C60C721F568B4400B6A921 /* GYChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatView.m; sourceTree = "<group>"; };
 		61C60C801F569F0D00B6A921 /* GYPicView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYPicView.h; sourceTree = "<group>"; };
 		61C60C811F569F0D00B6A921 /* GYPicView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYPicView.m; sourceTree = "<group>"; };
+		61CE25751F62370000E2631E /* GYVoiceInputPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYVoiceInputPromptView.h; sourceTree = "<group>"; };
+		61CE25761F62370000E2631E /* GYVoiceInputPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYVoiceInputPromptView.m; sourceTree = "<group>"; };
+		61CE25781F623F9300E2631E /* speak_Layer_bj.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speak_Layer_bj.png; sourceTree = "<group>"; };
+		61CE257A1F623FA400E2631E /* Microphone_ico01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone_ico01.png; sourceTree = "<group>"; };
+		61CE257B1F623FA400E2631E /* Microphone_ico02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone_ico02.png; sourceTree = "<group>"; };
+		61CE257C1F623FA400E2631E /* Microphone_ico03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Microphone_ico03.png; sourceTree = "<group>"; };
+		61CE25801F623FB700E2631E /* speak_Layer_bj1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speak_Layer_bj1.png; sourceTree = "<group>"; };
+		61CE25821F623FCB00E2631E /* cancel_audio.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_audio.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -590,6 +605,12 @@
 				614867C21F57F0AB00B31D99 /* speaking_Button_click.png */,
 				614867C31F57F0AB00B31D99 /* speaking_Button.png */,
 				614867C41F57F0AB00B31D99 /* type_select_btn_nor.png */,
+				61CE25781F623F9300E2631E /* speak_Layer_bj.png */,
+				61CE25801F623FB700E2631E /* speak_Layer_bj1.png */,
+				61CE25821F623FCB00E2631E /* cancel_audio.png */,
+				61CE257A1F623FA400E2631E /* Microphone_ico01.png */,
+				61CE257B1F623FA400E2631E /* Microphone_ico02.png */,
+				61CE257C1F623FA400E2631E /* Microphone_ico03.png */,
 				614867D61F57F5A300B31D99 /* Face */,
 			);
 			name = Resource;
@@ -631,6 +652,8 @@
 				6162778E1F5FC5A20042C663 /* GYChatViewCount.h */,
 				617489761F5E2D5A0020B1B3 /* GYChatInputCustomView.h */,
 				617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */,
+				61CE25751F62370000E2631E /* GYVoiceInputPromptView.h */,
+				61CE25761F62370000E2631E /* GYVoiceInputPromptView.m */,
 				6162778F1F5FCD440042C663 /* GYChatInputCustomViewCount.h */,
 				617489791F5E2EB90020B1B3 /* GYChatInputStyle1View.h */,
 				6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */,
@@ -810,6 +833,7 @@
 				614868961F57F5BC00B31D99 /* face_lh2.png in Resources */,
 				614868E61F57F5BC00B31D99 /* face_yaow.png in Resources */,
 				614868881F57F5BC00B31D99 /* face_hxiao.png in Resources */,
+				61CE257D1F623FA400E2631E /* Microphone_ico01.png in Resources */,
 				614868ED1F57F5BC00B31D99 /* face_zhu.png in Resources */,
 				614868971F57F5BC00B31D99 /* face_lhan.png in Resources */,
 				614868C81F57F5BC00B31D99 /* face_nxx.png in Resources */,
@@ -844,6 +868,7 @@
 				614868BF1F57F5BC00B31D99 /* face_nsx.png in Resources */,
 				614868D01F57F5BC00B31D99 /* face_pj.png in Resources */,
 				614868DE1F57F5BC00B31D99 /* face_wq.png in Resources */,
+				61CE25811F623FB700E2631E /* speak_Layer_bj1.png in Resources */,
 				614868A61F57F5BC00B31D99 /* face_ndy.png in Resources */,
 				613A8A5B1F5D413B001599F1 /* Mode_texttolist.png in Resources */,
 				614868D91F57F5BC00B31D99 /* face_sl.png in Resources */,
@@ -872,6 +897,7 @@
 				614868C71F57F5BC00B31D99 /* face_nxw.png in Resources */,
 				614868901F57F5BC00B31D99 /* face_jy.png in Resources */,
 				6148687D1F57F5BC00B31D99 /* face_fjwq.png in Resources */,
+				61CE25831F623FCB00E2631E /* cancel_audio.png in Resources */,
 				614868BC1F57F5BC00B31D99 /* face_nno.png in Resources */,
 				614867D21F57F0AB00B31D99 /* Keyboard_ios.png in Resources */,
 				614867C71F57F0AB00B31D99 /* chat_camera_icon_hl.png in Resources */,
@@ -907,6 +933,7 @@
 				614868701F57F5BC00B31D99 /* face_dk.png in Resources */,
 				614868981F57F5BC00B31D99 /* face_llei.png in Resources */,
 				6148686F1F57F5BC00B31D99 /* face_dh.png in Resources */,
+				61CE257F1F623FA400E2631E /* Microphone_ico03.png in Resources */,
 				614868B01F57F5BC00B31D99 /* face_njiong.png in Resources */,
 				614868791F57F5BC00B31D99 /* face_fjfw.png in Resources */,
 				614868C51F57F5BC00B31D99 /* face_nwq.png in Resources */,
@@ -915,6 +942,7 @@
 				614868E31F57F5BC00B31D99 /* face_xia.png in Resources */,
 				614868B81F57F5BC00B31D99 /* face_nmg.png in Resources */,
 				614868991F57F5BC00B31D99 /* face_lw.png in Resources */,
+				61CE257E1F623FA400E2631E /* Microphone_ico02.png in Resources */,
 				614868721F57F5BC00B31D99 /* face_dx.png in Resources */,
 				614868641F57F5BC00B31D99 /* face_ax.png in Resources */,
 				614868861F57F5BC00B31D99 /* face_huiy.png in Resources */,
@@ -935,6 +963,7 @@
 				614868CD1F57F5BC00B31D99 /* face_nzk.png in Resources */,
 				614868BE1F57F5BC00B31D99 /* face_nsh.png in Resources */,
 				6148686A1F57F5BC00B31D99 /* face_bz.png in Resources */,
+				61CE25791F623F9300E2631E /* speak_Layer_bj.png in Resources */,
 				614868EB1F57F5BC00B31D99 /* face_yx.png in Resources */,
 				614868AA1F57F5BC00B31D99 /* face_ng.png in Resources */,
 				614868EE1F57F5BC00B31D99 /* face_zq.png in Resources */,
@@ -976,6 +1005,7 @@
 				61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */,
 				61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */,
 				61C60C731F568B4400B6A921 /* GYChatView.m in Sources */,
+				61CE25771F62370000E2631E /* GYVoiceInputPromptView.m in Sources */,
 				61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */,
 				61C60C361F565DBC00B6A921 /* main.m in Sources */,
 				61C60C701F5663EE00B6A921 /* GYMotionView.m in Sources */,
