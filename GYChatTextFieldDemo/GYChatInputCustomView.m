@@ -86,7 +86,7 @@
     _textView.backgroundColor = [UIColor grayColor];
     _textView.layer.cornerRadius = kTextViewCornerRadius;
     _textView.delegate = self;
-//    _textView.font = [UIFont systemFontOfSize:20];
+    _textView.font = [UIFont systemFontOfSize:20];
     _textView.returnKeyType = UIReturnKeySend;
     [self addSubview:_textView];
     

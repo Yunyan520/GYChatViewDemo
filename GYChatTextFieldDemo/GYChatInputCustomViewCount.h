@@ -13,8 +13,10 @@
 #define kTextViewCornerRadius 5
 #define kMotionViewX 0
 #define kPicViewX 0
-#define kTextViewMaxLineCount 4
-#define kTextViewTextBank 16
+#define kTextViewMaxLineCount 5
+#define kTextViewTextBank 8
+#define kTextViewAnimationDuration 1
 #define kMotionNumberBefore6p 32
 #define kMotionNumberAfter6p 36
+
 #endif /* GYChatInputCustomViewCount_h */
