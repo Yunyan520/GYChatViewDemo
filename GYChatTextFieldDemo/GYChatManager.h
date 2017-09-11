@@ -12,6 +12,7 @@
 #import "GYPicView.h"
 #import "GYMotionView.h"
 #import "GYChatManagerCount.h"
+#import "GYVoiceInputPromptView.h"
 typedef NS_ENUM(NSInteger, ChatInputViewStyle)
 {
     /** 类似微信聊天界面输入框 */
@@ -56,7 +57,18 @@ typedef void(^ConfigViewCallback)(UIView *view);
  @param item 所需item
  */
 - (void)configChatRootView:(GYConfigChatViewItem *)item;
+/**
+ 创建语音输入提示UI
+ @param superView 父视图
+ @param callback 回调，返回提示view
+ */
+- (void)configVoiceInputPromtUI:(UIView *)superView callback:(ConfigViewCallback)callback;
 
+/**
+ 更改提示状态
+ @param status 修改后的提示状态
+ */
+- (void)InputPromptViewStatus:(PromptStatus)status;
 /**
  创建功能UI
  包含相册、相机、视频等按钮

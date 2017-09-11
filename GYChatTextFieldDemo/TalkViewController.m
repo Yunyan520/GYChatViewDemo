@@ -21,10 +21,8 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //    GYVoiceInputPromptView *view = [[GYVoiceInputPromptView alloc] initWithFrame:self.view.frame];
-    //    [self.view addSubview:view];
-    //    [view InputPromptViewStatus:PromptStatus_Cancle];
     self.view.backgroundColor = [UIColor greenColor];
+    [self configVoiceInputPromtUI];
     [self configFooterView];
     [self addTapGesture];
     
@@ -71,6 +69,12 @@
     GYChatManager *chatManager = [GYChatManager sharedManager];
     chatManager.delegate = self;
     [chatManager configChatRootView:item];
+}
+- (void)configVoiceInputPromtUI
+{
+    [[GYChatManager sharedManager] configVoiceInputPromtUI:self.view callback:^(UIView *view) {
+        [self.view addSubview:view];
+    }];
 }
 #pragma -mark GYChatManagerDelegate
 /** 点击功能按钮回调 */

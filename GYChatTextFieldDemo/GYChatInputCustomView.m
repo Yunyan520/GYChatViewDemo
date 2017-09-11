@@ -86,6 +86,7 @@
     _textView.backgroundColor = [UIColor grayColor];
     _textView.layer.cornerRadius = kTextViewCornerRadius;
     _textView.delegate = self;
+//    _textView.font = [UIFont systemFontOfSize:20];
     _textView.returnKeyType = UIReturnKeySend;
     [self addSubview:_textView];
     
@@ -233,18 +234,23 @@
 }
 - (void)recordTouchUpInside:(id)sender
 {
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
 }
 - (void)recordTouchUpOutside:(id)sender
 {
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
 }
 - (void)recordTouchDown:(id)sender
 {
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
 }
 - (void)recordTouchDragOutside:(id)sender
 {
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_WarnningCancle];
 }
 - (void)recordTouchDragIn:(id)sender
 {
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
 }
 #pragma -mark privateMethod
 - (void)isVoiceInputStatus:(BOOL)isVoice
@@ -275,7 +281,13 @@
 }
 - (void)setTextViewFrame
 {
-    static CGFloat maxHeight = kTextViewMaxHeight;
+    //获取单行字符串高度
+    CGFloat separateHeight = [self calculateWidth:_textView.text];
+    CGFloat maxHeight = kTextViewMaxLineCount * separateHeight + kTextViewTextBank;
+    if(maxHeight <= _textView.frame.size.height)
+    {
+        maxHeight = _textView.frame.size.height;
+    }
     CGRect frame = _item.textViewFrame;
     CGSize constraintSize = CGSizeMake(frame.size.width, MAXFLOAT);
     CGSize size = [_textView sizeThatFits:constraintSize];
@@ -296,6 +308,11 @@
     [self changeSelfViewFrame:CGRectMake(_selfFrame.origin.x, _selfFrame.origin.y - heightAdd, _selfFrame.size.width, _selfFrame.size.height + heightAdd)];
     _textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
     [self setContentUIFrame:heightAdd];
+}
+- (CGFloat)calculateWidth:(NSString *)str {
+    NSDictionary *dic  = [NSDictionary dictionaryWithObjectsAndKeys:_textView.font, NSFontAttributeName, nil];
+    CGSize size = [str sizeWithAttributes:dic];
+    return size.height;
 }
 - (void)setContentUIFrame:(CGFloat)heightChange
 {
@@ -446,6 +463,7 @@
 {
     _textView.text = draft;
     [_textView becomeFirstResponder];
+    [self setTextViewFrame];
 }
 #pragma -mark keyboardNotification
 //实现当键盘出现的时候计算键盘的高度大小。用于输入框显示位置

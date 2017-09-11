@@ -55,7 +55,7 @@
     [talkimageview addSubview:updateTimeLabel];
     
     UILabel *tipLabel = [[UILabel alloc]initWithFrame:kTipLabelRect];
-    //    tipLabel.text=@"滑动到此可以取消发送";
+    tipLabel.text=@"滑动到此可以取消发送";
     tipLabel.textAlignment = NSTextAlignmentCenter;
     tipLabel.font = [UIFont systemFontOfSize:kTipLabelFont];
     tipLabel.backgroundColor = [UIColor clearColor];
@@ -71,7 +71,7 @@
     _talkIconWarningView.hidden = YES;
     
     UILabel *warningtipLabel = [[UILabel alloc]initWithFrame:kTipLabelRect];
-    //    warningtipLabel.text=@"说话时间太短";
+    warningtipLabel.text=@"说话时间太短";
     warningtipLabel.textColor = [UIColor whiteColor];
     warningtipLabel.textAlignment = NSTextAlignmentCenter;
     warningtipLabel.font = [UIFont systemFontOfSize:kTipLabelFont];
@@ -89,32 +89,37 @@
     [self addSubview:_talkIconCancelView];
     _talkIconCancelView.hidden = YES;
     
-    UILabel *cancelLabel = [[UILabel alloc]initWithFrame:CGRectMake(cancleLabelX, cancleLabelY, cancleLabelWidth, cancleLabelHeight)];
-    cancelLabel.textAlignment = NSTextAlignmentCenter;
-    cancelLabel.textColor = [UIColor whiteColor];
-    cancelLabel.font = [UIFont systemFontOfSize:cancleLabelFont];
-    cancelLabel.backgroundColor = [UIColor redColor];
-    [_talkIconCancelView addSubview:cancelLabel];
+    UILabel *cancleLabel = [[UILabel alloc]initWithFrame:CGRectMake(cancleLabelX, cancleLabelY, cancleLabelWidth, cancleLabelHeight)];
+    cancleLabel.textAlignment = NSTextAlignmentCenter;
+    cancleLabel.textColor = [UIColor whiteColor];
+    cancleLabel.font = [UIFont systemFontOfSize:cancleLabelFont];
+    cancleLabel.text = @"滑到此处取消";
+//    cancleLabel.backgroundColor = [UIColor redColor];
+    [_talkIconCancelView addSubview:cancleLabel];
 }
 #pragma -mark publicMethods
 - (void)InputPromptViewStatus:(PromptStatus)status
 {
     switch (status) {
-        case PromptStatus_Talking:
+        case PromptStatus_IsTalking:
             _talkIconWarningView.hidden = YES;
             _talkIconCancelView.hidden = YES;
             _talkIconTalkingView.hidden = NO;
             break;
-        case PromptStatus_Warnning:
+        case PromptStatus_WarnningTooShort:
             _talkIconWarningView.hidden = NO;
             _talkIconCancelView.hidden = YES;
             _talkIconTalkingView.hidden = YES;
             break;
-        case PromptStatus_Cancle:
+        case PromptStatus_WarnningCancle:
             _talkIconWarningView.hidden = YES;
             _talkIconCancelView.hidden = NO;
             _talkIconTalkingView.hidden = YES;
             break;
+        case PromptStatus_End:
+            _talkIconWarningView.hidden = YES;
+            _talkIconCancelView.hidden = YES;
+            _talkIconTalkingView.hidden = YES;
         default:
             break;
     }

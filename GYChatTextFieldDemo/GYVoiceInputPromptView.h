@@ -12,9 +12,10 @@
 #import "GYVoiceInputPromptViewCount.h"
 typedef NS_ENUM(NSInteger, PromptStatus)
 {
-    PromptStatus_Talking,
-    PromptStatus_Warnning,
-    PromptStatus_Cancle
+    PromptStatus_IsTalking,
+    PromptStatus_WarnningTooShort,
+    PromptStatus_WarnningCancle,
+    PromptStatus_End
 };
 //语音输入提示UI
 @interface GYVoiceInputPromptView : UIView

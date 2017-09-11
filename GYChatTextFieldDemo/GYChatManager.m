@@ -8,6 +8,7 @@
 
 #import "GYChatManager.h"
 #import "GYChatView.h"
+
 @implementation GYConfigChatViewItem
 @end
 
@@ -15,6 +16,7 @@ static GYChatManager *instance = nil;
 @implementation GYChatManager
 {
     GYChatInputCustomView *_chatInputCustomView;
+    GYVoiceInputPromptView *_promt;
     UIView *_motionView;
     UIView *_picView;
 }
@@ -31,6 +33,15 @@ static GYChatManager *instance = nil;
     GYChatView *footerView=[[GYChatView alloc]initWithFrame:item];
     item.configViewCallback(footerView);
     _chatInputCustomView = [footerView getChatInputCustomView];
+}
+- (void)configVoiceInputPromtUI:(UIView *)superView callback:(ConfigViewCallback)callback
+{
+    _promt = [[GYVoiceInputPromptView alloc] initWithFrame:superView.frame];
+    callback(_promt);
+}
+- (void)InputPromptViewStatus:(PromptStatus)status
+{
+    [_promt InputPromptViewStatus:status];
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
