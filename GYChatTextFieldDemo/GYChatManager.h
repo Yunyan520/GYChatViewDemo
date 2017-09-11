@@ -47,6 +47,13 @@ typedef void(^ConfigViewCallback)(UIView *view);
 /** 收起键盘回调 */
 - (void)keyboradHidden;
 
+- (void)recordTouchUpInside:(id)sender;
+- (void)recordTouchUpOutside:(id)sender;
+- (void)recordTouchDown:(id)sender;
+- (void)recordTouchDragOutside:(id)sender;
+- (void)recordTouchDragIn:(id)sender;
+
+
 @end
 
 @interface GYChatManager : NSObject

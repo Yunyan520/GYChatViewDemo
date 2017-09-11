@@ -133,6 +133,27 @@
 {
     NSLog(@"键盘收起");
 }
+- (void)recordTouchUpInside:(id)sender
+{
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+}
+- (void)recordTouchUpOutside:(id)sender
+{
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+}
+- (void)recordTouchDown:(id)sender
+{
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+}
+- (void)recordTouchDragOutside:(id)sender
+{
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_WarnningCancle];
+}
+- (void)recordTouchDragIn:(id)sender
+{
+    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+}
+
 - (void)addTapGesture
 {
     UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 50, 50)];

@@ -234,23 +234,43 @@
 }
 - (void)recordTouchUpInside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchUpInside:)])
+    {
+        [[GYChatManager sharedManager].delegate recordTouchUpInside:sender];
+    }
+    
 }
 - (void)recordTouchUpOutside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchUpOutside:)])
+    {
+        [[GYChatManager sharedManager].delegate recordTouchUpOutside:sender];
+    }
+    
 }
 - (void)recordTouchDown:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDown:)])
+    {
+        [[GYChatManager sharedManager].delegate recordTouchDown:sender];
+    }
+    
 }
 - (void)recordTouchDragOutside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_WarnningCancle];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDragOutside:)])
+    {
+        [[GYChatManager sharedManager].delegate recordTouchDragOutside:sender];
+    }
+    
 }
 - (void)recordTouchDragIn:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDragIn:)])
+    {
+        [[GYChatManager sharedManager].delegate recordTouchDragIn:sender];
+    }
+    
 }
 #pragma -mark privateMethod
 - (void)isVoiceInputStatus:(BOOL)isVoice
