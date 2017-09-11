@@ -169,6 +169,7 @@
 		61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 61722AD81F5934A200EA49D2 /* GYChatManager.m */; };
 		617489781F5E2D5A0020B1B3 /* GYChatInputCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */; };
 		6174897B1F5E2EB90020B1B3 /* GYChatInputStyle1View.m in Sources */ = {isa = PBXBuildFile; fileRef = 6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */; };
+		61A7C8901F662B7600018DB6 /* TalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A7C88F1F662B7600018DB6 /* TalkViewController.m */; };
 		61C60C361F565DBC00B6A921 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C351F565DBC00B6A921 /* main.m */; };
 		61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C381F565DBC00B6A921 /* AppDelegate.m */; };
 		61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61C60C3B1F565DBC00B6A921 /* ViewController.m */; };
@@ -378,6 +379,8 @@
 		617489771F5E2D5A0020B1B3 /* GYChatInputCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatInputCustomView.m; sourceTree = "<group>"; };
 		617489791F5E2EB90020B1B3 /* GYChatInputStyle1View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GYChatInputStyle1View.h; sourceTree = "<group>"; };
 		6174897A1F5E2EB90020B1B3 /* GYChatInputStyle1View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GYChatInputStyle1View.m; sourceTree = "<group>"; };
+		61A7C88E1F662B7600018DB6 /* TalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkViewController.h; sourceTree = "<group>"; };
+		61A7C88F1F662B7600018DB6 /* TalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkViewController.m; sourceTree = "<group>"; };
 		61C60C311F565DBC00B6A921 /* GYChatTextFieldDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GYChatTextFieldDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61C60C351F565DBC00B6A921 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		61C60C371F565DBC00B6A921 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -645,6 +648,8 @@
 				61C60C381F565DBC00B6A921 /* AppDelegate.m */,
 				61C60C3A1F565DBC00B6A921 /* ViewController.h */,
 				61C60C3B1F565DBC00B6A921 /* ViewController.m */,
+				61A7C88E1F662B7600018DB6 /* TalkViewController.h */,
+				61A7C88F1F662B7600018DB6 /* TalkViewController.m */,
 				61722AD71F5934A200EA49D2 /* GYChatManager.h */,
 				61722AD81F5934A200EA49D2 /* GYChatManager.m */,
 				6162778D1F5FC3BC0042C663 /* GYChatManagerCount.h */,
@@ -1010,6 +1015,7 @@
 				61CE25771F62370000E2631E /* GYVoiceInputPromptView.m in Sources */,
 				61C60C391F565DBC00B6A921 /* AppDelegate.m in Sources */,
 				61C60C361F565DBC00B6A921 /* main.m in Sources */,
+				61A7C8901F662B7600018DB6 /* TalkViewController.m in Sources */,
 				61C60C701F5663EE00B6A921 /* GYMotionView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

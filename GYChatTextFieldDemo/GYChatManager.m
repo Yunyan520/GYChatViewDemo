@@ -49,9 +49,9 @@ static GYChatManager *instance = nil;
         if (!strongSelf) {
             return;
         }
-        if(strongSelf.functionClickedCallback)
+        if([strongSelf.delegate respondsToSelector:@selector(functionClicked:)])
         {
-            strongSelf.functionClickedCallback(functionItem);
+            [strongSelf.delegate functionClicked:functionItem];
         }
     };
     picView.sendFileCallback = ^(NSString *fileName) {
@@ -59,9 +59,9 @@ static GYChatManager *instance = nil;
         if (!strongSelf) {
             return;
         }
-        if(strongSelf.sendFileCallback)
+        if([strongSelf.delegate respondsToSelector:@selector(longPressSendFile:)])
         {
-            strongSelf.sendFileCallback(fileName);
+            [strongSelf.delegate longPressSendFile:fileName];
         }
     };
     callback(picView);
@@ -73,6 +73,12 @@ static GYChatManager *instance = nil;
 - (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed
 {
     [_chatInputCustomView orientateAnswer:personName isLongPressed:isLongPressed];
+}
+- (NSString *)getCurrentTextViewMessage
+{
+    NSString *currentMsg = @"";
+    currentMsg = [_chatInputCustomView getCurrentTextViewMessage];
+    return currentMsg;
 }
 - (void)addDraft:(NSString *)draft
 {

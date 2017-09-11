@@ -28,5 +28,6 @@
 - (void)menuBtnSelected:(BOOL)isSelected;
 - (void)keyBoardIsShow:(BOOL)isShow;
 - (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
+- (NSString *)getCurrentTextViewMessage;
 - (void)addDraft:(NSString *)draft;
 @end

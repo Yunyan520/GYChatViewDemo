@@ -31,20 +31,26 @@ typedef void(^ConfigViewCallback)(UIView *view);
 @end
 
 
-@interface GYChatManager : NSObject
+@protocol GYChatManagerDelegate <NSObject>
+@optional
 /** 点击功能按钮回调 */
-@property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
+- (void)functionClicked:(UIView *)functionItem;
 /** 长按发送文件 */
-@property(nonatomic, copy) void(^sendFileCallback)(NSString *fileName);
+- (void)longPressSendFile:(NSString *)fileName;
 /** 发送回调 */
-@property(nonatomic, copy) void(^sendMessageCallback)(NSString *msg);
+- (void)sendMessage:(NSString *)msg;
 /** 弹起键盘回调 */
-@property(nonatomic, copy) void(^keyboardShownCallback)(CGSize keyboardSize);
+- (void)keyboardShown:(CGSize)keyboardSize;
 /** 点击键盘上@按钮键时回调 */
-@property(nonatomic, copy) void(^clickedAtCallback)(NSString *msg);
+- (void)clickedAt:(NSString *)msg;
 /** 收起键盘回调 */
-@property(nonatomic, copy) void(^keyboradHiddenCallback)();
+- (void)keyboradHidden;
+
+@end
+
+@interface GYChatManager : NSObject
 + (GYChatManager *)sharedManager;
+@property(nonatomic, assign) id<GYChatManagerDelegate>delegate;
 /**
  创建框架UI
  @param item 所需item
@@ -76,6 +82,11 @@ typedef void(^ConfigViewCallback)(UIView *view);
  @param isLongPressed 是否通过长按方式
  */
 - (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
+/**
+ 获取当前textView内内容
+ @return 返回当前textView内容
+ */
+- (NSString *)getCurrentTextViewMessage;
 /**
  添加草稿
  @param draft 草稿内容

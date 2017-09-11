@@ -307,9 +307,9 @@
 //发送消息
 - (void)sendMessage
 {
-    if([GYChatManager sharedManager].sendMessageCallback)
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(sendMessage:)])
     {
-        [GYChatManager sharedManager].sendMessageCallback(_textView.text);
+        [[GYChatManager sharedManager].delegate sendMessage:_textView.text];
         _textView.text = @"";
         [self setTextViewFrame];
     }
@@ -438,6 +438,10 @@
     _textView.text = [NSString stringWithFormat:@"%@@%@",_textView.text,personName];
     [_textView becomeFirstResponder];
 }
+- (NSString *)getCurrentTextViewMessage
+{
+    return _textView.text;
+}
 - (void)addDraft:(NSString *)draft
 {
     _textView.text = draft;
@@ -460,12 +464,12 @@
         CGRect newFrame = CGRectMake(0, kScreenHeight - kbSize.height - _selfFrame.size.height, kScreenWidth, _selfFrame.size.height);
         [self changeSuperViewFrame:newFrame];
     }];
-    [GYChatManager sharedManager].keyboardShownCallback(kbSize);
+    [[GYChatManager sharedManager].delegate keyboardShown:kbSize];
 }
 //当键盘即将隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    [GYChatManager sharedManager].keyboradHiddenCallback();
+    [[GYChatManager sharedManager].delegate keyboradHidden];
     NSLog(@"键盘隐藏");
 }
 #pragma -mark UITextViewDelegate
@@ -500,9 +504,9 @@
     }
     if([text isEqualToString:@"@"])
     {
-        if([GYChatManager sharedManager].clickedAtCallback)
+        if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(clickedAt:)])
         {
-            [GYChatManager sharedManager].clickedAtCallback(text);
+            [[GYChatManager sharedManager].delegate clickedAt:text];
         }
     }
     return YES;
