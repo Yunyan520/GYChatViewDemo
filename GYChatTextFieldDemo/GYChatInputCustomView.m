@@ -491,7 +491,8 @@
 {
     _picButton.selected = NO;
     _iconButton.selected = NO;
-    _talkButton.selected = NO;
+//    _talkButton.selected = NO;
+    [self isVoiceInputStatus:NO];
 }
 //键盘即将弹起
 - (void)keyboardWillShown:(NSNotification*)aNotification

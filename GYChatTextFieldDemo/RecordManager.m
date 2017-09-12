@@ -7,16 +7,24 @@
 //
 
 #import "RecordManager.h"
+@interface RecordManager()
+
+@end
+
 static RecordManager *instance = nil;
 @implementation RecordManager
+
 - (instancetype)init
 {
     self = [super init];
     if(self)
     {
-        
+        [self initData];
     }
     return self;
+}
+- (void)initData
+{
 }
 + (RecordManager *)sharedManager
 {
@@ -30,22 +38,23 @@ static RecordManager *instance = nil;
 //开始录音
 - (BOOL)startRecord
 {
-    return NO;
+    return YES;
 }
 //判断是否正在录音
 - (BOOL)isRecording
 {
-    return NO;
+
+    return YES;
 }
 //停止录音
 - (BOOL)stopRecord
 {
-    return NO;
+    return YES;
 }
 //播放录音
 - (BOOL)playVoice
 {
-    return NO;
+    return YES;
 }
 //停止播放录音
 - (BOOL)stopVoice
@@ -67,4 +76,6 @@ static RecordManager *instance = nil;
 {
     return NO;
 }
+#pragma -mark privateMethod
+
 @end
