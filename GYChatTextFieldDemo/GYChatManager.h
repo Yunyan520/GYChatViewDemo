@@ -46,7 +46,7 @@ typedef void(^ConfigViewCallback)(UIView *view);
 - (void)clickedAt:(NSString *)msg;
 /** 收起键盘回调 */
 - (void)keyboradHidden;
-
+/** 语音输入按钮事件 */
 - (void)recordTouchUpInside:(id)sender;
 - (void)recordTouchUpOutside:(id)sender;
 - (void)recordTouchDown:(id)sender;

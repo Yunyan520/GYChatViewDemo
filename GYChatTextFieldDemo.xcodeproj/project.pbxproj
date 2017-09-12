@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		611C2F3A1F67770700E0472A /* RecordManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 611C2F391F67770700E0472A /* RecordManager.m */; };
+		611C2F421F6777C700E0472A /* CL_AudioRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 611C2F401F6777C700E0472A /* CL_AudioRecorder.m */; };
 		613A8A5B1F5D413B001599F1 /* Mode_texttolist.png in Resources */ = {isa = PBXBuildFile; fileRef = 613A8A5A1F5D413B001599F1 /* Mode_texttolist.png */; };
 		613A8A5D1F5D42F9001599F1 /* Mode_listtotext.png in Resources */ = {isa = PBXBuildFile; fileRef = 613A8A5C1F5D42F9001599F1 /* Mode_listtotext.png */; };
 		614867C51F57F0AB00B31D99 /* 语音输入.png in Resources */ = {isa = PBXBuildFile; fileRef = 614867B41F57F0AA00B31D99 /* 语音输入.png */; };
@@ -208,6 +210,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		611C2F381F67770700E0472A /* RecordManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordManager.h; sourceTree = "<group>"; };
+		611C2F391F67770700E0472A /* RecordManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordManager.m; sourceTree = "<group>"; };
+		611C2F3F1F6777C700E0472A /* CL_AudioRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CL_AudioRecorder.h; sourceTree = "<group>"; };
+		611C2F401F6777C700E0472A /* CL_AudioRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CL_AudioRecorder.m; sourceTree = "<group>"; };
+		611C2F411F6777C700E0472A /* CL_VoiceEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CL_VoiceEngine.h; sourceTree = "<group>"; };
 		613A8A5A1F5D413B001599F1 /* Mode_texttolist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mode_texttolist.png; sourceTree = "<group>"; };
 		613A8A5C1F5D42F9001599F1 /* Mode_listtotext.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mode_listtotext.png; sourceTree = "<group>"; };
 		614867B11F57E83200B31D99 /* faceDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = faceDefine.h; sourceTree = "<group>"; };
@@ -440,6 +447,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		611C2F3B1F67778200E0472A /* Third */ = {
+			isa = PBXGroup;
+			children = (
+				611C2F3E1F6777B900E0472A /* AudioRecorder */,
+			);
+			name = Third;
+			sourceTree = "<group>";
+		};
+		611C2F3E1F6777B900E0472A /* AudioRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				611C2F3F1F6777C700E0472A /* CL_AudioRecorder.h */,
+				611C2F401F6777C700E0472A /* CL_AudioRecorder.m */,
+				611C2F411F6777C700E0472A /* CL_VoiceEngine.h */,
+			);
+			name = AudioRecorder;
+			sourceTree = "<group>";
+		};
 		614867D61F57F5A300B31D99 /* Face */ = {
 			isa = PBXGroup;
 			children = (
@@ -643,6 +668,7 @@
 		61C60C331F565DBC00B6A921 /* GYChatTextFieldDemo */ = {
 			isa = PBXGroup;
 			children = (
+				611C2F3B1F67778200E0472A /* Third */,
 				614868EF1F57F5F500B31D99 /* Resource */,
 				61C60C371F565DBC00B6A921 /* AppDelegate.h */,
 				61C60C381F565DBC00B6A921 /* AppDelegate.m */,
@@ -672,6 +698,8 @@
 				616277911F5FD7EA0042C663 /* GYPicViewCount.h */,
 				61C60C6D1F56630400B6A921 /* GYScreen.h */,
 				614867B11F57E83200B31D99 /* faceDefine.h */,
+				611C2F381F67770700E0472A /* RecordManager.h */,
+				611C2F391F67770700E0472A /* RecordManager.m */,
 				61C60C3D1F565DBC00B6A921 /* Main.storyboard */,
 				61C60C401F565DBC00B6A921 /* Assets.xcassets */,
 				61C60C421F565DBC00B6A921 /* LaunchScreen.storyboard */,
@@ -1010,6 +1038,8 @@
 				6174897B1F5E2EB90020B1B3 /* GYChatInputStyle1View.m in Sources */,
 				61C60C3C1F565DBC00B6A921 /* ViewController.m in Sources */,
 				61C60C821F569F0D00B6A921 /* GYPicView.m in Sources */,
+				611C2F3A1F67770700E0472A /* RecordManager.m in Sources */,
+				611C2F421F6777C700E0472A /* CL_AudioRecorder.m in Sources */,
 				61722AD91F5934A200EA49D2 /* GYChatManager.m in Sources */,
 				61C60C731F568B4400B6A921 /* GYChatView.m in Sources */,
 				61CE25771F62370000E2631E /* GYVoiceInputPromptView.m in Sources */,
