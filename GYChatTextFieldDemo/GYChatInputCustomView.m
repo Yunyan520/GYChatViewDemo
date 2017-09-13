@@ -28,6 +28,8 @@
     GYMotionView *_motionView;
     GYPicView *_picView;
     CGRect _selfFrame;
+    CGRect _superViewFrameWithMotion;
+    CGRect _superViewFrameWithPic;
     CGRect _motionViewFrame;
     CGRect _picViewFrame;
     GYChatInputCustomViewItem *_item;
@@ -140,7 +142,8 @@
     GYChatManager *chatManager = [GYChatManager sharedManager];
     [chatManager configMotionView:_item.currentSuperView.frame callback:^(UIView *view) {
         _motionView = (GYMotionView *)view;
-        _motionViewFrame = CGRectMake(kMotionViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, kScreenWidth, view.frame.size.height + _item.currentSuperView.frame.size.height);
+        _motionViewFrame = _motionView.frame;
+        _superViewFrameWithMotion = CGRectMake(kMotionViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, kScreenWidth, view.frame.size.height + _item.currentSuperView.frame.size.height);
         __weak typeof(self) weakSelf = self;
         _motionView.chooseMotionCallback = ^(UIView *motion, NSArray *phArr, NSArray *bqArr) {
             __strong typeof(self) strongSelf = weakSelf;
@@ -162,7 +165,8 @@
 {
     [[GYChatManager sharedManager] configPicView:_item.currentSuperView.frame callback:^(UIView *view) {
         _picView = (GYPicView *)view;
-        _picViewFrame = CGRectMake(kPicViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, _item.currentSuperView.frame.size.width, view.frame.size.height + _item.currentSuperView.frame.size.height);
+        _picViewFrame = _picView.frame;
+        _superViewFrameWithPic = CGRectMake(kPicViewX, kScreenHeight - view.frame.size.height - _item.currentSuperView.frame.size.height, _item.currentSuperView.frame.size.width, view.frame.size.height + _item.currentSuperView.frame.size.height);
     }];
 }
 
@@ -204,10 +208,14 @@
         _pressButton.hidden = YES;
         _picButton.selected = NO;
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeSuperViewFrame:_motionViewFrame];
+            [self changeSuperViewFrame:_superViewFrameWithMotion];
         }];
         [_picView removeFromSuperview];
         [_item.currentSuperView addSubview:_motionView];
+        _motionView.frame = CGRectMake(_motionViewFrame.origin.x, kScreenHeight, _motionViewFrame.size.width, _motionViewFrame.size.height);
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            _motionView.frame = _motionViewFrame;
+        }];
     }
 }
 - (void)chooseItemAction:(id)sender
@@ -222,14 +230,18 @@
         [_picView removeFromSuperview];
     } else {
         picBtn.selected = YES;
+        _iconButton.selected = NO;
         [_textView resignFirstResponder];
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeSuperViewFrame:_picViewFrame];
+            [self changeSuperViewFrame:_superViewFrameWithPic];
         }];
-
-        _iconButton.selected = NO;
         [_motionView removeFromSuperview];
         [_item.currentSuperView addSubview:_picView];
+        _picView.frame = CGRectMake(_picViewFrame.origin.x, kScreenHeight, _picViewFrame.size.width, _picViewFrame.size.height);
+        
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            _picView.frame = _picViewFrame;
+        }];
     }
 }
 - (void)recordTouchUpInside:(id)sender
@@ -535,6 +547,10 @@
         [textView setContentOffset:CGPointMake(0,offsetHeight)];
         [self setTextViewFrame];
     }
+}
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    textView.selectedRange.location;
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return

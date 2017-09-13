@@ -8,30 +8,37 @@
 
 #import "GYChatInputStyle1View.h"
 
+@implementation ButtonItem
+
+
+
+@end
+
 @implementation GYChatInputStyle1View
 {
     CGRect _selfFrame;
-    NSInteger _footeBtnCount;
+    ButtonItem *_footeBtnItem;
 }
-- (instancetype)initWithFrame:(CGRect)frame footeBtnCount:(NSInteger)footeBtnCount
+- (instancetype)initWithFrame:(CGRect)frame footeBtnItem:(ButtonItem *)item
 {
     self = [super initWithFrame:frame];
     if (self) {
         _selfFrame = frame;
-        _footeBtnCount = footeBtnCount;
+        _footeBtnItem = item;
         [self configUI];
     }
     return self;
 }
 - (void)configUI
 {
-    for (NSInteger i = 0; i < _footeBtnCount; i++) {
+    NSInteger count = _footeBtnItem.btnCount;
+    for (NSInteger i = 0; i < count; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        CGFloat btnWidth = _selfFrame.size.width / _footeBtnCount;
+        CGFloat btnWidth = _selfFrame.size.width / count;
         btn.frame = CGRectMake(i * btnWidth, 0, btnWidth, _selfFrame.size.height);
-        [btn setTitle:[NSString stringWithFormat:@"%ld",(long)i] forState:UIControlStateNormal];
+        [btn setTitle:_footeBtnItem.btnTitles[i] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        btn.backgroundColor = [UIColor greenColor];
+        btn.backgroundColor = [UIColor grayColor];
         [self addSubview:btn];
     }
 }

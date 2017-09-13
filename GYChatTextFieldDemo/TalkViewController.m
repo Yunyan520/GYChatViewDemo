@@ -56,7 +56,7 @@
     CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, footerHeight);
     GYConfigChatViewItem *item = [[GYConfigChatViewItem alloc] init];
     item.inputViewFrame = footerRect;
-    item.style = TypeChat2;
+    item.style = TypeChat1;
     item.type2footerBtnCount = 2;
     __weak typeof(self) weakSelf = self;
     item.configViewCallback = ^(UIView *view) {

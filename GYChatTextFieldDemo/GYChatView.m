@@ -97,7 +97,10 @@
 
 - (void)configStyle1BackView
 {
-    _chatInputStyle1View = [[GYChatInputStyle1View alloc] initWithFrame:_style2BackFrame footeBtnCount:_item.type2footerBtnCount];
+    ButtonItem *item = [[ButtonItem alloc] init];
+    item.btnCount = 2;
+    item.btnTitles = @[@"功能介绍",@"人工服务"];
+    _chatInputStyle1View = [[GYChatInputStyle1View alloc] initWithFrame:_style2BackFrame footeBtnItem:item];
 }
 #pragma -mark ButtonClickedAction
 - (void)menuAction:(id)sender
