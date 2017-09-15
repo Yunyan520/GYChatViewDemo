@@ -22,6 +22,7 @@
     CGRect _muneBtnFrame;
     CGRect _style1BackFrame;
     CGRect _style2BackFrame;
+    UIButton *_muneButton;
     GYChatInputCustomView *_chatInputCustomView;
     GYChatInputStyle1View *_chatInputStyle1View;
 }
@@ -31,6 +32,7 @@
     if(self)
     {
         _item = item;
+//        self.backgroundColor = [UIColor redColor];
         [self setBackViewFrame];
         [self configUI];
     }
@@ -40,13 +42,13 @@
 {
     if(_item.style == TypeChat1)
     {
-        _style1BackFrame = CGRectMake(kChatType1_Style1BgX, kChatType1_Style1BgY, _item.inputViewFrame.size.width, _item.inputViewFrame.size.height);
+        _style1BackFrame = CGRectMake(kChatType1_Style1BgX, kChatType1_Style1BgY, _item.inputViewFrame.size.width, kChatFooterHeight);
     }
     else
     {
         _muneBtnFrame = CGRectMake(kChatType2_MenuBtnX, kChatType2_MenuBtnY, kChatType2_MenuBtnWidth, kChatType2_MenuBtnHeight);
-        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style1BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
-        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style2BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, _item.inputViewFrame.size.height);
+        _style1BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style1BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, kChatFooterHeight);
+        _style2BackFrame = CGRectMake(_muneBtnFrame.size.width, kChatType2_Style2BgY, _item.inputViewFrame.size.width - _muneBtnFrame.size.width, kChatFooterHeight);
     }
 }
 - (void)configUI
@@ -62,14 +64,14 @@
         return;
     }
     //切换类型按钮
-    UIButton *muneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    muneButton.frame = _muneBtnFrame;
-    muneButton.imageView.contentMode = UIViewContentModeCenter;
-    [muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_texttolist.png"] forState:UIControlStateNormal];
-    [muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_listtotext.png"] forState:UIControlStateSelected];
-    [muneButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];
-    muneButton.selected = NO;
-    [self addSubview:muneButton];
+    _muneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _muneButton.frame = _muneBtnFrame;
+    _muneButton.imageView.contentMode = UIViewContentModeCenter;
+    [_muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_texttolist.png"] forState:UIControlStateNormal];
+    [_muneButton setBackgroundImage:[UIImage imageNamed:@"Mode_listtotext.png"] forState:UIControlStateSelected];
+    [_muneButton addTarget:self action:@selector(menuAction:) forControlEvents:UIControlEventTouchUpInside];
+    _muneButton.selected = NO;
+    [self addSubview:_muneButton];
 }
 - (void)configCustomBackViewUI
 {
@@ -92,6 +94,7 @@
     }
     chatCustomViewItem.currentSuperView = self;
     _chatInputCustomView = [[GYChatInputCustomView alloc] initWithFrame:_style1BackFrame item:chatCustomViewItem];
+//    _chatInputCustomView.backgroundColor = [UIColor redColor];
      [self addSubview:_chatInputCustomView];
 }
 
@@ -122,13 +125,19 @@
     }
 }
 #pragma -mark publicMethod
-- (void)resetFrame
+- (void)setMuneButtonFrame:(CGRect)newFrame
 {
-    self.frame = _item.inputViewFrame;
+    if(_item.style == TypeChat2)
+    {
+        _muneButton.frame = newFrame;
+    }
 }
-- (void)changeFrame:(CGRect)newFrame
+- (void)resetMuneButtonFrame
 {
-    self.frame = newFrame;
+    if(_item.style == TypeChat2)
+    {
+        _muneButton.frame = _muneBtnFrame;
+    }
 }
 - (GYChatInputCustomView *)getChatInputCustomView
 {

@@ -9,16 +9,19 @@
 #ifndef GYChatViewCount_h
 #define GYChatViewCount_h
 
+#define kChatFooterHeight 50
+#define kChatFooterY kScreenHeight - kChatFooterHeight - 44
+
 #define kChatType1_Style1BgX 0
-#define kChatType1_Style1BgY 0
+#define kChatType1_Style1BgY 0 + kChatFooterY
 
 #define kChatType2_MenuBtnX  0
-#define kChatType2_MenuBtnY  7
+#define kChatType2_MenuBtnY  7 + kChatFooterY
 #define kChatType2_MenuBtnWidth  45
 #define kChatType2_MenuBtnHeight  30
 
-#define kChatType2_Style1BgY 0
-#define kChatType2_Style2BgY 0
+#define kChatType2_Style1BgY kChatFooterY
+#define kChatType2_Style2BgY 0 + kChatFooterY
 
 #define kChatType1_TalkBtnX 5
 #define kChatType1_TalkBtnY 7

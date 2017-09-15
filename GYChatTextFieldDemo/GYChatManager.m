@@ -45,15 +45,15 @@ static GYChatManager *instance = nil;
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-    CGRect motionRect =  CGRectMake(kMotionViewX, inputViewFrame.size.height, inputViewFrame.size.width, kMotionViewHeight);
-    GYMotionView *motionView = [[GYMotionView alloc] initWithFrame:motionRect];
+//    CGRect motionRect =  CGRectMake(kMotionViewX, inputViewFrame.size.height, inputViewFrame.size.width, kMotionViewHeight);
+    GYMotionView *motionView = [[GYMotionView alloc] initWithFrame:inputViewFrame];
     callback(motionView);
 }
 
 - (void)configPicView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-    CGRect picRect =  CGRectMake(kPicViewX, inputViewFrame.size.height, inputViewFrame.size.width, kPicViewHeight);
-    GYPicView *picView = [[GYPicView alloc] initWithFrame:picRect];
+//    CGRect picRect =  CGRectMake(kPicViewX, inputViewFrame.size.height, inputViewFrame.size.width, kPicViewHeight);
+    GYPicView *picView = [[GYPicView alloc] initWithFrame:inputViewFrame];
     __weak typeof(self) weakSelf = self;
     picView.functionClickedCallback = ^(UIView *functionItem) {
         __strong typeof(self) strongSelf = weakSelf;

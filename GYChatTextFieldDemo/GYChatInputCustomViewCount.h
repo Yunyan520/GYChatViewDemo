@@ -14,7 +14,7 @@
 #define kMotionViewX 0
 #define kPicViewX 0
 #define kTextViewMaxLineCount 5
-#define kTextViewTextBank 8
+#define kTextViewTextBank 0
 #define kTextViewAnimationDuration 1
 #define kMotionNumberBefore6p 32
 #define kMotionNumberAfter6p 36

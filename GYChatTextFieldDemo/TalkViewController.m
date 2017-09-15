@@ -21,7 +21,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor greenColor];
+//    self.view.backgroundColor = [UIColor greenColor];
     [self configVoiceInputPromtUI];
     [self configFooterView];
     [self addTapGesture];
@@ -51,9 +51,7 @@
 }
 - (void)configFooterView
 {
-    CGFloat footerHeight = 50;
-    CGFloat footerY =self.view.frame.size.height - footerHeight -44;
-    CGRect footerRect = CGRectMake(0, footerY, self.view.frame.size.width, footerHeight);
+    CGRect footerRect = kScreenRect;
     GYConfigChatViewItem *item = [[GYConfigChatViewItem alloc] init];
     item.inputViewFrame = footerRect;
     item.style = TypeChat1;

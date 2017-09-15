@@ -16,6 +16,6 @@
  */
 - (instancetype)initWithFrame:(GYConfigChatViewItem *)item;
 - (GYChatInputCustomView *)getChatInputCustomView;
-- (void)resetFrame;
-- (void)changeFrame:(CGRect)newFrame;
+- (void)setMuneButtonFrame:(CGRect)newFrame;
+- (void)resetMuneButtonFrame;
 @end
