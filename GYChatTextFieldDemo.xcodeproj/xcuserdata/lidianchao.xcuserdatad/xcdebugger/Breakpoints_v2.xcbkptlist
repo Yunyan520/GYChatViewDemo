@@ -10,12 +10,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "GYChatTextFieldDemo/GYChatInputCustomView.m"
-            timestampString = "527138411.743061"
+            timestampString = "527156168.996874"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "336"
-            endingLineNumber = "336"
+            startingLineNumber = "331"
+            endingLineNumber = "331"
             landmarkName = "-setTextViewFrame"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GYChatTextFieldDemo/GYChatInputCustomView.m"
+            timestampString = "527156055.239094"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "221"
+            endingLineNumber = "221"
+            landmarkName = "-moodIconAction:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -33,6 +33,7 @@
     CGRect _selfFrameWithPicView;
     CGRect _picViewFrame;
     CGRect _motionViewFrame;
+    CGRect _selfCurrentOriginHeightFrame;
     CGFloat _selfViewHeightAdd;
     CGFloat _currentTextViewHeight;
     GYChatInputCustomViewItem *_item;
@@ -46,6 +47,7 @@
     {
         _originSelfFrame = frame;
         _currentSelfFrame = frame;
+        _selfCurrentOriginHeightFrame = frame;
         _item = item;
         [self registerForKeyboardNotifications];
         [self configVoiceInputUI];
@@ -215,6 +217,7 @@
         _textView.hidden = NO;
         _pressButton.hidden = YES;
         _picButton.selected = NO;
+        _selfCurrentOriginHeightFrame = _selfFrameWithMotionView;
         CGRect newFrame = CGRectMake(_selfFrameWithMotionView.origin.x, _selfFrameWithMotionView.origin.y - _selfViewHeightAdd, _selfFrameWithMotionView.size.width, _selfFrameWithMotionView.size.height + _selfViewHeightAdd);
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
             [self changeSelfViewFrame:newFrame];
@@ -242,8 +245,8 @@
         picBtn.selected = YES;
         _iconButton.selected = NO;
         [_textView resignFirstResponder];
-        
-        CGRect newFrame = CGRectMake(_selfFrameWithPicView.origin.x, _selfFrameWithPicView.origin.y - _selfViewHeightAdd, _selfFrameWithPicView.size.width, _selfFrameWithPicView.size.height + _selfViewHeightAdd);
+        _selfCurrentOriginHeightFrame = _selfFrameWithPicView;        
+        CGRect newFrame = CGRectMake(_selfFrameWithMotionView.origin.x, _selfFrameWithMotionView.origin.y - _selfViewHeightAdd, _selfFrameWithMotionView.size.width, _selfFrameWithMotionView.size.height + _selfViewHeightAdd);
         [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
             [self changeSelfViewFrame:newFrame];
         }];
@@ -307,6 +310,7 @@
 - (void)resetCurrentViewFrame
 {
     self.frame = CGRectMake(_originSelfFrame.origin.x, _originSelfFrame.origin.y - _selfViewHeightAdd, _originSelfFrame.size.width, _originSelfFrame.size.height + _selfViewHeightAdd);
+    _selfFrameWithPicView = _originSelfFrame;
     _currentSelfFrame = self.frame;
     [_motionView removeFromSuperview];
     [_picView removeFromSuperview];
@@ -340,6 +344,11 @@
         {
             size.height = maxHeight;
             _textView.scrollEnabled = YES;   // 允许滚动
+            CGFloat offsetHeight = [self getTextViewContentHeight];
+            [UIView animateWithDuration:0.25 animations:^{
+                [_textView setContentOffset:CGPointMake(0, offsetHeight)];
+            }];
+            
         }
         else
         {
@@ -348,15 +357,15 @@
     }
     
     CGFloat heightAdd = size.height - _item.textViewFrame.size.height;
-    if(_currentTextViewHeight != size.height)
-    {
+//    if(_currentTextViewHeight != size.height)
+//    {
         [UIView animateWithDuration:0.25 animations:^{
             _textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
             _currentTextViewHeight = size.height;
             [self setContentUIFrame:heightAdd];
-            [self changeSelfViewFrame:CGRectMake(_currentSelfFrame.origin.x, _currentSelfFrame.origin.y - heightAdd, _currentSelfFrame.size.width, _currentSelfFrame.size.height + heightAdd)];
+            [self changeSelfViewFrame:CGRectMake(_selfCurrentOriginHeightFrame.origin.x, _selfCurrentOriginHeightFrame.origin.y - heightAdd, _selfCurrentOriginHeightFrame.size.width, _selfCurrentOriginHeightFrame.size.height + heightAdd)];
         }];
-    }
+//    }
     _selfViewHeightAdd = heightAdd;
 }
 - (CGFloat)calculateWidth:(NSString *)str {
@@ -378,7 +387,8 @@
     {
         [[GYChatManager sharedManager].delegate sendMessage:_textView.text];
         _textView.text = @"";
-        [self setTextViewFrame];
+//        [self setTextViewFrame];
+//        [self resetFrame];
     }
 }
 - (void)chooseMotion:(id)sender phArr:(NSArray *)phArr bqArr:(NSArray *)bqArr
@@ -408,11 +418,14 @@
         NSString *faceStr= [NSString stringWithFormat:@"%@",[temparray objectAtIndex:0]];
         [_messageString appendString:faceStr];
     }
+//    NSRange range = NSMakeRange(_textView.text.length, faceStr.length);
+//    [self textView:_textView shouldChangeTextInRange:range replacementText:faceStr];
     _textView.text=_messageString;
-    _textView.selectedRange = NSMakeRange([_messageString length],0);
-    CGFloat offsetHeight = [self getTextViewContentHeight];
-    [_textView setContentOffset:CGPointMake(0,offsetHeight)];
-    [self setTextViewFrame];
+//    _textView.selectedRange = NSMakeRange([_messageString length],0);
+//    [self scrollViewDidScroll:_textView];
+//    CGFloat offsetHeight = [self getTextViewContentHeight];
+//    [_textView setContentOffset:CGPointMake(0,offsetHeight)];
+//    [self setTextViewFrame];
 }
 - (void)clearClickMotion:(NSArray *)bqStrArray
 {
@@ -548,16 +561,18 @@
     [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
         CGRect newFrame = CGRectMake(_originSelfFrame.origin.x, kScreenHeight - kbSize.height - _originSelfFrame.size.height - _selfViewHeightAdd, kScreenWidth, _originSelfFrame.size.height + _selfViewHeightAdd);
         [self changeSelfViewFrame:newFrame];
+        _selfCurrentOriginHeightFrame = CGRectMake(_originSelfFrame.origin.x, kScreenHeight - kbSize.height - _originSelfFrame.size.height, kScreenWidth, _originSelfFrame.size.height);
+        _currentSelfFrame = self.frame;
     }];
-    _currentSelfFrame = self.frame;
+    
     [[GYChatManager sharedManager].delegate keyboardShown:kbSize];
 }
 //当键盘即将隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     [[GYChatManager sharedManager].delegate keyboradHidden];
-    _picButton.selected = NO;
-    _iconButton.selected = NO;
+//    _picButton.selected = NO;
+//    _iconButton.selected = NO;
     NSLog(@"键盘隐藏");
 }
 #pragma -mark UITextViewDelegate
