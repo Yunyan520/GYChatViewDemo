@@ -9,7 +9,7 @@
 #import "GYChatInputCustomView.h"
 #import "GYScreen.h"
 #import "GYChatView.h"
-#define kKeyboardAnimationDuration 0.25
+#define kChangeIconPicDuration 0.4
 @implementation GYChatInputCustomViewItem
 
 @end
@@ -21,8 +21,9 @@
 @implementation GYChatInputCustomView
 {
     UITextView *_textView;
+    UIView *_orientAnswerLabelBackView;
     UIButton *_pressButton;
-    UIButton *_talkButton;
+    UIButton *_changeStatusButton;
     UIButton *_picButton;
     UIButton *_iconButton;
     GYMotionView *_motionView;
@@ -34,28 +35,43 @@
     CGRect _picViewFrame;
     CGRect _motionViewFrame;
     CGRect _selfCurrentOriginHeightFrame;
+    CGRect _newTextViewFrame;
+    CGRect _newSelfFrame;
     CGFloat _selfViewHeightAdd;
     CGFloat _currentTextViewHeight;
     GYChatInputCustomViewItem *_item;
     BOOL _keyboradIsShow;
     NSMutableString *_messageString;
+    CGFloat _orientAnswerLabelHeight;
+    CGRect _currentTextViewFrame;
+    CGSize _currentContentSize;
+    BOOL _isOrientAnswerStatus;
 }
-- (instancetype)initWithFrame:(CGRect)frame item:(GYChatInputCustomViewItem *)item
+- (instancetype)initWithItem:(GYChatInputCustomViewItem *)item
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:item.currentViewFrame];
     if(self)
     {
-        _originSelfFrame = frame;
-        _currentSelfFrame = frame;
-        _selfCurrentOriginHeightFrame = frame;
         _item = item;
+        [self initFrame];
+        _orientAnswerLabelHeight = 0;
+        self.backgroundColor = kUIColorFromValue(0xF7F7F7);
         [self registerForKeyboardNotifications];
         [self configVoiceInputUI];
+        [self configOrientateAnswerLabel];
         [self configMotionPicSendUI];
         [self configMotionView];
         [self configPicView];
     }
     return self;
+}
+- (void)initFrame
+{
+    _newTextViewFrame = _item.textViewFrame;
+    _originSelfFrame = _item.currentViewFrame;
+    _currentSelfFrame = _item.currentViewFrame;
+    _newSelfFrame = _item.currentViewFrame;
+    _selfCurrentOriginHeightFrame = _item.currentViewFrame;
 }
 - (void)dealloc
 {
@@ -92,10 +108,10 @@
     _textView = [[UITextView alloc] init];
     _textView.frame = _item.textViewFrame;
     _currentTextViewHeight = _item.textViewFrame.size.height;
-    _textView.backgroundColor = [UIColor grayColor];
+    _textView.backgroundColor = kTextViewBackgroundColor;
     _textView.layer.cornerRadius = kTextViewCornerRadius;
     _textView.delegate = self;
-    _textView.font = [UIFont systemFontOfSize:17];
+    _textView.font = [UIFont systemFontOfSize:kTextViewFont];
     _textView.returnKeyType = UIReturnKeySend;
     _textView.userInteractionEnabled = YES;
     [self addSubview:_textView];
@@ -104,10 +120,10 @@
     _pressButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _pressButton.frame = _item.pressButtonFrame;
     _pressButton.hidden = YES;
-    [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button.png"] forState:UIControlStateNormal];
-    [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button_click.png"] forState:UIControlStateHighlighted];
-    [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button_click.png"] forState:UIControlStateSelected];
-    [_pressButton setBackgroundImage:[UIImage imageNamed:@"speaking_Button_click.png"] forState:UIControlStateDisabled];
+    [_pressButton setBackgroundImage:[UIImage imageNamed:kPressBtnNormalImage] forState:UIControlStateNormal];
+    [_pressButton setBackgroundImage:[UIImage imageNamed:kPressBtnHighlightedImage] forState:UIControlStateHighlighted];
+    [_pressButton setBackgroundImage:[UIImage imageNamed:kPressBtnSelectedImage] forState:UIControlStateSelected];
+    [_pressButton setBackgroundImage:[UIImage imageNamed:kPressBtnDisabledImage] forState:UIControlStateDisabled];
     [_pressButton setTitle:@"按住说话" forState:UIControlStateNormal];
     [_pressButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_pressButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
@@ -120,31 +136,51 @@
     [_pressButton addTarget:self action:@selector(recordTouchDragIn:) forControlEvents: UIControlEventTouchDragInside];
     [self addSubview:_pressButton];
 }
+- (void)configOrientateAnswerLabel
+{
+    _orientAnswerLabelBackView = [[UIView alloc] init];
+    _orientAnswerLabelBackView.frame = CGRectMake(_item.textViewFrame.origin.x, _item.textViewFrame.origin.y, _item.textViewFrame.size.width, kOrientAnswerLabelHeight + kOrientAnswerLabelHeightOffset);
+    _orientAnswerLabelBackView.backgroundColor = _textView.backgroundColor;
+    _orientAnswerLabelBackView.layer.cornerRadius = kTextViewCornerRadius;
+    [self addSubview:_orientAnswerLabelBackView];
+    _orientAnswerLabelBackView.hidden = YES;
+    
+    UILabel *orientAnswerLabel = [[UILabel alloc] init];
+    orientAnswerLabel.frame = CGRectMake(kOrientAnswerLabelXOffset,kOrientAnswerLabelYOffset, _item.textViewFrame.size.width - kOrientAnswerLabelWidthOffset, kOrientAnswerLabelHeight);
+    orientAnswerLabel.backgroundColor = kOrientAnswerLabelBackgroundColor;
+    orientAnswerLabel.layer.masksToBounds = YES;
+    orientAnswerLabel.layer.cornerRadius = kOrientAnswerLabelCornerRadius;
+    orientAnswerLabel.font = [UIFont systemFontOfSize:kOrientAnswerLabelFont];
+    orientAnswerLabel.textColor = kOrientAnswerLabelTextColor;
+    orientAnswerLabel.tag = kOrientAnswerLabelTag;
+    [_orientAnswerLabelBackView addSubview:orientAnswerLabel];
+}
 - (void)configMotionPicSendUI
 {
-    //	录音按钮
-    _talkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _talkButton.frame = _item.talkButtonFrame;
-    [_talkButton setImage:[UIImage imageNamed:@"Fav_Search_Voice.png"] forState:UIControlStateNormal];
-    [_talkButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
-    [_talkButton addTarget:self action:@selector(talkAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:_talkButton];
+    //	录音、输入状态切换按钮
+    _changeStatusButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _changeStatusButton.frame = _item.talkButtonFrame;
+    [_changeStatusButton setImage:[UIImage imageNamed:kChangeStatusBtnNormalImage] forState:UIControlStateNormal];
+    [_changeStatusButton setImage:[UIImage imageNamed:kChangeStatusBtnSelectImage] forState:UIControlStateSelected];
+    [_changeStatusButton addTarget:self action:@selector(talkAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:_changeStatusButton];
     //	表情选择按钮
     _iconButton = [UIButton buttonWithType:UIButtonTypeCustom];
     
     _iconButton.frame = _item.iconButtonFrame;
-    [_iconButton setImage:[UIImage imageNamed:@"Album_ToolViewEmotion.png"] forState:UIControlStateNormal];
-    [_iconButton setImage:[UIImage imageNamed:@"Keyboard_ios.png"] forState:UIControlStateSelected];
+    [_iconButton setImage:[UIImage imageNamed:kIconBtnNormalImage] forState:UIControlStateNormal];
+    [_iconButton setImage:[UIImage imageNamed:kIconBtnSelectImage] forState:UIControlStateSelected];
     [_iconButton addTarget:self action:@selector(moodIconAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_iconButton];
     
     //	图片选择按钮
     _picButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _picButton.frame = _item.picButtonFrame;
-    [_picButton setImage:[UIImage imageNamed:@"type_select_btn_nor.png"] forState:UIControlStateNormal];
+    [_picButton setImage:[UIImage imageNamed:kPicBtnNormalImage] forState:UIControlStateNormal];
     [_picButton addTarget:self action:@selector(chooseItemAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:_picButton];
 }
+
 - (void)configMotionView
 {
     _motionViewFrame = CGRectMake(ZeroX, _item.currentSuperView.frame.size.height - kMotionViewHeight, _item.currentSuperView.frame.size.width, kMotionViewHeight);
@@ -153,16 +189,16 @@
         _motionView = (GYMotionView *)view;
         _selfFrameWithMotionView = CGRectMake(_originSelfFrame.origin.x, _motionViewFrame.origin.y - _originSelfFrame.size.height, _originSelfFrame.size.width, _originSelfFrame.size.height);
         _currentSelfFrame = _selfFrameWithMotionView;
-        __weak typeof(self) weakSelf = self;
+        WS(ws);
         _motionView.chooseMotionCallback = ^(UIView *motion, NSArray *phArr, NSArray *bqArr) {
-            __strong typeof(self) strongSelf = weakSelf;
+            __strong typeof(self) strongSelf = ws;
             if (strongSelf) {
                 [strongSelf chooseMotion:motion phArr:phArr bqArr:bqArr];
             }
             return;
         };
         _motionView.sendMessageCallback = ^{
-            __strong typeof(self) strongSelf = weakSelf;
+            __strong typeof(self) strongSelf = ws;
             if(strongSelf)
             {
                 [strongSelf sendMessage];
@@ -170,6 +206,14 @@
         };
     }];
 }
+- (void)reFrameMotionView
+{
+    _motionViewFrame = CGRectMake(ZeroX, _item.currentSuperView.frame.size.height - kMotionViewHeight, _item.currentSuperView.frame.size.width, kMotionViewHeight);
+    _motionView.frame = _motionViewFrame;
+    _selfFrameWithMotionView = CGRectMake(_originSelfFrame.origin.x, _motionViewFrame.origin.y - _originSelfFrame.size.height, _originSelfFrame.size.width, _originSelfFrame.size.height);
+    _currentSelfFrame = _selfFrameWithMotionView;
+}
+
 - (void)configPicView
 {
     _picViewFrame = CGRectMake(ZeroX, _item.currentSuperView.frame.size.height - kPicViewHeight, _item.currentSuperView.frame.size.width, kPicViewHeight);
@@ -177,9 +221,16 @@
         _picView = (GYPicView *)view;
         _selfFrameWithPicView = CGRectMake(_originSelfFrame.origin.x, _picViewFrame.origin.y - _originSelfFrame.size.height, _originSelfFrame.size.width, _originSelfFrame.size.height);
         _currentSelfFrame = _selfFrameWithPicView;
+        
     }];
 }
-
+- (void)reFramePicView
+{
+    _picViewFrame = CGRectMake(ZeroX, _item.currentSuperView.frame.size.height - kPicViewHeight, _item.currentSuperView.frame.size.width, kPicViewHeight);
+    _picView.frame = _picViewFrame;
+    _selfFrameWithPicView = CGRectMake(_originSelfFrame.origin.x, _picViewFrame.origin.y - _originSelfFrame.size.height, _originSelfFrame.size.width, _originSelfFrame.size.height);
+    _currentSelfFrame = _selfFrameWithPicView;
+}
 - (void)talkAction:(id)sender
 {
     UIButton *talkBtn = (UIButton *)sender;
@@ -200,6 +251,10 @@
         [_textView resignFirstResponder];
         _keyboradIsShow = NO;
     }
+    if(_isOrientAnswerStatus)
+    {
+        _orientAnswerLabelBackView.hidden = talkBtn.selected;
+    }
 }
 - (void)moodIconAction:(id)sender
 {
@@ -218,53 +273,35 @@
         _pressButton.hidden = YES;
         _picButton.selected = NO;
         _selfCurrentOriginHeightFrame = _selfFrameWithMotionView;
-        CGRect newFrame = CGRectMake(_selfFrameWithMotionView.origin.x, _selfFrameWithMotionView.origin.y - _selfViewHeightAdd, _selfFrameWithMotionView.size.width, _selfFrameWithMotionView.size.height + _selfViewHeightAdd);
-        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeSelfViewFrame:newFrame];
-        }];
-        _currentSelfFrame = self.frame;
         [_picView removeFromSuperview];
-        [_item.currentSuperView addSubview:_motionView];
-        _motionView.frame = CGRectMake(_motionViewFrame.origin.x, kScreenHeight, _motionViewFrame.size.width, _motionViewFrame.size.height);
-        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            _motionView.frame = _motionViewFrame;
-        }];
+        [self changeToIconOrPicView:_motionView :_motionViewFrame];
     }
 }
 - (void)chooseItemAction:(id)sender
 {
-    UIButton *picBtn = (UIButton *)sender;
     [self isVoiceInputStatus:NO];
     _keyboradIsShow = YES;
-    if(picBtn.selected) {
+    if(_picButton.selected) {
         //弹起键盘
-        picBtn.selected = NO;
+        _picButton.selected = NO;
         [_textView becomeFirstResponder];
         [_picView removeFromSuperview];
     } else {
-        picBtn.selected = YES;
+        _picButton.selected = YES;
         _iconButton.selected = NO;
         [_textView resignFirstResponder];
-        _selfCurrentOriginHeightFrame = _selfFrameWithPicView;        
-        CGRect newFrame = CGRectMake(_selfFrameWithMotionView.origin.x, _selfFrameWithMotionView.origin.y - _selfViewHeightAdd, _selfFrameWithMotionView.size.width, _selfFrameWithMotionView.size.height + _selfViewHeightAdd);
-        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            [self changeSelfViewFrame:newFrame];
-        }];
-        _currentSelfFrame = self.frame;
+        _selfCurrentOriginHeightFrame = _selfFrameWithPicView;
         [_motionView removeFromSuperview];
-        [_item.currentSuperView addSubview:_picView];
-        _picView.frame = CGRectMake(_picViewFrame.origin.x, kScreenHeight, _picViewFrame.size.width, _picViewFrame.size.height);
-        
-        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
-            _picView.frame = _picViewFrame;
-        }];
+        [self changeToIconOrPicView:_picView :_picViewFrame];
     }
 }
+
 - (void)recordTouchUpInside:(id)sender
 {
     if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchUpInside:)])
     {
         [[GYChatManager sharedManager].delegate recordTouchUpInside:sender];
+        [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
     }
     
 }
@@ -273,6 +310,7 @@
     if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchUpOutside:)])
     {
         [[GYChatManager sharedManager].delegate recordTouchUpOutside:sender];
+        [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
     }
     
 }
@@ -281,6 +319,7 @@
     if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDown:)])
     {
         [[GYChatManager sharedManager].delegate recordTouchDown:sender];
+        [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
     }
     
 }
@@ -289,28 +328,41 @@
     if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDragOutside:)])
     {
         [[GYChatManager sharedManager].delegate recordTouchDragOutside:sender];
+        [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_WarnningCancle];
     }
-    
 }
 - (void)recordTouchDragIn:(id)sender
 {
     if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(recordTouchDragIn:)])
     {
         [[GYChatManager sharedManager].delegate recordTouchDragIn:sender];
+        [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
     }
     
 }
 #pragma -mark privateMethod
+- (void)changeToIconOrPicView:(UIView *)changeToView :(CGRect)frame
+{
+    CGRect newFrame = CGRectMake(_selfCurrentOriginHeightFrame.origin.x, _selfCurrentOriginHeightFrame.origin.y - _selfViewHeightAdd, _selfCurrentOriginHeightFrame.size.width, _selfCurrentOriginHeightFrame.size.height + _selfViewHeightAdd);
+    [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+        [self changeSelfViewFrame:newFrame];
+    }];
+    _currentSelfFrame = self.frame;
+    [_item.currentSuperView addSubview:changeToView];
+    changeToView.frame = CGRectMake(frame.origin.x, kScreenHeight, frame.size.width, frame.size.height);
+    [UIView animateWithDuration:kChangeIconPicDuration animations:^{
+        changeToView.frame = frame;
+    }];
+}
 - (void)isVoiceInputStatus:(BOOL)isVoice
 {
-    _talkButton.selected = isVoice;
+    _changeStatusButton.selected = isVoice;
     _pressButton.hidden = !isVoice;
     _textView.hidden = isVoice;
 }
 - (void)resetCurrentViewFrame
 {
     self.frame = CGRectMake(_originSelfFrame.origin.x, _originSelfFrame.origin.y - _selfViewHeightAdd, _originSelfFrame.size.width, _originSelfFrame.size.height + _selfViewHeightAdd);
-    _selfFrameWithPicView = _originSelfFrame;
     _currentSelfFrame = self.frame;
     [_motionView removeFromSuperview];
     [_picView removeFromSuperview];
@@ -319,18 +371,30 @@
 }
 - (void)changeSelfViewFrame:(CGRect)newFrame
 {
+    _newSelfFrame = newFrame;
     self.frame = newFrame;
-    GYChatView *chatView = (GYChatView *)_item.currentSuperView;
-    CGRect newMuneBtnFrame = CGRectMake(kChatType2_MenuBtnX, newFrame.origin.y + _currentTextViewHeight - _item.textViewFrame.size.height, kChatType2_MenuBtnWidth, kChatType2_MenuBtnHeight);
-    [chatView setMuneButtonFrame:newMuneBtnFrame];
+    if(_item.style == TypeChat2)
+    {
+        GYChatView *chatView = (GYChatView *)_item.currentSuperView;
+        CGRect newMuneBtnFrame = CGRectMake(kChatType2_MenuBtnX, newFrame.origin.y + _currentTextViewHeight - _item.textViewFrame.size.height + 10, kChatType2_MenuBtnWidth, kChatType2_MenuBtnHeight);
+        [chatView setMuneButtonFrame:newMuneBtnFrame];
+    }
+}
+- (void)changeTextViewFrame:(CGRect)newFrame
+{
+    _newTextViewFrame = newFrame;
+    _textView.frame = newFrame;
+    _orientAnswerLabelBackView.frame = CGRectMake(_textView.frame.origin.x, _textView.frame.origin.y, _textView.frame.size.width, kOrientAnswerLabelHeight + kOrientAnswerLabelHeightOffset);
+    _currentTextViewFrame = newFrame;
 }
 - (void)setTextViewFrame
 {
     NSString *text = _textView.text;
     //获取单行字符串高度
     CGFloat separateHeight = [self calculateWidth:text];
-    CGFloat maxHeight = kTextViewMaxLineCount * separateHeight + kTextViewTextBank;
-    if(maxHeight <= _textView.frame.size.height)
+    CGFloat maxHeight = kTextViewMaxLineCount * separateHeight;
+    CGFloat textViewHeight = _textView.frame.size.height;
+    if(maxHeight <= textViewHeight)
     {
         maxHeight = _textView.frame.size.height;
     }
@@ -344,8 +408,8 @@
         {
             size.height = maxHeight;
             _textView.scrollEnabled = YES;   // 允许滚动
-            CGFloat offsetHeight = [self getTextViewContentHeight];
-            [UIView animateWithDuration:0.25 animations:^{
+            CGFloat offsetHeight = [self getTextViewContentHeight] + _orientAnswerLabelHeight;
+            [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
                 [_textView setContentOffset:CGPointMake(0, offsetHeight)];
             }];
             
@@ -357,25 +421,28 @@
     }
     
     CGFloat heightAdd = size.height - _item.textViewFrame.size.height;
-//    if(_currentTextViewHeight != size.height)
-//    {
-        [UIView animateWithDuration:0.25 animations:^{
-            _textView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
-            _currentTextViewHeight = size.height;
-            [self setContentUIFrame:heightAdd];
-            [self changeSelfViewFrame:CGRectMake(_selfCurrentOriginHeightFrame.origin.x, _selfCurrentOriginHeightFrame.origin.y - heightAdd, _selfCurrentOriginHeightFrame.size.width, _selfCurrentOriginHeightFrame.size.height + heightAdd)];
-        }];
-//    }
+    _currentContentSize = size;
+    [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+        CGRect newTextViewFrame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, size.height);
+        [self changeTextViewFrame:newTextViewFrame];
+        _currentTextViewHeight = size.height;
+        [self setContentUIFrame:heightAdd];
+        [self changeSelfViewFrame:CGRectMake(_selfCurrentOriginHeightFrame.origin.x, _selfCurrentOriginHeightFrame.origin.y - heightAdd, _selfCurrentOriginHeightFrame.size.width, _selfCurrentOriginHeightFrame.size.height + heightAdd)];
+    }];
     _selfViewHeightAdd = heightAdd;
 }
 - (CGFloat)calculateWidth:(NSString *)str {
+    if([str rangeOfString:@"\r"].location != NSNotFound)
+    {
+        str = @"0";
+    }
     NSDictionary *dic  = [NSDictionary dictionaryWithObjectsAndKeys:_textView.font, NSFontAttributeName, nil];
     CGSize size = [str sizeWithAttributes:dic];
     return size.height;
 }
 - (void)setContentUIFrame:(CGFloat)heightChange
 {
-    _talkButton.frame = CGRectMake(_item.talkButtonFrame.origin.x, _item.talkButtonFrame.origin.y + heightChange, _item.talkButtonFrame.size.width, _item.talkButtonFrame.size.height);
+    _changeStatusButton.frame = CGRectMake(_item.talkButtonFrame.origin.x, _item.talkButtonFrame.origin.y + heightChange, _item.talkButtonFrame.size.width, _item.talkButtonFrame.size.height);
     _iconButton.frame = CGRectMake(_item.iconButtonFrame.origin.x, _item.iconButtonFrame.origin.y + heightChange, _item.iconButtonFrame.size.width, _item.iconButtonFrame.size.height);
     _picButton.frame = CGRectMake(_item.picButtonFrame.origin.x, _item.picButtonFrame.origin.y + heightChange, _item.picButtonFrame.size.width, _item.picButtonFrame.size.height);
     _pressButton.frame = CGRectMake(_item.pressButtonFrame.origin.x, _item.pressButtonFrame.origin.y + heightChange, _item.pressButtonFrame.size.width, _item.pressButtonFrame.size.height);
@@ -387,19 +454,15 @@
     {
         [[GYChatManager sharedManager].delegate sendMessage:_textView.text];
         _textView.text = @"";
-//        [self setTextViewFrame];
-//        [self resetFrame];
+    }
+    if(!_orientAnswerLabelBackView.hidden)
+    {
+        [self hiddenOrientAnswerLabel];
     }
 }
 - (void)chooseMotion:(id)sender phArr:(NSArray *)phArr bqArr:(NSArray *)bqArr
 {
     _messageString =[NSMutableString stringWithFormat:@"%@",_textView.text];
-    int everNum = kMotionNumberBefore6p;   // 在6plus之前一页显示32个表情
-
-    if (IS_IPHONE_6P) {
-        everNum = kMotionNumberAfter6p;   // 在6plus上一页显示36个表情
-    }
-
     UIButton *tempbtn = (UIButton *)sender;
 
     NSMutableDictionary *tempdic = [phArr objectAtIndex:tempbtn.tag];
@@ -418,19 +481,13 @@
         NSString *faceStr= [NSString stringWithFormat:@"%@",[temparray objectAtIndex:0]];
         [_messageString appendString:faceStr];
     }
-//    NSRange range = NSMakeRange(_textView.text.length, faceStr.length);
-//    [self textView:_textView shouldChangeTextInRange:range replacementText:faceStr];
-    _textView.text=_messageString;
-//    _textView.selectedRange = NSMakeRange([_messageString length],0);
-//    [self scrollViewDidScroll:_textView];
-//    CGFloat offsetHeight = [self getTextViewContentHeight];
-//    [_textView setContentOffset:CGPointMake(0,offsetHeight)];
-//    [self setTextViewFrame];
+    _textView.text = _messageString;
 }
 - (void)clearClickMotion:(NSArray *)bqStrArray
 {
     if (_messageString.length <= 0)
     {
+        [self hiddenOrientAnswerLabel];
         return;
     }
     NSString *tempStr = [_messageString substringFromIndex:_messageString.length-1];
@@ -445,7 +502,7 @@
 
     if (range.location == NSNotFound)
     {
-        _messageString = (NSMutableString *)[_messageString substringToIndex:(_messageString.length-1)];
+        _messageString = (NSMutableString *)[_messageString substringToIndex:(_messageString.length - 1)];
         return;
     }
     //截取@"[/"与@"]"之间的字符串
@@ -474,7 +531,7 @@
         CGFloat offsetHeight;
         if(_textView.contentSize.height >= _textView.frame.size.height)
         {
-            offsetHeight = _textView.contentSize.height - _textView.frame.size.height - 8;
+            offsetHeight = _textView.contentSize.height - _textView.frame.size.height - kTextViewTextBank;
         }
         else
         {
@@ -484,6 +541,20 @@
     }
     return 0;
 }
+- (void)hiddenOrientAnswerLabel
+{
+    _isOrientAnswerStatus = NO;
+    _orientAnswerLabelBackView.hidden = YES;
+    _textView.textContainerInset = UIEdgeInsetsMake(8, 0, 8, 0);
+    CGRect frame = _item.textViewFrame;
+    CGRect newTextViewFrame = frame;
+    [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+        [self changeTextViewFrame:newTextViewFrame];
+        [self setContentUIFrame:0];
+        [self changeSelfViewFrame:_selfCurrentOriginHeightFrame];
+    }];
+    
+}
 #pragma -mark publicMethod
 - (void)menuBtnSelected:(BOOL)isSelected
 {
@@ -492,10 +563,6 @@
     }];
     if(isSelected)
     {
-        if(_keyboradIsShow)
-        {
-            [_textView becomeFirstResponder];
-        }
         _iconButton.selected = NO;
         _picButton.selected = NO;
     } else
@@ -520,7 +587,30 @@
         _iconButton.selected = NO;
     }
 }
-- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed
+- (void)orientateAnswer:(NSString *)messageAnswered userName:(NSString *)userName
+{
+    _isOrientAnswerStatus = YES;
+    _orientAnswerLabelHeight = kOrientAnswerLabelHeight + kOrientAnswerLabelTopBank;
+    _orientAnswerLabelBackView.hidden = NO;
+    UILabel *orientAnswerLabel = (UILabel *)[_orientAnswerLabelBackView viewWithTag:kOrientAnswerLabelTag];
+    
+    orientAnswerLabel.text = messageAnswered;
+    _textView.textContainerInset = UIEdgeInsetsMake(_orientAnswerLabelHeight, 0, 0, 0);
+    [_textView becomeFirstResponder];
+    
+    CGRect frame = _currentTextViewFrame;
+    if([_textView.text  isEqual: @""])
+    {
+        frame = _item.textViewFrame;
+    }
+    CGFloat heightAdd = _orientAnswerLabelHeight - kOrientAnswerLabelTopOffSet;
+    [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+        CGRect newTextViewFrame = CGRectMake(frame.origin.x, frame.origin.y - heightAdd, frame.size.width, frame.size.height + heightAdd);
+        [self changeTextViewFrame:newTextViewFrame];
+    }];
+    _textView.text = [NSString stringWithFormat:@"%@@%@ ",_textView.text,userName];
+}
+- (void)atSomeone:(NSString *)personName isLongPressed:(BOOL)isLongPressed
 {
     if(isLongPressed)
     {
@@ -531,7 +621,7 @@
             return;
         }
     }
-    _textView.text = [NSString stringWithFormat:@"%@@%@",_textView.text,personName];
+    _textView.text = [NSString stringWithFormat:@"%@@%@ ",_textView.text,personName];
     [_textView becomeFirstResponder];
 }
 - (NSString *)getCurrentTextViewMessage
@@ -540,9 +630,38 @@
 }
 - (void)addDraft:(NSString *)draft
 {
-    _textView.text = draft;
-    [_textView becomeFirstResponder];
-    [self setTextViewFrame];
+    if(draft)
+    {
+        _textView.text = draft;
+        if(_item.style == TypeChat1)
+        {
+            [_textView becomeFirstResponder];
+            [self setTextViewFrame];
+        }
+    }
+}
+- (void)viewWillLayoutSubviews
+{
+    [self initFrame];
+    self.frame = _newSelfFrame;
+    if(![_textView.text isEqualToString:@""])
+    {
+        [self setTextViewFrame];
+    }
+    else
+    {
+        _textView.frame = _newTextViewFrame;
+        [self setContentUIFrame:0];
+    }
+    _orientAnswerLabelBackView.frame = CGRectMake(_item.textViewFrame.origin.x, _item.textViewFrame.origin.y, _item.textViewFrame.size.width, kOrientAnswerLabelHeight + kOrientAnswerLabelHeightOffset);
+    _iconButton.selected = NO;
+    _picButton.selected = NO;
+    [_motionView removeFromSuperview];
+    [_picView removeFromSuperview];
+    [self reFrameMotionView];
+    [self reFramePicView];
+    [_motionView viewWillLayoutSubviews];
+    [_picView viewWillLayoutSubviews];
 }
 #pragma -mark keyboardNotification
 //实现当键盘出现的时候计算键盘的高度大小。用于输入框显示位置
@@ -564,15 +683,24 @@
         _selfCurrentOriginHeightFrame = CGRectMake(_originSelfFrame.origin.x, kScreenHeight - kbSize.height - _originSelfFrame.size.height, kScreenWidth, _originSelfFrame.size.height);
         _currentSelfFrame = self.frame;
     }];
-    
-    [[GYChatManager sharedManager].delegate keyboardShown:kbSize];
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(keyboardShown:)])
+    {
+        [[GYChatManager sharedManager].delegate keyboardShown:kbSize];
+    }
 }
 //当键盘即将隐藏的时候
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    [[GYChatManager sharedManager].delegate keyboradHidden];
-//    _picButton.selected = NO;
-//    _iconButton.selected = NO;
+    if([[GYChatManager sharedManager].delegate respondsToSelector:@selector(keyboradHidden)])
+    {
+        [[GYChatManager sharedManager].delegate keyboradHidden];
+    }
+    if(!_iconButton.selected && !_picButton.selected)
+    {
+        [UIView animateWithDuration:kKeyboardAnimationDuration animations:^{
+            [self resetCurrentViewFrame];
+        }];
+    }
     NSLog(@"键盘隐藏");
 }
 #pragma -mark UITextViewDelegate
@@ -584,6 +712,8 @@
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
     [self setTextViewFrame];
+    UIEdgeInsets point  = textView.textContainerInset;
+    NSLog(@"pointX:%f,%f,%f,%f",point.top,point.left,point.bottom,point.right);
 }
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
     if ([text isEqualToString:@"\n"]){ //判断输入的字是否是回车，即按下return
@@ -597,15 +727,15 @@
             [[GYChatManager sharedManager].delegate clickedAt:text];
         }
     }
+    if([text isEqualToString:@""])
+    {
+        //监听删除事件
+        if([_textView.text  isEqual: @""])
+        {
+            [self hiddenOrientAnswerLabel];
+        }
+    }
     return YES;
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGSize scrollSize =  scrollView.contentSize;
-    NSLog(@"scrollSizeW:%f,H:%f",scrollSize.width,scrollSize.height);
-    CGPoint offset = scrollView.contentOffset;
-    NSLog(@"offsetX:%f,Y:%f",offset.x,offset.y);
-    NSLog(@"滚动完毕");
 }
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -39,4 +39,8 @@
 #define cancleLabelHeight 26.0
 #define cancleLabelFont 13
 
+#define kTalkingStatus_TalkingImage @"speak_Layer_bj.png"
+#define kTalkingStatus_WarningImage @"speak_Layer_bj1.png"
+#define kTalkingStatus_CancelImage @"speak_Layer_bj.png"
+
 #endif /* GYVoiceInputPromptViewCount_h */

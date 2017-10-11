@@ -15,7 +15,7 @@
 
 @end
 
-@implementation FunctionButtonModel
+@implementation GYFunctionButtonModel
 
 
 
@@ -25,6 +25,8 @@
 {
     NSMutableArray *_functionArray;
     UIScrollView *_bgScrollview;
+    UIView *_lineView;
+    CGRect _lineRect;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -42,8 +44,13 @@
 }
 - (void)configUI
 {
+    [self setUIFrame];
     [self configBgScrollView];
     [self configFunctionItemIcon];
+}
+- (void)setUIFrame
+{
+    _lineRect = CGRectMake(kLineX, kLineX, self.frame.size.width, kLineHeight);
 }
 - (void)configBgScrollView
 {
@@ -56,6 +63,10 @@
     _bgScrollview.showsVerticalScrollIndicator = NO;
     _bgScrollview.backgroundColor = [UIColor clearColor];
     [self addSubview:_bgScrollview];
+    
+    _lineView = [[UIView alloc] initWithFrame:_lineRect];
+    _lineView.backgroundColor = [UIColor grayColor];
+    [self addSubview:_lineView];
 }
 - (void)configFunctionItemIcon
 {
@@ -70,22 +81,16 @@
     if ( IS_IPHONE_6P) {
         numberOfIconEachLine = kNumberOfIconEachLine_6p;
     }
-    
-//    float buttonSize = 60.0;
-//    float labelHeight = 20.0;
-    
     unsigned long page = sumnum / numberOfIconEachLine + (sumnum % numberOfIconEachLine ? 1 : 0);
     
     float paddingX = (_bgScrollview.frame.size.width - numberOfIconEachLine * kBtnSize) / (numberOfIconEachLine + 1);
-//    float paddingY = 15;
-    
     _bgScrollview.pagingEnabled = YES;
     _bgScrollview.scrollEnabled = YES;
     _bgScrollview.contentSize = CGSizeMake(_bgScrollview.frame.size.width, (kPaddingY + kBtnSize + kLabelHeight) * page);
     
     for (int i = 0; i < sumnum; i++) {
         
-        FunctionButtonModel *model = [_functionArray objectAtIndex:i];
+        GYFunctionButtonModel *model = [_functionArray objectAtIndex:i];
         
         int row = i / numberOfIconEachLine;
         int col = i % numberOfIconEachLine;
@@ -94,19 +99,19 @@
         iconbutton.backgroundColor=[UIColor clearColor];
         iconbutton.tag = model.btnTag;
         [iconbutton addTarget:self action:@selector(functionItemBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if (i + kFunctionItemTag == kFunctionItemTag_Picture) {
+        if (i + kFunctionItemBaseTag == kFunctionItemTag_Picture) {
             [self addLongPressToButton:iconbutton];
         }
-        if (i + kFunctionItemTag == kFunctionItemTag_Camera){
+        if (i + kFunctionItemBaseTag == kFunctionItemTag_Camera){
             [self addLongPressToButton:iconbutton];
         }
-        if (i + kFunctionItemTag == kFunctionItemTag_Video){
+        if (i + kFunctionItemBaseTag == kFunctionItemTag_Video){
             [self addLongPressToButton:iconbutton];
         }
-        if (i + kFunctionItemTag == kFunctionItemTag_File){
+        if (i + kFunctionItemBaseTag == kFunctionItemTag_File){
             [self addLongPressToButton:iconbutton];
         }
-        if (i + kFunctionItemTag == kFunctionItemTag_Receipt){
+        if (i + kFunctionItemBaseTag == kFunctionItemTag_Receipt){
             [self addLongPressToButton:iconbutton];
         }
         [iconbutton setImage:[UIImage imageNamed:model.imageName]forState:UIControlStateNormal];
@@ -116,12 +121,13 @@
         
         CGRect nameLabelRect = CGRectMake(kNameLabelRect, kBtnSize, kBtnSize, kLabelHeight);
         CGFloat nameLabelFont = kNameLabelFont;
-        UILabel *nameLabel=[[UILabel alloc]initWithFrame:nameLabelRect];
+        UILabel *nameLabel = [[UILabel alloc]initWithFrame:nameLabelRect];
+        nameLabel.tag = kFunctionItemBaseTitleTag + i;
         nameLabel.text = model.functionName;
-        nameLabel.backgroundColor=[UIColor clearColor];
-        nameLabel.font=[UIFont systemFontOfSize:nameLabelFont];
-        nameLabel.textColor=[UIColor blackColor];
-        nameLabel.textAlignment=NSTextAlignmentCenter;
+        nameLabel.backgroundColor = [UIColor clearColor];
+        nameLabel.font = [UIFont systemFontOfSize:nameLabelFont];
+        nameLabel.textColor = [UIColor blackColor];
+        nameLabel.textAlignment = NSTextAlignmentCenter;
         [iconbutton addSubview:nameLabel];
     }
 }
@@ -129,49 +135,14 @@
 - (NSMutableArray *)getAllFunctionItems
 {
     NSMutableArray *functionArray = [[NSMutableArray alloc]init];
-    FunctionButtonModel *button = nil;
-    //    照片按钮
-    button = [[FunctionButtonModel alloc]init];
-    button.functionName = @"照片";
-    button.imageName = @"chat_picture_icon.png";
-    button.hlImageName = @"chat_picture_icon_hl.png";
-    button.btnTag = kFunctionItemTag_Picture;
-    [functionArray addObject:button];
-    //    拍照按钮
-    button = [[FunctionButtonModel alloc]init];
-    button.functionName = @"拍照";
-    button.imageName = @"chat_camera_icon.png";
-    button.hlImageName = @"chat_camera_icon_hl.png";
-    button.btnTag = kFunctionItemTag_Camera;
-    [functionArray addObject:button];
-    //    视频按钮
-    button = [[FunctionButtonModel alloc]init];
-    button.functionName = @"视频";
-    button.imageName = @"chat_video_icon.png";
-    button.hlImageName = @"chat_video_icon_hl.png";
-    button.btnTag = kFunctionItemTag_Video;
-    [functionArray addObject:button];
-    //文件按钮
-    button = [[FunctionButtonModel alloc]init];//文件
-    button.functionName = @"文件";
-    button.imageName = @"chat_file_icon.png";
-    button.hlImageName = @"chat_file_icon_hl.png";
-    button.btnTag = kFunctionItemTag_File;
-    [functionArray addObject:button];
-    //回执按钮
-    button = [[FunctionButtonModel alloc]init];
-    button.functionName = @"回执";
-    button.imageName = @"chat_receipt_icon.png";
-    button.hlImageName = @"chat_receipt_icon_hl.png";
-    button.btnTag = kFunctionItemTag_Receipt;
-    [functionArray addObject:button];
-    //语音按钮
-    button = [[FunctionButtonModel alloc]init];
-    button.functionName = @"语音";
-    button.imageName = @"语音输入.png";
-    button.hlImageName = @"voiceInput.png";
-    button.btnTag = kFunctionItemTag_VoiceInput;
-    [functionArray addObject:button];
+    for (NSInteger i = 0; i < kFunction_NameArr.count; i++) {
+        GYFunctionButtonModel *button = [[GYFunctionButtonModel alloc]init];
+        button.functionName = kFunction_NameArr[i];
+        button.imageName = kFunction_NormalImageArr[i];
+        button.hlImageName = kFunction_HlImageArr[i];
+        button.btnTag = kFunctionItemBaseTag + i;
+        [functionArray addObject:button];
+    }
     return functionArray;
 }
 
@@ -199,7 +170,7 @@
             break;
     }
     
-    longPress.minimumPressDuration = 1; //1s 定义按的时间
+    longPress.minimumPressDuration = kMinimumPressDuration; //1s 定义按的时间
     [button addGestureRecognizer:longPress];
 }
 /*
@@ -298,6 +269,29 @@
         {
             self.sendFileCallback(logFilePath);
         }
+    }
+}
+- (void)viewWillLayoutSubviews
+{
+    [self setUIFrame];
+    _lineView.frame = _lineRect;
+    _bgScrollview.frame = CGRectMake(kBgScrollViewX, kBgScrollViewY, self.frame.size.width, self.frame.size.height);
+    NSUInteger sumnum = _functionArray.count;
+    int numberOfIconEachLine = kNumberOfIconEachLine;
+    if ( IS_IPHONE_6P) {
+        numberOfIconEachLine = kNumberOfIconEachLine_6p;
+    }
+    unsigned long page = sumnum / numberOfIconEachLine + (sumnum % numberOfIconEachLine ? 1 : 0);
+    float paddingX = (_bgScrollview.frame.size.width - numberOfIconEachLine * kBtnSize) / (numberOfIconEachLine + 1);
+    _bgScrollview.contentSize = CGSizeMake(_bgScrollview.frame.size.width, (kPaddingY + kBtnSize + kLabelHeight) * page);
+    
+    for (int i = 0; i < sumnum; i++) {
+        int row = i / numberOfIconEachLine;
+        int col = i % numberOfIconEachLine;
+        UIButton *iconBtn = (UIButton *)[self viewWithTag:kFunctionItemBaseTag + i];
+        iconBtn.frame = CGRectMake(paddingX + (kBtnSize + paddingX) * col,kPaddingY + (kPaddingY + kBtnSize + kLabelHeight) * row ,kBtnSize,kBtnSize);
+        UILabel *titleLabel = (UILabel *)[self viewWithTag:kFunctionItemBaseTitleTag + i];
+        titleLabel.frame = CGRectMake(kNameLabelRect, kBtnSize, kBtnSize, kLabelHeight);
     }
 }
 @end

@@ -7,22 +7,16 @@
 //
 
 #import "TalkViewController.h"
-#import "GYChatView.h"
 #import "GYChatManager.h"
-#import "GYVoiceInputPromptView.h"
 #import "ViewController.h"
 @interface TalkViewController ()<GYChatManagerDelegate>
 
 @end
 
 @implementation TalkViewController
-{
-    NSString *_draft;
-}
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.view.backgroundColor = [UIColor greenColor];
-    [self configVoiceInputPromtUI];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self configFooterView];
     [self addTapGesture];
     
@@ -32,22 +26,23 @@
 }
 - (void)viewDidAppear:(BOOL)animated
 {
-    if(_draft)
+    [super viewDidAppear:animated];
+    NSString *draft = [GYChatManager sharedManager].draft;
+    if(!([draft isEqualToString:@""] || draft == nil))
     {
-        [[GYChatManager sharedManager] addDraft:_draft];
+        [[GYChatManager sharedManager] addDraft:draft];
     }
+}
+- (void)viewWillLayoutSubviews
+{
+    [[GYChatManager sharedManager] viewWillLayoutSubviews];
 }
 - (void)back
 {
     NSString *draft = [[GYChatManager sharedManager] getCurrentTextViewMessage];
+    [[GYChatManager sharedManager] setDraft:draft];
     NSLog(@"%@", draft);
-    ViewController* vc= [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-    [vc getDraft:draft];
     [self.navigationController popViewControllerAnimated:YES];
-}
-- (void)addDraft:(NSString *)draft
-{
-    _draft = draft;
 }
 - (void)configFooterView
 {
@@ -56,9 +51,9 @@
     item.inputViewFrame = footerRect;
     item.style = TypeChat1;
     item.type2footerBtnCount = 2;
-    __weak typeof(self) weakSelf = self;
+    WS(ws);
     item.configViewCallback = ^(UIView *view) {
-        __strong typeof(self) strongSelf = weakSelf;
+        __strong typeof(self) strongSelf = ws;
         if (strongSelf) {
             [self.view addSubview:view];
         }
@@ -68,12 +63,7 @@
     chatManager.delegate = self;
     [chatManager configChatRootView:item];
 }
-- (void)configVoiceInputPromtUI
-{
-    [[GYChatManager sharedManager] configVoiceInputPromtUI:self.view callback:^(UIView *view) {
-        [self.view addSubview:view];
-    }];
-}
+
 #pragma -mark GYChatManagerDelegate
 /** 点击功能按钮回调 */
 - (void)functionClicked:(UIView *)functionItem
@@ -124,7 +114,7 @@
 - (void)clickedAt:(NSString *)msg
 {
     NSLog(@"%@",msg);
-    [[GYChatManager sharedManager] orientateAnswer:@"personName1" isLongPressed:NO];
+    [[GYChatManager sharedManager] atSomeone:@"personName1" isLongPressed:NO];
 }
 /** 收起键盘回调 */
 - (void)keyboradHidden
@@ -133,48 +123,68 @@
 }
 - (void)recordTouchUpInside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+    
 }
 - (void)recordTouchUpOutside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_End];
+    
 }
 - (void)recordTouchDown:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+    
 }
 - (void)recordTouchDragOutside:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_WarnningCancle];
+    
 }
 - (void)recordTouchDragIn:(id)sender
 {
-    [[GYChatManager sharedManager] InputPromptViewStatus:PromptStatus_IsTalking];
+    
 }
 
 - (void)addTapGesture
 {
-    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(100, 300, 50, 50)];
+    UIImageView *icon = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 50, 50)];
     icon.backgroundColor = [UIColor redColor];
     icon.userInteractionEnabled = YES;
     [self.view addSubview:icon];
     
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
-    [self.view addGestureRecognizer:recognizer];
+    UILongPressGestureRecognizer *longPress1 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction1:)];
+    [icon addGestureRecognizer:longPress1];
+    
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 200, 200, 30)];
+    messageLabel.backgroundColor = [UIColor greenColor];
+    messageLabel.text = @"长按回复消息";
+    messageLabel.userInteractionEnabled = YES;
+    [self.view addSubview:messageLabel];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
-    [icon addGestureRecognizer:longPress];
+    [messageLabel addGestureRecognizer:longPress];
+    
+    UIButton *changeBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    changeBtn.frame = CGRectMake(100, 170, 200, 30);
+    changeBtn.backgroundColor = [UIColor yellowColor];
+    [changeBtn addTarget:self action:@selector(changeAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:changeBtn];
 }
-- (void)tapAction:(id)sender
+- (void)changeAction
 {
-    [[GYChatManager sharedManager] keyboardIsShow:NO];
+//    [[GYChatManager sharedManager] changeChatStyle:TypeChat2];
 }
 - (void)longPressAction:(id)sender
 {
     UILongPressGestureRecognizer *gesture = (UILongPressGestureRecognizer *)sender;
     if(gesture.state == UIGestureRecognizerStateBegan)
     {
-        [[GYChatManager sharedManager] orientateAnswer:@"personName" isLongPressed:YES];
+        [[GYChatManager sharedManager] orientateAnswer:@"定向回复" userName:@"username"];
+    }
+}
+- (void)longPressAction1:(id)sender
+{
+    UILongPressGestureRecognizer *gesture = (UILongPressGestureRecognizer *)sender;
+    if(gesture.state == UIGestureRecognizerStateBegan)
+    {
+        [[GYChatManager sharedManager] atSomeone:@"personName" isLongPressed:YES];
     }
 }
 

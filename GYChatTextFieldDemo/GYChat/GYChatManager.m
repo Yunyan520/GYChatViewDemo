@@ -15,6 +15,7 @@
 static GYChatManager *instance = nil;
 @implementation GYChatManager
 {
+    GYChatView *_chatView;
     GYChatInputCustomView *_chatInputCustomView;
     GYVoiceInputPromptView *_promt;
     UIView *_motionView;
@@ -32,6 +33,7 @@ static GYChatManager *instance = nil;
 {
     GYChatView *footerView=[[GYChatView alloc]initWithFrame:item];
     item.configViewCallback(footerView);
+    _chatView = footerView;
     _chatInputCustomView = [footerView getChatInputCustomView];
 }
 - (void)configVoiceInputPromtUI:(UIView *)superView callback:(ConfigViewCallback)callback
@@ -45,18 +47,16 @@ static GYChatManager *instance = nil;
 }
 - (void)configMotionView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-//    CGRect motionRect =  CGRectMake(kMotionViewX, inputViewFrame.size.height, inputViewFrame.size.width, kMotionViewHeight);
     GYMotionView *motionView = [[GYMotionView alloc] initWithFrame:inputViewFrame];
     callback(motionView);
 }
 
 - (void)configPicView:(CGRect)inputViewFrame callback:(ConfigViewCallback)callback
 {
-//    CGRect picRect =  CGRectMake(kPicViewX, inputViewFrame.size.height, inputViewFrame.size.width, kPicViewHeight);
     GYPicView *picView = [[GYPicView alloc] initWithFrame:inputViewFrame];
-    __weak typeof(self) weakSelf = self;
+    WS(ws);
     picView.functionClickedCallback = ^(UIView *functionItem) {
-        __strong typeof(self) strongSelf = weakSelf;
+        __strong typeof(self) strongSelf = ws;
         if (!strongSelf) {
             return;
         }
@@ -66,7 +66,7 @@ static GYChatManager *instance = nil;
         }
     };
     picView.sendFileCallback = ^(NSString *fileName) {
-        __strong typeof(self) strongSelf = weakSelf;
+        __strong typeof(self) strongSelf = ws;
         if (!strongSelf) {
             return;
         }
@@ -81,9 +81,13 @@ static GYChatManager *instance = nil;
 {
     [_chatInputCustomView keyBoardIsShow:isShow];
 }
-- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed
+- (void)orientateAnswer:(NSString *)messageAnswered userName:(NSString *)userName
 {
-    [_chatInputCustomView orientateAnswer:personName isLongPressed:isLongPressed];
+    [_chatInputCustomView orientateAnswer:messageAnswered userName:userName];
+}
+- (void)atSomeone:(NSString *)personName isLongPressed:(BOOL)isLongPressed
+{
+    [_chatInputCustomView atSomeone:personName isLongPressed:isLongPressed];
 }
 - (NSString *)getCurrentTextViewMessage
 {
@@ -94,5 +98,13 @@ static GYChatManager *instance = nil;
 - (void)addDraft:(NSString *)draft
 {
     [_chatInputCustomView addDraft:draft];
+}
+//- (void)changeChatStyle:(ChatInputViewStyle)newStyle
+//{
+//    [_chatView changeChatStyle:newStyle];
+//}
+- (void)viewWillLayoutSubviews
+{
+    [_chatView viewWillLayoutSubviews];
 }
 @end

@@ -20,10 +20,7 @@ typedef NS_ENUM(NSInteger, ChatInputViewStyle)
     /** 类似微信公众号输入框 */
     TypeChat2
 };
-
-
 typedef void(^ConfigViewCallback)(UIView *view);
-
 @interface GYConfigChatViewItem : NSObject
 @property(nonatomic, assign) CGRect inputViewFrame;
 @property(nonatomic, assign) ChatInputViewStyle style;
@@ -52,13 +49,12 @@ typedef void(^ConfigViewCallback)(UIView *view);
 - (void)recordTouchDown:(id)sender;
 - (void)recordTouchDragOutside:(id)sender;
 - (void)recordTouchDragIn:(id)sender;
-
-
 @end
-
 @interface GYChatManager : NSObject
-+ (GYChatManager *)sharedManager;
 @property(nonatomic, assign) id<GYChatManagerDelegate>delegate;
+@property(nonatomic, copy) NSString *draft;
+
++ (GYChatManager *)sharedManager;
 /**
  创建框架UI
  @param item 所需item
@@ -94,13 +90,18 @@ typedef void(^ConfigViewCallback)(UIView *view);
  @param isShow 0为隐藏键盘，1为弹起键盘
  */
 - (void)keyboardIsShow:(BOOL)isShow;
-
 /**
- 定向回复
- @param personName 对谁进行定向回复
+ 对某条消息定向回复
+ @param messageAnswered 回复的消息
+ @param userName 消息主人名称
+ */
+- (void)orientateAnswer:(NSString *)messageAnswered userName:(NSString *)userName;
+/**
+ 艾特某人
+ @param personName 人名
  @param isLongPressed 是否通过长按方式
  */
-- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
+- (void)atSomeone:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
 /**
  获取当前textView内内容
  @return 返回当前textView内容
@@ -111,4 +112,10 @@ typedef void(^ConfigViewCallback)(UIView *view);
  @param draft 草稿内容
  */
 - (void)addDraft:(NSString *)draft;
+/**
+ 切换输入框类型
+ @param newStyle 新类型
+ */
+//- (void)changeChatStyle:(ChatInputViewStyle)newStyle;
+- (void)viewWillLayoutSubviews;
 @end

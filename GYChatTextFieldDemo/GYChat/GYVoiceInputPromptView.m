@@ -14,24 +14,33 @@
     UIImageView *_talkIconTalkingView;
     UIImageView *_talkIconWarningView;
     UIImageView *_talkIconCancelView;
+    CGRect _talkIconTalkingViewFrame;
+    CGRect _talkIconWarningViewFrame;
+    CGRect _talkIconCancelViewFrame;
 }
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if(self)
     {
+        [self setUIFrame];
         [self configTalkingUI];
         [self configWarmingUI];
         [self configCancleUI];
     }
     return self;
 }
-
+- (void)setUIFrame
+{
+    _talkIconTalkingViewFrame = CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight);
+    _talkIconWarningViewFrame = CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight);
+    _talkIconCancelViewFrame = CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight);
+}
 - (void)configTalkingUI
 {
-    _talkIconTalkingView = [[UIImageView alloc]initWithFrame:CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight)];
+    _talkIconTalkingView = [[UIImageView alloc]initWithFrame:_talkIconTalkingViewFrame];
     _talkIconTalkingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-    _talkIconTalkingView.image = [UIImage imageNamed:@"speak_Layer_bj.png"];
+    _talkIconTalkingView.image = [UIImage imageNamed:kTalkingStatus_TalkingImage];
     [self addSubview:_talkIconTalkingView];
     _talkIconTalkingView.hidden = YES;
     
@@ -55,7 +64,7 @@
     [talkimageview addSubview:updateTimeLabel];
     
     UILabel *tipLabel = [[UILabel alloc]initWithFrame:kTipLabelRect];
-    tipLabel.text=@"滑动到此可以取消发送";
+    tipLabel.text = @"滑动到此可以取消发送";
     tipLabel.textAlignment = NSTextAlignmentCenter;
     tipLabel.font = [UIFont systemFontOfSize:kTipLabelFont];
     tipLabel.backgroundColor = [UIColor clearColor];
@@ -64,14 +73,14 @@
 - (void)configWarmingUI
 {
     //录音不播放提示。
-    _talkIconWarningView = [[UIImageView alloc]initWithFrame:CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight)];
+    _talkIconWarningView = [[UIImageView alloc]initWithFrame:_talkIconWarningViewFrame];
     _talkIconWarningView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-    _talkIconWarningView.image = [UIImage imageNamed:@"speak_Layer_bj1.png"];
+    _talkIconWarningView.image = [UIImage imageNamed:kTalkingStatus_WarningImage];
     [self addSubview:_talkIconWarningView];
     _talkIconWarningView.hidden = YES;
     
     UILabel *warningtipLabel = [[UILabel alloc]initWithFrame:kTipLabelRect];
-    warningtipLabel.text=@"说话时间太短";
+    warningtipLabel.text = @"说话时间太短";
     warningtipLabel.textColor = [UIColor whiteColor];
     warningtipLabel.textAlignment = NSTextAlignmentCenter;
     warningtipLabel.font = [UIFont systemFontOfSize:kTipLabelFont];
@@ -80,9 +89,9 @@
 }
 - (void)configCancleUI
 {
-    _talkIconCancelView = [[UIImageView alloc]initWithFrame:CGRectMake(kTalkIconTalkingViewX, kTalkIconViewY, kTalkIconTalkingViewWidth, kTalkIconViewHeight)];
+    _talkIconCancelView = [[UIImageView alloc]initWithFrame:_talkIconCancelViewFrame];
     _talkIconCancelView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-    _talkIconCancelView.image = [UIImage imageNamed:@"speak_Layer_bj.png"];
+    _talkIconCancelView.image = [UIImage imageNamed:kTalkingStatus_CancelImage];
     UIImageView*imageview = [[UIImageView alloc]initWithFrame:CGRectMake(kCancleImageX, kCancleImageY, kTalkIconTalkingViewWidth, kTalkIconViewHeight)];
     imageview.image = [UIImage imageNamed:@"cancel_audio.png"];
     [_talkIconCancelView addSubview:imageview];
@@ -123,6 +132,13 @@
         default:
             break;
     }
+}
+- (void)viewWillLayoutSubviews
+{
+    [self setUIFrame];
+    _talkIconTalkingView.frame = _talkIconTalkingViewFrame;
+    _talkIconWarningView.frame = _talkIconWarningViewFrame;
+    _talkIconCancelView.frame = _talkIconCancelViewFrame;
 }
 /*
 // Only override drawRect: if you perform custom drawing.

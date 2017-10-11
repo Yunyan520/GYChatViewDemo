@@ -9,6 +9,8 @@
 #ifndef GYChatManagerCount_h
 #define GYChatManagerCount_h
 
+#define WS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
+
 #define kMotionViewX 0
 #define kMotionViewHeight 205
 

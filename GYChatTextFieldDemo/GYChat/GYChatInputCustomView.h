@@ -15,19 +15,24 @@
 #import "GYChatManager.h"
 #import "GYChatInputCustomViewCount.h"
 @interface GYChatInputCustomViewItem : NSObject
+@property(nonatomic, assign) CGRect currentViewFrame;
 @property(nonatomic, assign) CGRect talkButtonFrame;
 @property(nonatomic, assign) CGRect textViewFrame;
 @property(nonatomic, assign) CGRect pressButtonFrame;
 @property(nonatomic, assign) CGRect iconButtonFrame;
 @property(nonatomic, assign) CGRect picButtonFrame;
 @property(nonatomic, assign) UIView *currentSuperView;
+@property(nonatomic, assign) ChatInputViewStyle style;
 @end
 
 @interface GYChatInputCustomView : UIView
-- (instancetype)initWithFrame:(CGRect)frame item:(GYChatInputCustomViewItem *)item;
+- (instancetype)initWithItem:(GYChatInputCustomViewItem *)item;
 - (void)menuBtnSelected:(BOOL)isSelected;
 - (void)keyBoardIsShow:(BOOL)isShow;
-- (void)orientateAnswer:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
+- (void)orientateAnswer:(NSString *)messageAnswered userName:(NSString *)userName;
+- (void)atSomeone:(NSString *)personName isLongPressed:(BOOL)isLongPressed;
 - (NSString *)getCurrentTextViewMessage;
 - (void)addDraft:(NSString *)draft;
+//重新布局
+- (void)viewWillLayoutSubviews;
 @end

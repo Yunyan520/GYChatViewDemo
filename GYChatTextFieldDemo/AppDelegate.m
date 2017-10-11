@@ -22,7 +22,8 @@
     [self.window makeKeyAndVisible];
     ViewController *root = [ViewController new];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:root];
-    
+//    11111
+    //lidianchaoPushTest
     self.window.rootViewController = nav;
     return YES;
 }

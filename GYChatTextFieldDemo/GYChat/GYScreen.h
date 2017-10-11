@@ -59,7 +59,8 @@
 
 
 
-#define kUIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define kUIColorFromValue(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define kUIColorFromRGB(r,g,b,a) [UIColor colorWithRed:r*1.0/255.0 green:g*1.0/255.0 blue:g*1.0/255.0 alpha:a*1.0]
 #define kUIImageSize(image) image.size
 #define kRealSize(size) (size)/2
 #define kIPHONE5sWIDTH 320

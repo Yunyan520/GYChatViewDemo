@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "TalkViewController.h"
+#import "GYChatManager.h"
 @interface ViewController ()
 
 @end
@@ -15,7 +16,6 @@
 @implementation ViewController
 {
     UILabel *_draftLabel;
-    NSString *_draft;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,19 +33,12 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    _draftLabel.text = _draft;
-}
-- (void)getDraft:(NSString *)msg
-{
-    _draft = msg;
+    [super viewWillAppear:animated];
+    _draftLabel.text = [GYChatManager sharedManager].draft;
 }
 - (void)btnAction
 {
     TalkViewController *vc = [[TalkViewController alloc] init];
-    if(_draft)
-    {
-        [vc addDraft:_draft];
-    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)didReceiveMemoryWarning {

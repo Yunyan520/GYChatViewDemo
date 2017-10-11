@@ -8,14 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "GYPicViewCount.h"
-#define kFunctionItemTag 1000
-#define kFunctionItemTag_Picture kFunctionItemTag + 0
-#define kFunctionItemTag_Camera kFunctionItemTag + 1
-#define kFunctionItemTag_Video kFunctionItemTag + 2
-#define kFunctionItemTag_File kFunctionItemTag + 3
-#define kFunctionItemTag_Receipt kFunctionItemTag + 4
-#define kFunctionItemTag_VoiceInput kFunctionItemTag + 5
-@interface FunctionButtonModel : NSObject
+
+@interface GYFunctionButtonModel : NSObject
 /** 功能名称 */
 @property(nonatomic,copy) NSString *functionName;
 /** 常态图片名称 */
@@ -31,6 +25,7 @@
 @property(nonatomic, copy) void(^functionClickedCallback)(UIView *functionItem);
 /** 长按发送文件 */
 @property(nonatomic, copy) void(^sendFileCallback)(NSString *fileName);
+- (void)viewWillLayoutSubviews;
 @end
 @interface NSDate(myformatter)
 

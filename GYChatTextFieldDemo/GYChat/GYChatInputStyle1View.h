@@ -12,11 +12,13 @@
  *包含其他功能按钮
  */
 
-@interface ButtonItem : NSObject
+@interface GYButtonItem : NSObject
 @property(nonatomic, assign) NSInteger btnCount;
 @property(nonatomic, strong) NSArray *btnTitles;
 @end
 
 @interface GYChatInputStyle1View : UIView
-- (instancetype)initWithFrame:(CGRect)frame footeBtnItem:(ButtonItem *)item;
+- (instancetype)initWithFrame:(CGRect)frame footeBtnItem:(GYButtonItem *)item;
+//重新布局
+- (void)viewWillLayoutSubviews;
 @end

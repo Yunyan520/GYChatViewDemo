@@ -16,4 +16,5 @@ typedef void(^ChooseMotionCallback)(UIView *motion,NSArray *phArr,NSArray *bqArr
 @property(nonatomic, copy) ChooseMotionCallback chooseMotionCallback;
 /** 发送回调 */
 @property(nonatomic, copy) void(^sendMessageCallback)();
+- (void)viewWillLayoutSubviews;
 @end

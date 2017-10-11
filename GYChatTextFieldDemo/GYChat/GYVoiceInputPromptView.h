@@ -20,4 +20,6 @@ typedef NS_ENUM(NSInteger, PromptStatus)
 //语音输入提示UI
 @interface GYVoiceInputPromptView : UIView
 - (void)InputPromptViewStatus:(PromptStatus)status;
+//重新布局
+- (void)viewWillLayoutSubviews;
 @end

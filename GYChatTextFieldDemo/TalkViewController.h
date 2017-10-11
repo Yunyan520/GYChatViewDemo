@@ -9,5 +9,4 @@
 #import <UIKit/UIKit.h>
 
 @interface TalkViewController : UIViewController
-- (void)addDraft:(NSString *)draft;
 @end

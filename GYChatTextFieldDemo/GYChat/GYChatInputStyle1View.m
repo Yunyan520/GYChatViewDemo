@@ -7,8 +7,8 @@
 //
 
 #import "GYChatInputStyle1View.h"
-
-@implementation ButtonItem
+#define kFooterBtnBaseTag 9000
+@implementation GYButtonItem
 
 
 
@@ -17,12 +17,13 @@
 @implementation GYChatInputStyle1View
 {
     CGRect _selfFrame;
-    ButtonItem *_footeBtnItem;
+    GYButtonItem *_footeBtnItem;
 }
-- (instancetype)initWithFrame:(CGRect)frame footeBtnItem:(ButtonItem *)item
+- (instancetype)initWithFrame:(CGRect)frame footeBtnItem:(GYButtonItem *)item
 {
     self = [super initWithFrame:frame];
     if (self) {
+//        self.backgroundColor = [UIColor blueColor];
         _selfFrame = frame;
         _footeBtnItem = item;
         [self configUI];
@@ -35,11 +36,22 @@
     for (NSInteger i = 0; i < count; i++) {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
         CGFloat btnWidth = _selfFrame.size.width / count;
-        btn.frame = CGRectMake(i * btnWidth, 0, btnWidth, _selfFrame.size.height);
+        btn.frame = CGRectMake(i * btnWidth, 10, btnWidth, 30);
         [btn setTitle:_footeBtnItem.btnTitles[i] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(btnClicked:) forControlEvents:UIControlEventTouchUpInside];
         btn.backgroundColor = [UIColor grayColor];
+        btn.tag = kFooterBtnBaseTag + i;
         [self addSubview:btn];
+    }
+}
+- (void)viewWillLayoutSubviews
+{
+    CGRect selfFrame = self.frame;
+    NSInteger count = _footeBtnItem.btnCount;
+    for (NSInteger i = 0; i < count; i++) {
+        UIButton *btn = (UIButton *)[self viewWithTag:i + kFooterBtnBaseTag];
+        CGFloat btnWidth = selfFrame.size.width / count;
+        btn.frame = CGRectMake(i * btnWidth, 10, btnWidth, 30);
     }
 }
 - (void)btnClicked:(id)sender

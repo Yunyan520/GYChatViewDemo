@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GYChatTextFieldDemo/GYChatInputCustomView.m"
-            timestampString = "527156168.996874"
+            filePath = "GYChatTextFieldDemo/GYChatView.m"
+            timestampString = "528445557.66816"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "331"
-            endingLineNumber = "331"
-            landmarkName = "-setTextViewFrame"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "-changeAction:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "GYChatTextFieldDemo/GYChatInputCustomView.m"
-            timestampString = "527156055.239094"
+            filePath = "GYChatTextFieldDemo/GYChat/GYChatView.m"
+            timestampString = "529313548.867099"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "221"
-            endingLineNumber = "221"
-            landmarkName = "-moodIconAction:"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "-setBackViewFrame"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
