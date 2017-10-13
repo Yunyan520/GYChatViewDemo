@@ -117,5 +117,8 @@ typedef void(^ConfigViewCallback)(UIView *view);
  @param newStyle 新类型
  */
 //- (void)changeChatStyle:(ChatInputViewStyle)newStyle;
+/**
+ 自动布局方法
+ */
 - (void)viewWillLayoutSubviews;
 @end
