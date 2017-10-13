@@ -9,14 +9,20 @@
 
 ### /** 点击功能按钮回调 */ #
 - (void)functionClicked:(UIView *)functionItem;
-### - (void)longPressSendFile:(NSString *)fileName;
-### - (void)sendMessage:(NSString *)msg;
-### - (void)keyboardShown:(CGSize)keyboardSize;
-### - (void)clickedAt:(NSString *)msg;
-### - (void)keyboradHidden;
-### - (void)recordTouchUpInside:(id)sender;
-### - (void)recordTouchUpOutside:(id)sender;
-### - (void)recordTouchDown:(id)sender;
-### - (void)recordTouchDragOutside:(id)sender;
-### - (void)recordTouchDragIn:(id)sender;
+### /** 长按发送文件 */ #
+- (void)longPressSendFile:(NSString *)fileName;
+### /** 发送回调 */ #
+- (void)sendMessage:(NSString *)msg;
+### /** 弹起键盘回调 */ #
+- (void)keyboardShown:(CGSize)keyboardSize;
+### /** 点击键盘上@按钮键时回调 */ #
+- (void)clickedAt:(NSString *)msg;
+### /** 收起键盘回调 */ #
+- (void)keyboradHidden;
+### /** 语音输入按钮事件 */ #
+- (void)recordTouchUpInside:(id)sender;
+- (void)recordTouchUpOutside:(id)sender;
+- (void)recordTouchDown:(id)sender;
+- (void)recordTouchDragOutside:(id)sender;
+- (void)recordTouchDragIn:(id)sender; 
 ## 2、主要接口
